@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta charset="UTF-8">
+    <title>账号注册</title>
+    <link rel="stylesheet" href="css/public.css">
+    <link rel="stylesheet" href="css/regis.css">
+    <script src="js/jquery-1.9.1.js"></script>
+    <script src="js/reg.js"></script>
+
+    /**
+        使用swagger-client客户端
+    **/
+    <script src="javascript-client/swagger-client.min.js"></script>
+    <script type="text/javascript">
+        // initialize swagger with callback
+        //        var swaggerWithCallback = new SwaggerClient({
+        //            url: "http://petstore.swagger.io/v2/swagger.json",
+        //            success: function () {
+        //                console.log('callback ready', swaggerWithCallback);
+        //            }
+        //        });
+        // initialize swagger with promise
+        var swaggerWithPromise = new SwaggerClient({
+            //url: "http://localhost:8181/greenMall/api-docs",
+            url: "http://petstore.swagger.io/v2/swagger.json",
+            usePromise: true
+        }).then(function (swagger) {
+                    swaggerWithPromise = swagger;
+                    return swaggerWithPromise.pet.getPetById({petId: 7}, {responseContentType: 'application/json'});
+                }).then(function (pet) {
+                    console.log('Swagger promise resolved pet', pet);
+                    return swaggerWithPromise.store.getOrderById({orderId: 2});
+                }).then(function (order) {
+                    console.log('Swagger promise resolved order', order);
+//            return swaggerWithPromise.store.getOrderById();
+                }).catch(function (error) {
+//                    console.error('Swagger promise rejected', error);
+                });
+    </script>
+
+    /**
+        使用jquery
+    **/
+    <script type="text/javascript">
+        $.ajax({
+            url: "http://petstore.swagger.io/v2/pet/7" ,
+            // 当响应对应的状态码时，执行对应的回调函数
+            statusCode: {
+                404: function(data) {
+                    alert( "找不到页面" );
+                },
+                200: function(data){
+                    alert("请求成功");
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+
+<div class="reg">
+    <h1>账号注册</h1>
+
+    <div class="myfrm">
+        <ul>
+            <li>
+                <label for="phone">手机号</label>
+                <input type="number" id="phone" placeholder="请输入手机号">
+                <a href="javascript:void(0);" class="vlel">×</a>
+            </li>
+            <li>
+                <label for="code">效验码</label>
+                <input type="text" id="code" placeholder="请输入验证码">
+                <a href="javascript:void(0);" class="hcode">点击获取</a>
+            </li>
+            <li>
+                <label for="pwd">密码：</label>
+                <input type="password" id="pwd" placeholder="请输入密码">
+            </li>
+        </ul>
+    </div>
+    <div class="next">
+        <a href="#" class="">下一步</a>
+
+        <p>点击【下一步】代表您已阅读并同意用户使用协议</p>
+    </div>
+
+
+    <!-- 验证错误 -->
+    <div class="error_bg">
+        <div class="error">
+            <p><img src="images/error.png" alt="">手机号格式不正确</p>
+            <a href="javascript:void(0);">确定</a>
+        </div>
+    </div>
+
+    <!-- loading 等待 -->
+    <div class="loading">
+        <img src="images/loading.png" alt="">
+
+        <p>正在发送验证码</p>
+    </div>
+
+</div>
+
+
+</body>
+</html>

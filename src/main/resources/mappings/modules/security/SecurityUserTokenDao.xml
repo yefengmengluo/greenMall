@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.security.dao.SecurityUserTokenDao">
+    
+	<sql id="securityUserTokenColumns">
+		a.id AS "id",
+		a.unique_user AS "uniqueUser",
+		a.login_name AS "loginName",
+		a.login_type AS "loginType",
+		a.password AS "password",
+		a.login_ip AS "loginIp",
+		a.login_date AS "loginDate",
+		a.login_flag AS "loginFlag",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="securityUserTokenJoins">
+	</sql>
+    
+	<select id="get" resultType="SecurityUserToken">
+		SELECT 
+			<include refid="securityUserTokenColumns"/>
+		FROM security_user_token a
+		<include refid="securityUserTokenJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SecurityUserToken">
+		SELECT 
+			<include refid="securityUserTokenColumns"/>
+		FROM security_user_token a
+		<include refid="securityUserTokenJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="uniqueUser != null and uniqueUser != ''">
+				AND a.unique_user = #{uniqueUser}
+			</if>
+			<if test="loginName != null and loginName != ''">
+				AND a.login_name = #{loginName}
+			</if>
+			<if test="loginType != null and loginType != ''">
+				AND a.login_type = #{loginType}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="SecurityUserToken">
+		SELECT 
+			<include refid="securityUserTokenColumns"/>
+		FROM security_user_token a
+		<include refid="securityUserTokenJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO security_user_token(
+			id,
+			unique_user,
+			login_name,
+			login_type,
+			password,
+			login_ip,
+			login_date,
+			login_flag,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{uniqueUser},
+			#{loginName},
+			#{loginType},
+			#{password},
+			#{loginIp},
+			#{loginDate},
+			#{loginFlag},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE security_user_token SET 	
+			unique_user = #{uniqueUser},
+			login_name = #{loginName},
+			login_type = #{loginType},
+			password = #{password},
+			login_ip = #{loginIp},
+			login_date = #{loginDate},
+			login_flag = #{loginFlag},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE security_user_token SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+
+
+</mapper>

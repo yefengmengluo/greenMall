@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.info.dao.InfoRelationDao">
+
+    <sql id="getColumns">
+        a.id,
+        a.from_info_id AS "fromInfo.id",
+        a.to_info_id AS "toInfo.id",
+        a.relation,
+        a.from_statue,
+        a.to_statue,
+        a.statue,
+        a.create_date,
+        a.update_date,
+        a.create_by as "createBy.id",
+        a.update_by as "updateBy.id",
+        a.remarks,
+        f.user_name as "fromInfo.userName",
+        f.telephone as "fromInfo.telephone",
+        t.user_name as "toInfo.userName",
+        t.telephone as "toInfo.telephone"
+    </sql>
+
+
+    <insert id="insert">
+        INSERT INTO supply_demand_relation(
+        id,
+        from_info_id,
+        to_info_id,
+        relation,
+        from_statue,
+        to_statue,
+        statue,
+        create_date,
+        update_date,
+        create_by,
+        update_by,
+        remarks
+        ) VALUES (
+        #{id},
+        #{fromInfo.id},
+        #{toInfo.id},
+        #{relation},
+        #{fromStatue},
+        #{toStatue},
+        #{statue},
+        now(),
+        now(),
+        #{createBy.id},
+        #{updateBy.id},
+        #{remarks}
+        )
+    </insert>
+
+    <select id="findList" resultType="InfoRelation">
+        SELECT
+        <include refid="getColumns"/>
+        FROM supply_demand_relation a LEFT JOIN (select a.id as id,b.user_name as
+        user_name,b.telephone as telephone from supply_demand_info a LEFT JOIN user_address_info b on a.address_id=b.id) f
+        on a.from_info_id=f.id LEFT JOIN (select a.id as id,b.user_name as
+        user_name,b.telephone as telephone from supply_demand_info a LEFT JOIN user_address_info b on a.address_id=b.id) t
+        on a.to_info_id=t.id
+        WHERE  true
+        <if test="statue">
+            and a.statue=#{statue}
+        </if>
+        <if test="startDate and startDate!=''">
+            and a.create_date&gt;#{startDate}
+        </if>
+        <if test="endDate and endDate!=''">
+            and a.create_date&lt;#{endDate}
+        </if>
+       <choose>
+            <when test="relationType and relationType==-1">
+                and a.from_statue=0 and a.to_statue=0
+            </when>
+           <when test="relationType and relationType==1">
+               and a.from_statue&lt;&gt;a.to_statue
+            </when>
+           <when test="relationType and relationType==2">
+               and a.from_statue=1 and a.to_statue=1
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
+        <!--
+                <if test="goodsId and goodsId!=''">
+                    and a.goods_id=#{goodsId}
+                </if>
+                <if test="pgoodsId and pgoodsId!=''">
+                    and a.pgoods_id=#{pgoodsId}
+                </if>
+                <if test="provinceId and provinceId!=''">
+                    and c.province_id=#{provinceId}
+                </if>
+                <if test="cityId and cityId!=''">
+                    and c.city_id=#{cityId}
+                </if>
+                <if test="type">
+                    and a.type=#{type}
+                </if>
+                <if test="goodsName">
+                    and a.goods_name like concat('%',#{goodsName},'%')
+                </if>
+                <if test="detailArea">
+                    and c.detail_area like concat('%',#{detailArea},'%')
+                </if>
+                <if test="organizationName and organizationName!=null">
+                    and (e.organization_name like concat('%',#{organizationName},'%') or f.name like concat('%',#{organizationName},'%'))
+                </if>
+                <if test="pgoodsName">
+                    and a.pgoods_name like
+                    concat('%',#{pgoodsName},'%')
+                </if>
+                <if test="pids">
+                    and a.pids like
+                    concat('%',#{pids},'%')
+                </if>
+                <if test="type">
+                    and a.type=#{type}
+                </if>
+                <if test="publishUser and publishUser!='' and publishUser.id">
+                    and a.publish_user=#{publishUser.id}
+                </if>
+                <if test="publishUserId">
+                    and a.publish_user=#{publishUserId}
+                </if>
+                <if test="ignoreIds">
+                    and a.id NOT IN (#{ignoreIds})
+                </if>
+                <if test="entrustSupplyDemandId">
+                    and a.entrust_supply_demand_id=#{entrustSupplyDemandId}
+                </if>
+                <if test="isFront and isFront==true">
+                    and a.validate_end_date&gt;now() and a.validate_start_date&lt;now()
+                </if>
+                <if test="isEntrust">
+                    and a.is_entrust=#{isEntrust}
+                </if>
+                <if test="isEntrust==0">
+                    and a.is_entrust=#{isEntrust}
+                </if>-->
+        group by a.id ORDER BY a.update_date DESC
+    </select>
+</mapper>

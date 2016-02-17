@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+                http://www.springframework.org/schema/jms
+                http://www.springframework.org/schema/jms/spring-jms-4.1.xsd
+                http://activemq.apache.org/schema/core
+                http://activemq.apache.org/schema/core/activemq-core-5.11.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <jms:annotation-driven/>
+
+
+    <!--//////////////////////////////////////////////////////////////-->
+    <!--///////////////嵌入式activeMq////////////////////////////-->
+    <!--//////////////////////////////////////////////////////////////-->
+    <amq:broker useJmx="false" persistent="false" schedulerSupport="true">
+        <amq:transportConnectors>
+            <amq:transportConnector uri="tcp://localhost:8162" />
+        </amq:transportConnectors>
+        <!--<amq:persistenceAdapter>-->
+            <!--<amq:jdbcPersistenceAdapter dataSource="#dataSource" />-->
+        <!--</amq:persistenceAdapter>-->
+    </amq:broker>
+
+    <bean id="cachingConnectionFactory" class="org.apache.activemq.spring.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://localhost:8162"/>
+    </bean>
+
+    <!--//////////////////////////////////////////////////////////////-->
+    <!--///////////////非嵌入式activeMq////////////////////////////////-->
+    <!--//////////////////////////////////////////////////////////////-->
+     <!--Spring Caching连接工厂-->
+     <!--Spring用于管理真正的ConnectionFactory的ConnectionFactory-->
+    <!--<bean id="cachingConnectionFactory"-->
+          <!--class="org.springframework.jms.connection.CachingConnectionFactory">-->
+        <!--&lt;!&ndash; 目标ConnectionFactory对应真实的可以产生JMS Connection的ConnectionFactory &ndash;&gt;-->
+        <!--<property name="targetConnectionFactory">-->
+            <!--<bean class="org.apache.activemq.spring.ActiveMQConnectionFactory">-->
+                <!--<property name="brokerURL" value="tcp://localhost:8161"/>-->
+            <!--</bean>-->
+        <!--</property>-->
+        <!--&lt;!&ndash; Session缓存数量 &ndash;&gt;-->
+        <!--<property name="sessionCacheSize" value="10"></property>-->
+    <!--</bean>-->
+
+
+    <!-- 消息处理器 -->
+    <bean id="jmsMessageConverter" class="org.springframework.jms.support.converter.SimpleMessageConverter" />
+    <!-- ====Producer side start==== -->
+    <!-- 定义JmsTemplate的Queue类型 -->
+    <bean id="jmsQueueTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <constructor-arg ref="cachingConnectionFactory" />
+        <!-- 非pub/sub模型（发布/订阅），即队列模式 -->
+        <property name="pubSubDomain" value="false" />
+        <property name="messageConverter" ref="jmsMessageConverter"></property>
+    </bean>
+    <!-- 定义JmsTemplate的Topic类型 -->
+    <bean id="jmsTopicTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <constructor-arg ref="cachingConnectionFactory" />
+        <!-- pub/sub模型（发布/订阅） -->
+        <property name="pubSubDomain" value="true" />
+        <property name="messageConverter" ref="jmsMessageConverter"></property>
+    </bean>
+
+
+    <!--定义短信队列-->
+    <bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="cachingConnectionFactory"></property>
+        <property name="concurrency" value="3-10"></property>
+        <property name="destination">
+            <bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+                <constructor-arg>
+                    <value>msg_queue</value>
+                </constructor-arg>
+            </bean>
+        </property>
+        <property name="messageListener" ref="targetToSend"></property>
+        <property name="errorHandler" ref="jmsHandler"/>
+    </bean>
+
+    <!--以下为测试队列
+    <bean id="jmsListenerContainerFactory" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="cachingConnectionFactory"></property>
+        <property name="concurrency" value="3-10"></property>
+        <property name="destination">
+            <bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+                <constructor-arg>
+                    <value>test_queue</value>
+                </constructor-arg>
+            </bean>
+        </property>
+        <property name="messageListener" ref="queueReciver"></property>
+    </bean>
+-->
+
+    <!--下面jms方式与上面bean方式等效-->
+    <!--<jms:listener-container destination-type="queue"-->
+                            <!--container-type="default"-->
+                            <!--connection-factory="cachingConnectionFactory"-->
+                            <!--acknowledge="auto"-->
+                            <!--concurrency="5-10">-->
+        <!--<jms:listener destination="test_queue" ref="queueReciver" />-->
+    <!--</jms:listener-container>-->
+
+    <!--<jms:listener-container destination-type="topic" container-type="default" connection-factory="cachingConnectionFactory" acknowledge="auto" concurrency="5-10">-->
+        <!--<jms:listener destination="test_topic" ref="topicReciver" />-->
+    <!--</jms:listener-container>-->
+
+</beans>
+

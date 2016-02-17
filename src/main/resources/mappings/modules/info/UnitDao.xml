@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.info.dao.UnitDao">
+
+    <select id="get" resultType="Unit">
+        SELECT
+        *
+        FROM supply_demand_unit
+        WHERE id = #{id}
+    </select>
+
+    <select id="findList" resultType="Unit">
+        SELECT
+        *
+        FROM supply_demand_unit
+        WHERE del_flag = #{DEL_FLAG_NORMAL}
+        <if test="name!=null and name!=''">
+           and name LIKE concat('%',#{name},'%')
+        </if>
+        <if test="code!=null and code!=''">
+            and code=#{code}
+        </if>
+        <if test="statue!=null and statue!=''">
+          and  statue=#{statue}
+        </if>
+        <if test="statue==0">
+            and statue=0
+        </if>
+        ORDER BY update_date DESC
+    </select>
+
+    <select id="findAllList" resultType="Unit">
+        SELECT
+        *
+        FROM supply_demand_unit
+        WHERE del_flag = #{DEL_FLAG_NORMAL}
+        ORDER BY update_date DESC
+    </select>
+
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO supply_demand_unit(
+        name,
+        code,
+        statue,
+        create_by,
+        create_date,
+        update_by,
+        update_date,
+        del_flag
+        ) VALUES (
+        #{name},
+        #{code},
+        #{statue},
+        #{createBy.id},
+        #{createDate},
+        #{updateBy.id},
+        #{updateDate},
+        #{delFlag}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE supply_demand_unit SET
+        name = #{name},
+        code = #{code},
+        statue = #{statue},
+        update_by = #{updateBy.id},
+        update_date = #{updateDate}
+        WHERE id = #{id}
+    </update>
+
+    <update id="delete">
+        UPDATE supply_demand_unit SET
+        del_flag = #{DEL_FLAG_DELETE}
+        WHERE id = #{id}
+    </update>
+
+    <select id="findAllExceptUnitIds" resultType="Unit">
+        SELECT
+        *
+        FROM supply_demand_unit
+        WHERE del_flag = #{DEL_FLAG_NORMAL}
+        AND id not in (SELECT unit_id FROM `supply_demand_unit_category` where gcategory_id=#{gcategoryId}
+         <if test="id!=null and id!=''">
+             and id&lt;&gt;${id}
+         </if>
+
+        )
+         ORDER BY update_date DESC
+    </select>
+
+</mapper>

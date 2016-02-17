@@ -1,0 +1,28 @@
+#top{margin-top: 29px;}
+.com-full-wrapper{margin-top: 0px;height: 120px;overflow: hidden;width: 1190px;margin: 0 auto;position: relative;}
+.common-logo{margin-left: 80px;}
+.common-logo div a{width: 136px;height: 90px;}
+.common-ad{width: 210px;padding: 5px 0 0 36px;height: 71px;overflow: hidden;}
+.commmon-ad-con{height: 70px;line-height: 70px;padding: 38px 0px 0px 80px;background: url(../../images/top/ewm.png) no-repeat;overflow: hidden;font-size: 22px;color: #777777;font-family: "微软雅黑";}
+.advertising-common-single-html{padding: 0;}
+.commmon-ad-con p{font-size: 14px;color: #777777;height: 20px;line-height: 6px;}
+.com-search{height: 100px;width: 610px;overflow: hidden;margin-top: 0;position: relative;}
+.com-search-title{height: 25px;line-height: 25px;margin-bottom: 5px;}
+.com-search-title ul{padding-top: 0;overflow: hidden;}
+.com-search-title ul li{float: left;width: 60px;height: 25px;display: block;line-height: 25px;overflow: hidden;text-align: center;font-family: "微软雅黑";font-size: 14px;font-weight: 100;background: url(../../images/top/3_03.png) right center no-repeat;}
+.com-search-title ul li a{font-size: 14px;color: #555555;}
+.com-search-title ul li.on a{color: #ea5503;background-color: #fff;}
+.com-search-con{width: 610px;height: 40px;overflow: hidden;}
+.com-search-con .com-search-con-text{width: 409px;padding-left: 10px;overflow: hidden;height: 38px;line-height: 38px;font-size: 12px;color: #777777;float: left;border: 1px solid #999999;border-right: none;position: relative;}
+
+.com-search-con img{position: absolute;left: 398px;top: 44px;display: none;}
+.com-search-con .com-search-con-btn1{width: 92px;height: 40px;background: #ea5503 url(../../images/top/icon_03.png) 10px center no-repeat;border: none;float: left;color: #fff;overflow: hidden;cursor: pointer;position: relative;}
+
+.com-search-con .com-search-con-btn2{width: 92px;height: 40px;background: #ee8301;border: none;float: left;color: #fff;overflow: hidden;cursor: pointer;margin-left: 5px;}
+.common-nav-full{width: 100%;background: #f08300;height: 42px;}
+.common-nav-con{width: 1190px;margin: 0 auto;}
+.common-nav-category-nav-con{width: 1108px;}
+.common-nav-category-nav-con ul{width: 1040px;}
+.common-nav-category-nav-con ul li{width: 114px;}
+.common-nav-con li a{font-weight: normal;}
+.common-nav-full .common-nav-category-nav-con li a:hover{background:#ea5504;text-decoration: none;}

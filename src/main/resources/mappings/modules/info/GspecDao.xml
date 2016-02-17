@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.info.dao.GspecDao">
+
+	<sql id="gspecColumns">
+		g.id,
+		g.code,
+		g.order_item,
+		g.gcategory_id AS "gcategory.id",
+		g.remarks,
+		g.name
+	</sql>
+	<sql id="gvalueColumns">
+		v.id,
+		v.val,
+		v.order_item,
+		v.del_flag
+	</sql>
+
+	<select id="findList" resultType="Gspec">
+		SELECT
+		<include refid="gspecColumns"/>
+		FROM goods_spec g
+		WHERE
+		g.gcategory_id = #{gcategory.id}
+		ORDER BY g.order_item
+	</select>
+
+	<select id="findValsByGspec" resultType="Gvalue" parameterType="Gspec">
+		SELECT
+		<include refid="gvalueColumns"/>
+		FROM goods_spec_value v
+		WHERE
+		v.spec_id = #{id}
+		ORDER BY v.order_item
+	</select>
+
+	<select id="get" resultType="Gspec">
+		SELECT
+		<include refid="gspecColumns"/>
+		FROM goods_spec g
+		WHERE g.id = #{id}
+	</select>
+
+	<insert id="insert">
+		INSERT INTO goods_spec(
+		name,
+		code,
+		gcategory_id,
+		order_item,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
+		) VALUES (
+		#{name},
+		#{code},
+		#{gcategory.id},
+		#{orderItem},
+		#{createBy.id},
+		#{createDate},
+		#{updateBy.id},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update">
+
+		UPDATE goods_spec SET
+		name=#{name},
+		code=#{code},
+		order_item=#{orderItem},
+		update_by=#{updateBy.id},
+		update_date=#{updateDate},
+		remarks=#{remarks},
+		del_flag=#{delFlag}
+		WHERE id = #{id}
+	</update>
+
+
+</mapper>

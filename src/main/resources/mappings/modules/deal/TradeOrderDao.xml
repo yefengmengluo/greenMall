@@ -1,0 +1,686 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.deal.dao.TradeOrderDao">    
+	<sql id="tradeOrderColumns">		
+		a.id AS "id",
+		a.order_number AS "OrderNumber",
+		a.statue AS "statue",
+		a.supply_user_id AS "supplyUserId",
+		a.supply_user_name AS "supplyUserName",
+		a.demand_user_id AS "demandUserId",
+		a.demand_name AS "demandName",
+		a.add_date AS "addDate",
+		a.ship_time AS "shipTime",
+		a.invoice_no AS "invoiceNo",
+		a.finish_time AS "finishTime",
+		a.goods_amount AS "goodsAmount",
+		a.evaluation_status AS "evaluationStatus",
+		a.evaluation_time AS "evaluationTime",
+		a.evaluation_content AS "evaluationContent",
+		a.receive_province AS "receiveProvince",
+		a.receive_city AS "receiveCity",
+		a.receive_area AS "receiveArea",
+		a.receive_detail_area AS "receiveDetailArea",
+		a.remarks AS "remarks",
+		a.ordertotal AS "ordertotal",
+		a.poundage AS "poundage",
+		a.distribution_fee AS "distributionfee",
+		a.goods_total_money AS "goodstotalmoney",
+		a.paymenttype AS "paymenttype",
+		a.payment AS "payment",
+		a.distribution AS "distribution",
+		a.goods_account_payable AS "goodsaccountpayable",
+		a.cash_pledge AS "cash_pledge",
+		a.demand_returncash AS "demandreturncash",
+		a.supply_commission AS "supplycommission",
+		a.transactiontype AS "transactiontype",
+		a.update_date AS "updateDate"
+	</sql>
+	<sql id="tradeOrderItem">
+	    t.id AS "tradeOrder.id",
+		t.order_number AS "tradeOrder.OrderNumber",
+		t.statue AS "tradeOrder.statue",
+		t.supply_user_id AS "tradeOrder.supplyUserId",
+		t.supply_user_name AS "tradeOrder.supplyUserName",
+		t.demand_user_id AS "tradeOrder.demandUserId",
+		t.demand_name AS "tradeOrder.demandName",
+		t.add_date AS "tradeOrder.addDate",
+		t.ship_time AS "tradeOrder.shipTime",
+		t.invoice_no AS "tradeOrder.invoiceNo",
+		t.finish_time AS "tradeOrder.finishTime",
+		t.goods_amount AS "tradeOrder.goodsAmount",
+		t.evaluation_status AS "tradeOrder.evaluationStatus",
+		t.evaluation_time AS "tradeOrder.evaluationTime",
+		t.evaluation_content AS "tradeOrder.evaluationContent",
+		t.receive_province AS "tradeOrder.receiveProvince",
+		t.receive_city AS "tradeOrder.receiveCity",
+		t.receive_area AS "tradeOrder.receiveArea",
+		t.receive_detail_area AS "tradeOrder.receiveDetailArea",
+		t.remarks AS "tradeOrder.remarks",
+		t.ordertotal AS "tradeOrder.ordertotal",
+		t.poundage AS "tradeOrder.poundage",
+		t.distribution_fee AS "tradeOrder.distributionfee",
+		t.goods_total_money AS "tradeOrder.goodstotalmoney",
+		t.paymenttype AS "tradeOrder.paymenttype",
+		t.payment AS "tradeOrder.payment",
+		t.distribution AS "tradeOrder.distribution",
+		t.goods_account_payable AS "tradeOrder.goodsaccountpayable",
+		t.cash_pledge AS "tradeOrder.cash_pledge",
+		t.demand_returncash AS "tradeOrder.demandreturncash",
+		t.supply_commission AS "tradeOrder.supplycommission",		
+		t.transactiontype AS "tradeOrder.transactiontype",
+		t.update_date AS "tradeOrder.updateDate",
+		udi.province_id AS "addressInfo.provinceId",
+		udi.city_id AS "addressInfo.cityId",
+		udi.area_id AS "addressInfo.areaId",
+		udi.warehouse AS "addressInfo.warehouse",
+		udi.detail_area AS "addressInfo.detailArea",
+		udi.user_id AS "addressInfo.userId",
+		udi.user_name AS "addressInfo.username",
+		udi.telephone AS "addressInfo.telephone",
+		udi.is_defalt AS "addressInfo.isDefault",
+		udi.postcode AS "addressInfo.postcode",
+		udi.type AS "addressInfo.type",
+		udi.province_name AS "addressInfo.provinceName",
+		udi.city_name AS "addressInfo.cityName",
+		udi.area_name AS "addressInfo.areaName",
+		udi.del_flag AS "addressInfo.delFlag",
+		su.name AS "user.name",
+		su.email AS "user.email",
+		su.faxnumber AS "user.faxNumber",
+		su.phone AS "user.phone",
+		su.mobile AS "user.mobile"
+	</sql>
+	
+    <sql id="detailsColumns">
+        a.id AS "tradeOrder.id",
+		a.order_number AS "tradeOrder.OrderNumber",
+		a.statue AS "tradeOrder.statue",
+		a.supply_user_id AS "tradeOrder.supplyUserId",
+		a.supply_user_name AS "tradeOrder.supplyUserName",
+		a.demand_user_id AS "tradeOrder.demandUserId",
+		a.demand_name AS "tradeOrder.demandName",
+		a.add_date AS "tradeOrder.addDate",
+		a.ship_time AS "tradeOrder.shipTime",
+		a.invoice_no AS "tradeOrder.invoiceNo",
+		a.finish_time AS "tradeOrder.finishTime",
+		a.goods_amount AS "tradeOrder.goodsAmount",
+		a.evaluation_status AS "tradeOrder.evaluationStatus",
+		a.evaluation_time AS "tradeOrder.evaluationTime",
+		a.evaluation_content AS "tradeOrder.evaluationContent",
+		a.receive_province AS "tradeOrder.receiveProvince",
+		a.receive_city AS "tradeOrder.receiveCity",
+		a.receive_area AS "tradeOrder.receiveArea",
+		a.receive_detail_area AS "tradeOrder.receiveDetailArea",
+		a.remarks AS "tradeOrder.remarks",
+		a.ordertotal AS "tradeOrder.ordertotal",
+		a.poundage AS "tradeOrder.poundage",
+		a.distribution_fee AS "tradeOrder.distributionfee",
+		a.goods_total_money AS "tradeOrder.goodstotalmoney",
+		a.paymenttype AS "tradeOrder.paymenttype",
+		a.payment AS "tradeOrder.payment",
+		a.distribution AS "tradeOrder.distribution",
+		a.goods_account_payable AS "tradeOrder.goodsaccountpayable",
+		a.cash_pledge AS "tradeOrder.cash_pledge",
+		a.demand_returncash AS "tradeOrder.demandreturncash",
+		a.supply_commission AS "tradeOrder.supplycommission",
+		a.transactiontype AS "tradeOrder.transactiontype",
+		a.update_date AS "tradeOrder.updateDate",
+		sd.id AS "tradeOrderSupplyDemand.id",
+		sd.order_id AS "tradeOrderSupplyDemand.orderId",
+		sd.supply_id AS "tradeOrderSupplyDemand.supplyId",
+		sd.demand_id AS "tradeOrderSupplyDemand.demandId",
+		sd.total_price AS "tradeOrderSupplyDemand.totalPrice",
+		sd.per_price AS "tradeOrderSupplyDemand.perPrice",
+		sd.number AS "tradeOrderSupplyDemand.number",
+		sd.image_path AS "tradeOrderSupplyDemand.imagePath",
+		sd.price_unit_id AS "tradeOrderSupplyDemand.priceUnitId",
+		sd.number_unit_id AS "tradeOrderSupplyDemand.numberUnitId",
+		sd.price_unit_value AS "tradeOrderSupplyDemand.priceUnitValue",
+		sd.number_unit_value AS "tradeOrderSupplyDemand.numberUnitValue",
+		sd.remarks AS "tradeOrderSupplyDemand.remarks",
+		sd.goods_name AS "tradeOrderSupplyDemand.goodsName",
+		sd.pgoods_name AS "tradeOrderSupplyDemand.pgoodsName",
+		us.user_name AS "addressInfo.username",
+		us.telephone AS "addressInfo.telephone",
+		us.detail_area AS "addressInfo.detailArea"
+    </sql>
+	<sql id="supplyInfos">
+	    a.id AS "id",
+		a.goods_name AS "goodsName",
+		a.pgoods_alias AS "pgoodsAlias",
+		a.goods_id AS "goodsId",
+		a.pgoods_id AS "pgoodsId",
+		a.pgoods_name AS "pgoodsName",
+		a.pids AS "pids",
+		a.price_unit_id AS "priceUnitId",
+		a.number_unit_id AS "numberUnitId",
+		a.price_unit_value AS "priceUnitValue",
+		a.number_unit_value AS "numberUnitValue",
+		a.number AS "number",
+		a.from_per_price AS "fromPerPrice",
+		a.to_per_price AS "toPerPrice",
+		a.specs AS "specs",
+		a.remarks AS "remarks",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.create_by AS "createBy.id",
+		a.update_by AS "updateBy.id",
+		a.statue AS "statue",
+		a.statue_intro AS "statueIntro",
+		a.type AS "type",
+		a.is_entrust AS "isEntrust",
+		a.entrust_supply_demand_id AS "entrustSupplyDemandId",
+		a.entrust_organization_id AS "entrustOrganizationId",
+		a.address_id AS "addressId",
+		a.validate_start_date AS "validateStartDate",
+		a.validate_end_date AS "validateEndDate",
+		a.production_province AS "productionProvince",
+		a.production_city AS "productionCity",
+		a.production_area AS "productionArea",
+		a.production_detail_area AS "productionDetailArea",
+		a.order_uploading_id AS "orderUploadingId",
+		a.publish_user AS "publishUser",
+		a.check_record_id AS "checkRecordId",
+		a.production_province_name AS "productionProvinceName",
+		a.production_city_name AS "productionCityName",
+		a.production_area_name AS "productionAreaName"
+	</sql>
+	
+	<sql id="supplyDemandInfoColumns">
+		a.id AS "id",
+		a.goods_name AS "goodsName",
+		a.pgoods_alias AS "pgoodsAlias",
+		a.goods_id AS "goodsId",
+		a.pgoods_id AS "pgoodsId",
+		a.pgoods_name AS "pgoodsName",
+		a.pids AS "pids",
+		a.price_unit_id AS "priceUnitId",
+		a.number_unit_id AS "numberUnitId",
+		a.price_unit_value AS "priceUnitValue",
+		a.number_unit_value AS "numberUnitValue",
+		a.number AS "number",
+		a.from_per_price AS "fromPerPrice",
+		a.to_per_price AS "toPerPrice",
+		a.specs AS "specs",
+		a.remarks AS "remarks",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.create_by AS "createBy.id",
+		a.update_by AS "updateBy.id",
+		a.statue AS "statue",
+		a.statue_intro AS "statueIntro",
+		a.type AS "type",
+		a.is_entrust AS "isEntrust",
+		a.entrust_supply_demand_id AS "entrustSupplyDemandId",
+		a.entrust_organization_id AS "entrustOrganizationId",
+		a.address_id AS "addressId",
+		a.validate_start_date AS "validateStartDate",
+		a.validate_end_date AS "validateEndDate",
+		a.production_province AS "productionProvince",
+		a.production_city AS "productionCity",
+		a.production_area AS "productionArea",
+		a.production_detail_area AS "productionDetailArea",
+		a.order_uploading_id AS "orderUploadingId",
+		a.publish_user AS "publishUser",
+		a.check_record_id AS "checkRecordId",
+		a.production_province_name AS "productionProvinceName",
+		a.production_city_name AS "productionCityName",
+		a.production_area_name AS "productionAreaName"
+	</sql>
+	
+	<sql id="info">
+	    yy.id AS "",
+    	yy.company_id AS "user.company",
+    	yy.office_id AS "user.office",
+    	yy.login_name AS "user.loginName",
+    	yy.password  AS "user.password",
+    	yy.no AS "user.no",
+		yy.name AS "user.name",
+		yy.email AS "user.email",
+		yy.qq AS "user.qq",
+		yy.faxnumber AS "user.faxNumber",
+		yy.phone AS "user.phone",
+		yy.mobile AS "user.mobile",
+		yy.user_type AS "user.userType",
+		yy.login_ip AS "user.loginIp",
+		yy.login_date AS "user.loginDate",
+		yy.remarks ,
+		yy.login_flag AS "user.loginFlag",
+		yy.statue AS "user.statue",
+		yy.photo AS "user.photo",
+		yy.create_by AS "user.createBy.id",
+		yy.create_date AS "user.createDate",
+		yy.update_by AS "user.updateBy",
+		yy.update_date AS "user.updateDate",
+		yy.del_flag AS "user.delFlag",
+		yy.organization_id AS "user.organizationId",		
+	    oi.id AS "organization.id",
+		oi.name AS "organization.name",
+		oi.type AS "organization.type",
+		oi.image_path AS "organization.imagePath",
+		oi.create_date AS "organization.createDate",
+		oi.update_date AS "organization.updateDate",
+		oi.create_by AS "organization.createBy",
+		oi.update_by AS "organization.updateBy",
+		oi.regist_date AS "organization.registDate",
+		oi.is_entrust AS "organization.isEntrust",
+		oi.regist_number AS "organization.registNumber",
+		oi.province_id AS "organization.provinceId",
+		oi.city_id AS "organization.cityId",
+		oi.area_id AS "organization.area",
+		oi.detail_area AS "organization.detailArea",
+		oi.postcode AS "organization.postcode",
+		oi.fax_number AS "organization.faxNumber",
+		oi.remarks AS "organization.remarks",
+		oi.person_name AS "organization.personName",
+		oi.phone_mob AS "organization.phoneMob",
+		oi.phone_tel AS "organization.phoneTel",
+		oi.qq_number AS "organization.qqNumber",
+		oi.email AS "organization.email"
+	</sql>
+	<sql id="address">
+	    a.id as "id",
+        a.province_id as "provinceId",
+        a.city_id  as "cityId",
+        a.area_id as "areaId",
+        a.warehouse  as "warehouse",
+        a.detail_area as "detailArea",
+        a.user_id as "userId",
+        a.user_name as "userName",
+        a.telephone as "telephone",
+        a.is_defalt as "isDefalt",
+        a.del_flag as "delFlag",
+        a.postcode as "postcode",
+        a.type as "type",
+        a.province_name as "provinceName",
+        a.city_name as "cityName",
+        a.area_name as "areaName",
+        a.create_by as "createBy",
+        a.update_by as "updateBy",
+        a.create_date as "createDate",
+        a.update_date as "updateDate"
+	</sql>
+	
+	<select id="get" resultType="TradeOrder">
+		  select 
+	      <include refid="tradeOrderColumns"/> 
+	    from trade_order a where a.id=#{id}		
+	</select>
+	
+	<select id="getStatus" resultType="TradeOrder">
+	   select * from trade_order_log where order_number=#{orderNumber}
+	</select>
+	
+	<!-- FROM trade_order a,(select max(add_date) as adddate from trade_order where order_number = #{orderNumber}) s where a.order_number = #{orderNumber} and a.add_date=s.adddate -->
+	<select id="getOrderByOrderId" resultType="TradeOrder" >	 	    	    
+	    SELECT 
+			<include refid="tradeOrderColumns"/>
+		FROM trade_order a,(select max(add_date) as adddate from trade_order where order_number = #{orderNumber}) s where		
+			 a.order_number = #{orderNumber} and a.add_date=s.adddate
+	</select>
+	
+	<!-- 详情分页修改版  -->
+	<select id="getDetails" resultType="Details">
+	  select 
+	    <include refid="detailsColumns" />
+	   from trade_order a left join trade_order_supply_demand sd on a.id = sd.order_id,(select user_name,telephone,detail_area from user_address_info u,(select address_id from supply_demand_info 
+	  <where>
+	    <if test="supplyid!=null and supplyid!='' ">
+	      id=#{supplyid}
+	    </if>
+	    
+	    <if test="demandid!=null and demandid!='' ">
+	      id=#{demandid}
+	    </if>
+	    
+	  </where>
+	  ) s where u.id=s.address_id) us 
+	  <where>
+	   <if test="supplyid!=null and supplyid!='' ">
+	      sd.supply_id=#{supplyid}
+	    </if>
+	    
+	    <if test="demandid!=null and demandid!='' ">
+	      sd.demand_id=#{demandid}
+	    </if>
+	  </where>
+	</select>
+	 
+	<!-- 详情分页 -过时-->
+	<select id="getDetails_Old" resultType="Details">
+		select
+		<include refid="detailsColumns" />
+		from
+		trade_order a
+		left join
+		trade_order_supply_demand sd
+		on a.id = sd.order_id,
+		(select max(aa.add_date) max_date from trade_order aa left join
+		trade_order_supply_demand sd on aa.id = sd.order_id
+		<where>
+			<if test="supplyid!=null and supplyid !='' ">
+				sd.supply_id=#{supplyid}
+			</if>
+			<if test="demandid!=null and demandid !='' ">
+			    sd.demand_id=#{demandid}
+			</if>
+		</where>
+		group by sd.order_id) s
+		<where>
+			 and a.add_date = s.max_date
+		</where>
+	</select>
+	
+	
+	<select id="findList" resultType="TradeOrder">
+		SELECT 
+			<include refid="tradeOrderColumns"/>
+		FROM trade_order a 
+		<where>
+		   a.statue!=-1
+			<if test="orderNumber!=null and orderNumber !=''">
+			    and a.order_number=#{orderNumber} <!-- 根据订单的编号筛选订单 -->
+			</if>
+			<if test="statue!=null and statue !='' or statue==0 ">
+			    and a.statue=#{statue} <!-- 根据订单转态来筛选订单 -->
+			</if>
+		</where>		    
+		order by add_date desc   <!-- 降序排列-->
+	</select>
+	
+	<select id="getOrderIng" resultType="TradeOrder">
+		SELECT 
+			<include refid="tradeOrderColumns"/>
+	 from trade_order a where a.statue=2 or a.statue=3 or a.statue=4 or a.statue=1 order by a.add_date desc   <!-- 降序排列-->
+	</select>
+	
+	<select id="findAllList" resultType="TradeOrder">
+		SELECT 
+			<include refid="tradeOrderColumns"/>
+		FROM trade_order a
+		<!-- <include refid="tradeOrderJoins"/> -->
+		<where>
+			
+		</where>		
+		<!-- <choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose> -->
+		order by desc
+	</select>
+
+	<insert id="insert">
+		INSERT INTO trade_order(
+		id,
+		order_number,
+		statue,
+		supply_user_id,
+		supply_user_name,
+		demand_user_id,
+		demand_name,
+		add_date,
+		ship_time,
+		invoice_no,
+		finish_time,
+		goods_amount,
+		evaluation_status,
+		evaluation_time,
+		evaluation_content,
+		receive_province,
+		receive_city,
+		receive_area,
+		receive_detail_area,
+		remarks,
+		ordertotal,
+		poundage,
+		distribution_fee,
+		goods_total_money,
+		paymenttype,
+		payment,
+		distribution,
+		goods_account_payable,
+		cash_pledge,
+		demand_returncash,
+		supply_commission,
+		transactiontype,
+		update_date
+		) VALUES (
+		#{id},
+		#{orderNumber},
+		#{statue},
+		#{supplyUserId},
+		#{supplyUserName},
+		#{demandUserId},
+		#{demandName},
+		#{addDate},
+		#{shipTime},
+		#{invoiceNo},
+		#{finishTime},
+		#{goodsAmount},
+		#{evaluationStatus},
+		#{evaluationTime},
+		#{evaluationContent},
+		#{receiveProvince},
+		#{receiveCity},
+		#{receiveArea},
+		#{receiveDetailArea},
+		#{remarks},
+		#{ordertotal},
+		#{poundage},
+		#{distributionfee},
+		#{goodstotalmoney},
+		#{paymenttype},
+		#{payment},
+		#{distribution},
+		#{goodsaccountpayable},
+		#{cashpledge},
+		#{demandreturncash},
+		#{supplycommission},
+		#{transactiontype},
+		#{updateDate}
+		)
+	</insert>
+
+    <!-- 更新订单数据 -->
+	<update id="updateData">
+		UPDATE trade_order 
+		<set> 
+			<if test="statue!=null and statue!='' or statue==0 ">statue = #{statue},</if>
+			<if test="shipTime!=null and shipTime!='' ">ship_time = #{shipTime},</if>
+			<if test="finishTime!=null and finishTime!='' ">finish_time = #{finishTime},</if>
+			<if test="goodsAmount!=null and goodsAmount!='' ">goods_amount = #{goodsAmount},</if>
+			<if test="ordertotal!=null and ordertotal!='' ">ordertotal = #{ordertotal},</if>
+			<if test="poundage!=null and poundage!='' ">poundage = #{poundage},</if>
+			<if test="distributionfee!=null and distributionfee!='' ">distribution_fee = #{distributionfee},</if>
+			<if test="paymenttype!=null and paymenttype!='' ">paymenttype = #{paymenttype},</if>
+			<if test="payment!=null and payment!='' ">payment = #{payment},</if>
+			<if test="distribution!=null and distribution!='' ">distribution = #{distribution},</if>
+			<if test="goodsaccountpayable!=null and goodsaccountpayable!='' ">goods_account_payable = #{goodsaccountpayable},</if>
+			<if test="cashpledge!=null and cashpledge!='' ">cash_pledge = #{cashpledge},</if>
+			<if test="demandreturncash!=null and demandreturncash!='' ">demand_returncash = #{demandreturncash},</if>
+			<if test="supplycommission!=null and supplycommission!='' ">supply_commission = #{supplycommission},</if>
+			<if test="transactiontype!=null and transactiontype!='' ">transactiontype = #{transactiontype},</if>
+			<if test="updateDate!=null and updateDate!='' ">update_date = #{updateDate},</if>	
+			<if test="remarks!=null and remarks!='' ">remarks = #{remarks}</if>
+		</set>						
+		where id =#{id}
+	</update>
+	
+	<!-- 把订单数据放入流水表 -->
+	<insert id="addOrderFlow">
+	  INSERT INTO trade_order_log(
+			id,
+			order_number,
+			statue,
+			supply_user_id,
+			supply_user_name,
+			demand_user_id,
+			demand_name,
+			add_date,
+			ship_time,
+			invoice_no,
+			finish_time,
+			goods_amount,
+			evaluation_status,
+			evaluation_time,
+			evaluation_content,
+			receive_province,
+			receive_city,
+			receive_area,
+			receive_detail_area,
+			remarks,
+			ordertotal,
+			poundage,
+			distribution_fee,
+			goods_total_money,
+			paymenttype,
+			payment,
+			distribution,
+			cash_pledge,
+			demand_returncash,
+			supply_commission,
+			transactiontype,
+			update_date
+		) VALUES (
+			#{id},
+			#{orderNumber},
+			#{statue},
+			#{supplyUserId},
+			#{supplyUserName},
+			#{demandUserId},
+			#{demandName},
+			#{addDate},
+			#{shipTime},
+			#{invoiceNo},
+			#{finishTime},
+			#{goodsAmount},
+			#{evaluationStatus},
+			#{evaluationTime},
+			#{evaluationContent},
+			#{receiveProvince},
+			#{receiveCity},
+			#{receiveArea},
+			#{receiveDetailArea},
+			#{remarks},
+			#{ordertotal},
+			#{poundage},
+			#{distributionfee},
+			#{goodstotalmoney},
+			#{paymenttype},
+			#{payment},
+			#{distribution},
+			#{cashpledge},
+			#{demandreturncash},
+			#{supplycommission},
+			#{transactiontype},
+			#{updateDate}
+		)
+	</insert>
+	<delete id="delete">
+		DELETE FROM trade_order
+		WHERE id = #{id}
+	</delete>
+	<select id="queryOrder" resultType="com.wk.p3.greenmall.modules.deal.entity.OrderData">
+	select sdi.address_id AS "addressId",uai.id AS "userAddressId",o.order_number AS "orderNumber",tosd.demand_id AS "demandId",tosd.supply_id AS "supplyId",sdi.pids AS "pids",uai.type,o.statue AS "statue",o.update_date AS "updateDate",sdi.pgoods_name AS "pgoodsname",sdi.goods_name AS "goodsname",tosd.number AS "number",uai.user_name AS "demandname"
+           from trade_order_supply_demand tosd 
+                     left join trade_order o on tosd.order_id = o.order_number
+				             left join supply_demand_info sdi on tosd.demand_id=sdi.id  
+							       left join user_address_info uai on sdi.address_id = uai.id where sdi.pids like CONCAT(CONCAT('%',#{pids}),'%') 
+	
+	</select>
+	
+	<!-- 一下两处sql可以使用存储过程处理 -->
+	<!-- 卖家角度返回数据:从trade_order表，sys_user表，user_address_info表获取买家信息，订单信息，收货地址  -->
+   <select id="findOrderSupplyDetails" resultType="com.wk.p3.greenmall.modules.deal.entity.OrderItem">
+        select 
+          <include refid="tradeOrderItem"/>
+         from trade_order t left join sys_user su on t.supply_user_id = su.id left join user_address_info udi on udi.user_id=su.id where t.id=#{orderId} limit 1
+   </select>
+   
+   <!-- 买家角度返回数据:从trade_order表，sys_user表，user_address_info表获取买家信息，订单信息，收货地址 -->
+   <select id="findOrderDemandDetails" resultType="com.wk.p3.greenmall.modules.deal.entity.OrderItem">
+        select 
+          <include refid="tradeOrderItem"/>
+         from trade_order t left join sys_user su on t.demand_user_id = su.id left join user_address_info udi on udi.user_id=su.id where t.id=#{orderId} limit 1
+   </select>
+   <!-- 此接口已经过时   -->
+   <!-- 返回供应单信息 即供应信息  -->
+   <select id="findSupplyInfo" resultType="com.wk.p3.greenmall.modules.deal.entity.SupplyDemandInfo">
+     select 
+        <include refid="supplyDemandInfoColumns"/>
+      <!-- from trade_order_supply_demand tosd left join supply_demand_info a on tosd.supply_id=a.id  where tosd.order_id=#{orderId} limit 1 -->
+      from supply_demand_info a,(select supply_id,demand_id from trade_order_supply_demand tosd where tosd.order_id=#{orderId}) s where  a.id in(s.supply_id,s.demand_id)
+   </select>
+ 
+   <!-- 新添加返回采购单信息 即采购信息-->
+   <select id="queryDemandInfo" resultType="com.wk.p3.greenmall.modules.deal.entity.SupplyDemandInfo">
+     select 
+        <include refid="supplyDemandInfoColumns"/>
+      <!-- from trade_order_supply_demand tosd left join supply_demand_info a on tosd.supply_id=a.id  where tosd.order_id=#{orderId} limit 1 -->
+      from supply_demand_info a,(select supply_id,demand_id from trade_order_supply_demand tosd where tosd.order_id=#{orderId}) s where a.statue >= 3 and a.id = s.demand_id
+   </select>
+ 
+ 
+   <!-- 新添加返回供应单信息 即供应信息-->
+   <select id="querySupplyInfo" resultType="com.wk.p3.greenmall.modules.deal.entity.SupplyDemandInfo">
+     select 
+        <include refid="supplyDemandInfoColumns"/>
+      <!-- from trade_order_supply_demand tosd left join supply_demand_info a on tosd.supply_id=a.id  where tosd.order_id=#{orderId} limit 1 -->
+      from supply_demand_info a,(select supply_id,demand_id from trade_order_supply_demand tosd where tosd.order_id=#{orderId}) s where a.statue >= 3 and a.id = s.supply_id
+   </select>
+ 
+   <sql id="userColumns">
+      s.name AS "name",
+      s.email AS "email",
+      s.faxNumber AS "faxNumber",
+      s.phone AS "phone",
+      s.mobile AS "mobile",
+      s.user_type AS "userType"
+   </sql>
+   <!-- 根据publish_id=id 返回供求商的信息   -->
+   <select id="supplyDemandUserInfo" resultType="com.wk.p3.greenmall.modules.sys.entity.User">
+     select 
+       <include refid="userColumns"/>
+      from sys_user s where s.id=#{publish_user}
+   </select>
+   <!-- 返回卖家信息 -->
+   <!-- 读取两个表  sys_user,organization_info-->
+   <select id="returnSupplyInfo" resultType="com.wk.p3.greenmall.modules.deal.entity.InfoVO">
+     select 
+       <include refid="info"/>
+      from organization_info oi,(select * from sys_user,(select address_id,publish_user from supply_demand_info,
+                                                     (select demand_id,supply_id from trade_order_supply_demand where order_id=#{orderId}) tosd where id=tosd.supply_id) oo where id=oo.publish_user) yy where oi.id=yy.organization_id;
+     
+   </select>
+   <!-- 返回买家信息 -->
+   <!-- 读取两个表  sys_user,organization_info-->
+   <select id="returnDemandInfo" resultType="com.wk.p3.greenmall.modules.deal.entity.InfoVO">
+   select 
+      <include refid="info"/>
+    from organization_info oi,(select * from sys_user,(select address_id,publish_user from supply_demand_info,
+                                                     (select demand_id,supply_id from trade_order_supply_demand where order_id=#{orderId}) tosd where id=tosd.demand_id) oo where id=oo.publish_user) yy where oi.id=yy.organization_id;
+   
+   </select>
+   <!-- 返回收货地址 -->
+   <!-- 只读一个表user_address_info -->
+   <select id="returnSupplyAddress" resultType="com.wk.p3.greenmall.modules.user.entity.UserAddressInfo">
+   select 
+     <include refid="address"/> 
+   from user_address_info a,
+                                (select address_id,publish_user from supply_demand_info,
+                                                     (select demand_id,supply_id from trade_order_supply_demand where order_id=#{orderId}) tosd where id=tosd.demand_id) sdi where a.id =sdi.address_id; 
+   </select>
+   <!-- 返回发货地址 -->
+   <!-- 只读一个表user_address_info -->
+   <select id="returnDemandAddress" resultType="com.wk.p3.greenmall.modules.user.entity.UserAddressInfo">
+   select 
+     <include refid="address"/> 
+    from user_address_info a,
+                                (select address_id,publish_user from supply_demand_info,
+                                     (select demand_id,supply_id from trade_order_supply_demand where order_id=#{orderId}) tosd where id=tosd.supply_id) sdi where a.id =sdi.address_id;
+   </select>
+</mapper>

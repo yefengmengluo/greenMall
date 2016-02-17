@@ -1,0 +1,13 @@
+/*顶部导航*/
+.top-out{background: url(../../images/top/bg.png) repeat-x;width: 100%;margin: 0 auto;position: fixed;z-index: 9999;top: 0;left: 0;}
+.top-1{height: 36px;width: 1190px;margin: 0 auto;}
+.top-1-L{height: 36px;line-height: 36px;letter-spacing: 1px;position: relative;margin-right: 162px;}
+.top-1-L a.shouy{background: url(../../images/top/Home.png) left center no-repeat;padding-left: 30px;padding-right: 10px;display: block;float: left;}
+.top-1-L a.shouy,.top-1-L em{color: #9a9a9a;}
+.top-1-L a{color: #ea5504;padding-left: 10px;padding-right: 10px;}
+.ullist{height: 36px;line-height: 36px;}
+.ullist ul li{float: left;width: 100px;height: 36px;display: block;line-height: 36px;overflow: hidden;text-align: center;background: url(../../images/top/3_03.png) right center no-repeat;}
+.ullist ul li a,.ullist span{color: #9a9a9a;}
+.ullist span{padding-left: 44px;background: url(../../images/top/Telephone.png) 15px 8px no-repeat;display: block;float: left;}
+.ullist ul li a:hover,.top-1-L a:hover{color: #ea5504;cursor: pointer;}
+/*顶部导航*/

@@ -1,0 +1,635 @@
+/* CSS Document */
+body{
+	background: #f2f2f2;
+}
+.reg{
+	width:3rem; 
+	margin:0 auto;
+}
+.reg h1{
+	height: .48rem;
+	font-size: .18rem; 
+	line-height: .48rem;
+	font-weight: normal;
+}
+.myfrm li{
+	height: .44rem;
+	margin-bottom: .01rem;
+	line-height: .44rem;
+	background: #fff;
+	overflow: hidden;
+	position: relative;
+}
+.myfrm li label{
+	display: inline-block;
+	width: .5rem;
+	font-size: .14rem;
+	margin-left: .15rem;
+}
+.myfrm input{
+	width: 1.5rem;
+	border: none;
+	outline: none;
+	text-indent: .1rem;
+}
+
+.myfrm li a{
+	display: inline-block;
+	float: right;
+}
+.vlel{
+	width: .12rem;
+	height: .12rem;
+	margin-right: .1rem;
+	color: #fff;
+	font-size: .1rem;
+	margin-top: .14rem;
+	line-height: .11rem;
+	text-align: center;
+	border-radius: 50%;
+	background: #cdcdcd;
+}
+.hcode{
+	height: .26rem;
+	margin-top: .075rem;
+	margin-right: .05rem;
+	padding: 0 .05rem;
+	color: #fff;
+	line-height: .26rem;
+	text-align: center;
+	background: #f93;
+	border-radius: .03rem;
+}
+.hcode.active{
+	background: #e4e4e4;
+}
+
+.next a{ 
+	margin-top: .4rem;
+	background: #f93;
+	width: 3rem;
+	height: .4rem;
+	line-height: .4rem;
+	display: block;
+	border-radius: .05rem;
+	text-align: center;
+	font-size: .14rem;
+	color: #fff;
+  
+}
+
+.next p{
+  width: 3rem;
+	font-size: .12rem;
+	line-height: .28rem;
+  text-align: center;
+  
+ }
+
+ .next a.active{
+	background: #e4e4e4;
+}
+
+/* 错误提示 */
+.error_bg{
+	display: none;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: rgba(0,0,0,.3);
+}
+.error_bg.active{
+	display: block;
+}
+.error{
+	width: 2.8rem;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -.55rem;
+	margin-left: -1.4rem;
+	background: #fff;
+	border-radius: .05rem;
+}
+.error p{
+	height: .7rem;
+	font-size: .16rem;
+	line-height: .7rem;
+	text-align: center;
+	border-bottom: solid 1px #999;
+}
+.error p img{
+	display: inline-block;
+	margin-right: .03rem;
+	height: .2rem;
+	vertical-align: -.04rem;
+}
+.error>a{
+	display: block;
+	height: .42rem;
+	color: #e60012;
+	font-size: .17rem;
+	line-height: .42rem;
+	text-align: center;
+}
+
+/* loading */
+.loading{
+	display: none;
+	width: 1.6rem;
+	height: 1.2rem;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -.6rem;
+	margin-left: -.8rem;
+	text-align: center;
+	border-radius: .08rem;
+	background: rgba(0,0,0,.8);
+}
+.loading.active{
+	display: block;
+}
+.loading img{
+	display: inline-block;
+	margin: .2rem auto .1rem;
+	animation: rotate 1s linear infinite;
+}
+@keyframes rotate{
+	0%	{transform: none;}
+	100%{transform: rotate(360deg);}
+}
+.loading p{
+	color: #E6E6E6;
+	font-size: .16rem;
+	text-align: center;
+}
+
+
+/*注册第一步结束*/
+
+.perfect{
+	width:3rem; 
+	margin:0 auto;
+}
+.perfect h1{
+	height: .48rem;
+	font-size: .18rem; 
+	line-height: .48rem;
+	font-weight: normal;
+}
+
+.myfrm-two li{
+	height: .44rem;
+	margin-bottom: .01rem;
+	line-height: .44rem;
+	background: #fff;
+	overflow: hidden;
+	position: relative;
+}
+.myfrm-two li label{
+	display: inline-block;
+	/*width: 2.7rem;*/
+	font-size: .14rem;
+	margin-left: .15rem;
+}
+.myfrm-two input{
+	width: 1.9rem;
+	border: none;
+	outline: none;
+	text-indent: .1rem;
+}
+
+
+.myfrm-two li a{
+	color: #999;
+	font-size: .14rem;
+	display: inline-block;
+	float: right;
+	margin-right: .1rem;
+}
+
+
+
+.next-two{ 
+	margin-top: .4rem;
+	;
+	width: 3rem;
+	height: .7rem;
+	
+  
+}
+
+.next-icn{
+	margin-top: .4rem;
+	background: #f93;
+	width: 3rem;
+	height: .4rem;
+	line-height: .4rem;
+	display: block;
+	border-radius: .05rem;
+	text-align: center;
+	font-size: .14rem;
+	color: #fff;
+}
+
+.next-icn.next-icn-two{
+	margin-top: .4rem;
+	background: #e4e4e4;
+	width: 3rem;
+	height: .4rem;
+	line-height: .4rem;
+	display: block;
+	border-radius: .05rem;
+	text-align: center;
+	font-size: .14rem;
+	color: #fff;
+}
+
+
+.next-two-tz{
+  width: 3rem; 
+  height: .3rem;
+  display: block;
+	font-size: .12rem;
+	line-height: .3rem;
+  text-align: center;
+  color: #0000ff;
+  
+ }
+
+ /*注册第二步结束*/
+
+
+.usexg{
+	width:3rem; 
+	margin:0 auto;
+}
+.usexg h1{ width: 3rem;
+	font: left;
+	display: block;
+	height: .48rem;
+}
+
+.usexg h1 p{ 
+	width: 2.6rem;
+	font: left;
+	display: inline-block;
+	height: .48rem;
+	font-size: .18rem; 
+	line-height: .48rem;
+	font-weight: normal;
+}
+.usexg h1 a{
+	float: right;
+	
+	display: inline-block;
+	height: .48rem;
+	font-size: .18rem; 
+	line-height: .48rem;
+	font-weight: normal;
+	margin-right: .1rem;
+}
+
+.xguser li{
+	height: .44rem;
+	margin-bottom: .01rem;
+	line-height: .44rem;
+	background: #fff;
+	overflow: hidden;
+	position: relative;
+}
+.xguser li label{
+	display: inline-block;
+	width: .7rem;
+	font-size: .14rem;
+	margin-left: .15rem;
+}
+.xguser input{
+	width: 1.9rem;
+	border: none;
+	outline: none;
+	text-indent: .1rem;
+}
+
+
+.xguser li a{
+	color: #999;
+	font-size: .14rem;
+	display: inline-block;
+	float: right;
+	margin-right: .1rem;
+}
+
+.xguser li a.ysh {
+    color: #f00;
+	font-size: .14rem;
+	display: inline-block;
+	float: right;
+	margin-right: .1rem;
+}
+/*已审核样式*/
+.xguser li a.wsh {
+    color: #f4f4f4;
+	font-size: .14rem;
+	display: inline-block;
+	float: right;
+	margin-right: .1rem;
+}
+/*未审核样式*/
+.user-bc{ 
+	margin-top: .4rem;
+	;
+	width: 3rem;
+	height: .7rem;
+	
+  
+}
+
+.user-bc-icn{
+	margin-top: .4rem;
+	background: #f93;
+	width: 3rem;
+	height: .4rem;
+	line-height: .4rem;
+	display: block;
+	border-radius: .05rem;
+	text-align: center;
+	font-size: .14rem;
+	color: #fff;
+}
+
+.user-bc-icn.user-bc-icn-two{
+	margin-top: .4rem;
+	background: #e4e4e4;
+	width: 3rem;
+	height: .4rem;
+	line-height: .4rem;
+	display: block;
+	border-radius: .05rem;
+	text-align: center;
+	font-size: .14rem;
+	color: #fff;
+}
+
+
+/*修改信息结束*/
+
+
+.procurer{
+	width:3.2rem; 
+	margin:0 auto;
+}
+
+.procurer h1{ 
+	width: 3rem;
+	padding-left:.1rem;
+	font: left;
+	display: block;
+	height: .48rem;
+	margin-top:.4rem ;
+	font-size: .2rem;
+	color: #777;
+}
+
+.procurer-con{
+	 width:3rem;
+	 padding-left:.1rem;
+	 padding-right:.1rem;
+	 background:#fff;
+}
+.procurer-con li{
+	border-bottom:.01rem #c8c7cc solid;
+	
+	height: .44rem;
+	margin-bottom: .01rem;
+	line-height: .44rem;
+	background: #fff;
+	overflow: hidden;
+	position: relative;
+}
+
+.procurer-con li span{
+	width: .38rem; max-width:.38rem;
+	height: .38rem; max-height:.38ren;
+	float:left;
+	margin-top:.03rem;
+	margin-left:.03rem;
+	display: block;
+	
+}
+.procurer-con li h2{
+	display: inline-block;
+	width: 2rem;
+	font-size: .14rem;
+	margin-left:.2rem;
+    
+}
+
+.procurer-con li h2 a{
+	display: inline-block;
+	width: 2rem;
+	font-weight:normal;
+	font-size: .14rem;
+	margin-left:.2rem;
+    
+}
+
+.procurer-con li a{
+	color: #999;
+	font-size: .14rem;
+	display: inline-block;
+	float: right;
+	margin-right: .1rem;
+}
+/*猜你喜欢结束*/
+
+
+.linke-detailed{
+	width:3.2rem; 
+	margin:0 auto;
+}
+
+.linke-detailed h1{ 
+	width: 3rem;
+	padding-left:.1rem;
+	font: left;
+	display: block;
+	height: .48rem;
+	margin-top:.4rem ;
+	font-size: .2rem;
+	color: #777;
+}
+
+.lindt-con{
+	 width:3rem;
+	 padding-left:.1rem;
+	 padding-right:.1rem;
+	 background:#fff;
+}
+.lindt-con li{
+	border-bottom:.01rem #c8c7cc solid;
+	height: 2.1rem;
+	margin-bottom: .01rem;
+	line-height: .44rem;
+	background: #fff;
+	overflow: hidden;
+	position: relative;
+}
+
+
+.lindt-con li h2{
+	display: inline-block;
+	width: 3rem;
+	height:.38rem;
+	font-size: .18rem;
+	line-height:.38rem;
+}
+
+.lindt-con li h2 em{
+	width: .15rem;
+    height: .15rem;
+	display: inline-block;
+    margin-left: .05rem;
+    margin-top: .12rem;
+    border-radius: 50%;
+    background: #007aff;
+	float:left;
+}
+
+.lindt-con li h2 em.hs{
+	
+    background: #c8c7cd;
+
+}
+.lindt-con li h2 a{
+	width:1.7rem;
+	color: #222;
+	font-size: .16rem;
+	display: inline-block;
+	float: left; margin-left:.1rem;
+}
+
+.lindt-con li h2 i{
+	font-style:normal;
+	float:right;
+	display: inline-block;
+	width: .7rem;
+	height:.5rem;
+	font-weight:normal;
+	font-size: .14rem;
+	margin-left:.2rem;
+}
+
+.lindt-con li span{
+	width:3rem;
+	height:.30rem;
+	margin-left:.2rem;
+	margin-bottom:.1rem;
+	display:block;
+	padding-left:.38rem;
+	font-size:.18rem;
+	line-height:.30rem;
+	color:#222;
+	background:url(../images/icon_04.png) no-repeat left;	
+}
+.lindt-con li p{
+	width:3rem;
+	display:block;
+	padding-left:.2rem;
+	font-size:.18rem;
+	line-height:.30rem;
+	color:#222;
+	
+}
+
+/*猜您喜欢详细结束*/
+
+.detail{
+	width:3.2rem; 
+	margin:0 auto;
+}
+
+.detail h1{ 
+	width: 3rem;
+	padding-left:.1rem;
+	font: left;
+	display: block;
+	height: .48rem;
+	margin-top:.4rem ;
+	font-size: .2rem;
+	color: #777;
+}
+.detail-3rem{
+	 width:3.2rem;
+	 height:2rem;
+	 margin:0 auto;
+	 background-color:#fff;
+	 border-bottom:.01rem #c8c7cc solid;
+	}
+.detail-con{
+
+	 padding-left:.1rem;
+
+	 background:#fff;
+	 float:left;
+}
+.detail-con li{
+	height: .3rem;
+	margin-bottom: .01rem;
+	line-height: .30rem;
+	background: #fff;
+	overflow: hidden;
+	position: relative;
+}
+
+.detail-con li em{
+    height: .3rem;
+	font-style:normal;
+	line-height:.3rem;
+	font-size:.16rem;
+	line-height:.30rem;
+	display: inline-block;
+	float:left;
+	color:#777;
+}
+.detail-con li span{
+
+	height:.3rem;
+	margin-bottom:.1rem;
+	display:block;
+    display: inline-block;
+	font-size:.16rem;
+	line-height:.30rem;
+	color:#222;	float:left;
+		
+}
+
+.detail-conrf{	position: relative;
+	 width:1.5rem;
+	  height:1.2rem;
+	  margin-top:.3rem;
+	  padding-left:.5rem;
+	  float:right;
+	  margin-right:.1rem;
+	  display:block;
+	  overflow:hidden;
+	 background:url(../images/Personal-configuration.png) no-repeat;
+}
+.detail-conrf li{
+	width:1.5rem;
+	margin-bottom: .01rem;
+	font-size:.14rem;
+	line-height: .2rem;
+	overflow: hidden;
+}
+
+
+
+#red{ color:#red;}
+
+
+
+

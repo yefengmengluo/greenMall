@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.wechat.dao.mp.MpMessageDao">
+    
+	<sql id="mpMessageColumns">
+		a.id AS "id",
+		a.user_id AS "mpUserId",
+		a.info_type AS "infoType",
+		a.title AS "title",
+		a.content AS "content",
+		a.show_date AS "showDate",
+		a.send_date AS "sendDate",
+		a.send_flag AS "sendFlag",
+		a.create_by AS "createById",
+		a.create_date AS "createDate",
+		a.update_by AS "updateById",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="mpMessageJoins">
+		LEFT JOIN sys_user u2 ON u2.id = a.user_id
+	</sql>
+    
+	<select id="get" resultType="MpMessage">
+		SELECT 
+			<include refid="mpMessageColumns"/>
+		FROM mp_message a
+		<include refid="mpMessageJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="MpMessage">
+		SELECT 
+			<include refid="mpMessageColumns"/>
+		FROM mp_message a
+		<include refid="mpMessageJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="title != null and title != ''">
+				AND a.title LIKE 
+					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="MpMessage">
+		SELECT 
+			<include refid="mpMessageColumns"/>
+		FROM mp_message a
+		<include refid="mpMessageJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO mp_message(
+			id,
+			user_id,
+			info_type,
+			title,
+			content,
+			show_date,
+			send_date,
+			send_flag,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{mpUserId},
+			#{infoType},
+			#{title},
+			#{content},
+			#{showDate},
+			#{sendDate},
+			#{sendFlag},
+			#{createById},
+			#{createDate},
+			#{updateById},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE mp_message SET 	
+			user_id = #{mpUserId},
+			info_type = #{infoType},
+			title = #{title},
+			content = #{content},
+			show_date = #{showDate},
+			send_date = #{sendDate},
+			send_flag = #{sendFlag},
+			update_by = #{updateById},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE mp_message SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

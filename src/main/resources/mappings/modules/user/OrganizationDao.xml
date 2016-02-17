@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.user.dao.OrganizationDao">
+    
+	<sql id="organizationInfoColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.type AS "type",
+		a.image_path AS "imagePath",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.create_by AS "createBy.id",
+		a.update_by AS "updateBy.id",
+		a.regist_date AS "registDate",
+		a.is_entrust AS "isEntrust",
+		a.regist_number AS "registNumber",
+		a.province_id AS "provinceId",
+		a.city_id AS "cityId",
+		a.area_id AS "area",
+		a.detail_area AS "detailArea",
+		a.postcode AS "postcode",
+		a.fax_number AS "faxNumber",
+		a.remarks AS "remarks",
+		a.person_name AS "personName",
+		a.phone_mob AS "phoneMob",
+		a.phone_tel AS "phoneTel",
+		a.qq_number AS "qqNumber",
+		a.email AS "email"
+	</sql>
+	
+	<sql id="organizationInfoJoins">
+		LEFT JOIN sys_mdict m on m.id=a.type
+	</sql>
+    <select id="findOrganziationMainGoodsbyId" resultType="java.lang.String">
+    	SELECT g.`name` FROM organization_main_goods om LEFT JOIN goods_gcategory g ON om.goods_type=g.id where om.organization_id=#{id} and g.show_spec='1'
+    </select>
+	<select id="findOrganziationMainIdsGoodsbyId" resultType="java.lang.Integer">
+    	SELECT g.id FROM organization_main_goods om LEFT JOIN goods_gcategory g ON om.goods_type=g.id where om.organization_id=#{id} and g.show_spec='1'
+    </select>
+	<select id="get" resultType="com.wk.p3.greenmall.modules.user.entity.Organization">
+		SELECT 
+			<include refid="organizationInfoColumns"/>
+		FROM organization_info a
+		<include refid="organizationInfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findOrganizationById" resultType="com.wk.p3.greenmall.modules.user.entity.Organization">
+		SELECT 
+			<include refid="organizationInfoColumns"/>
+		FROM organization_info a
+		<include refid="organizationInfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	<update id="deleteMainGoodsById">
+		DELETE FROM organization_main_goods WHERE organization_id=#{id}
+	</update>
+	<insert id="insertMainGoodsById">
+		INSERT INTO organization_main_goods(id,goods_type,organization_id) values
+		 <foreach collection="mainGoods" item="item" index="index" separator=",">  
+       		 ((select replace(uuid(), '-', '')),#{item},#{id})
+   		 </foreach>
+	</insert>
+	<select id="findList" resultType="com.wk.p3.greenmall.modules.user.entity.Organization">
+		SELECT 
+			<include refid="organizationInfoColumns"/>
+		FROM organization_info a
+		<include refid="organizationInfoJoins"/>
+		<where>
+			
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="com.wk.p3.greenmall.modules.user.entity.Organization">
+		SELECT 
+			<include refid="organizationInfoColumns"/>
+		FROM organization_info a
+		<include refid="organizationInfoJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO organization_info(
+			id,
+			name,
+			type,
+			image_path,
+			create_date,
+			update_date,
+			create_by,	
+			update_by,
+			regist_date,
+			is_entrust,
+			regist_number,
+			province_id,
+			city_id,
+			area_id,
+			detail_area,
+			postcode,
+			fax_number,
+			remarks,
+			person_name,
+			phone_mob,
+			phone_tel,
+			qq_number,
+			email
+		) VALUES (
+			#{id},
+			#{name},
+			#{type},
+			#{imagePath},
+			#{createDate},
+			#{updateDate},
+			#{createBy.id},
+			#{updateBy.id},
+			#{registDate},
+			#{isEntrust},
+			#{registNumber},
+			#{provinceId},
+			#{cityId},
+			#{area},
+			#{detailArea},
+			#{postcode},
+			#{faxNumber},
+			#{remarks},
+			#{personName},
+			#{phoneMob},
+			#{phoneTel},
+			#{qqNumber},
+			#{email}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE organization_info SET 	
+			name = #{name},
+			type = #{type},
+			image_path = #{imagePath},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id},
+			regist_date = #{registDate},
+			is_entrust = #{isEntrust},
+			regist_number = #{registNumber},
+			province_id = #{provinceId},
+			city_id = #{cityId},
+			area_id = #{area.id},
+			detail_area = #{detailArea},
+			postcode = #{postcode},
+			fax_number = #{faxNumber},
+			remarks = #{remarks},
+			person_name = #{personName},
+			phone_mob = #{phoneMob},
+			phone_tel = #{phoneTel},
+			qq_number = #{qqNumber},
+			email = #{email}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateOrganization">
+		UPDATE organization_info SET 	
+			name = #{name},
+			type = #{type},
+			image_path = #{imagePath},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id},
+			regist_date = #{registDate},
+			is_entrust = #{isEntrust},
+			regist_number = #{registNumber},
+			province_id = #{provinceId},
+			city_id = #{cityId},
+			area_id = #{area},
+			detail_area = #{detailArea},
+			postcode = #{postcode},
+			fax_number = #{faxNumber},
+			remarks = #{remarks},
+			person_name = #{personName},
+			phone_mob = #{phoneMob},
+			phone_tel = #{phoneTel},
+			qq_number = #{qqNumber},
+			email = #{email}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM organization_info
+		WHERE id = #{id}
+	</update>
+	<select id="findOrganizationType" resultType="com.wk.p3.greenmall.modules.user.entity.OrganizationType">
+		SELECT a.id AS 'id',a.`name` AS 'name' FROM sys_mdict a where a.parent_id=(SELECT id FROM sys_mdict where `name`='企业类型')
+	</select>
+
+	<select id="findOrganizationByMainGoodsType" resultType="com.wk.p3.greenmall.modules.user.entity.Organization" parameterType="com.wk.p3.greenmall.modules.info.entity.Gcategory">
+		SELECT
+		<include refid="organizationInfoColumns"/>
+		FROM organization_info a
+		<include refid="organizationInfoJoins"/>
+		LEFT JOIN organization_main_goods om ON om.organization_id=a.id
+		where om.goods_type=#{id}
+		GROUP BY a.id
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+</mapper>

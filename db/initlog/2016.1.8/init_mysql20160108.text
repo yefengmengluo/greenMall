@@ -1,0 +1,1013 @@
+SET SESSION FOREIGN_KEY_CHECKS=0;
+
+drop table if exists supply_offer_order_download_log;
+
+/*==============================================================*/
+/* Table: supply_offer_order_download_log                       */
+/*==============================================================*/
+create table supply_offer_order_download_log
+(
+   id                   national varchar(64) not null,
+   order_id             national varchar(64) not null comment '某人总的报价单',
+   uploading_log_id     national varchar(64) not null comment '上传的order_ID',
+   download_user        national varchar(255) comment '下载人',
+   ip                   national varchar(128) not null comment '下载ip',
+   download_time        datetime not null,
+   primary key (id)
+);
+
+alter table supply_offer_order_download_log comment '报价单下载历史记录';
+
+alter table supply_offer_order_download_log add constraint FK_Reference_62 foreign key (order_id)
+      references supply_offer_order (id);
+
+alter table supply_offer_order_download_log add constraint FK_Reference_63 foreign key (uploading_log_id)
+      references supply_offer_order_uploading_log (id);
+drop table if exists supply_offer_order_uploading_log;
+
+/*==============================================================*/
+/* Table: supply_offer_order_uploading_log                      */
+/*==============================================================*/
+create table supply_offer_order_uploading_log
+(
+   id                   national varchar(64) not null,
+   offer_user_id        national varchar(64) not null comment '上传人',
+   offer_telephone      national varchar(32) not null comment '上传人手机号',
+   url                  national varchar(128) comment '上传路径',
+   offer_order_id       national varchar(32) comment '主的报价单id',
+   offer_date           datetime comment '上传时间',
+   download_count       int(10) not null comment '下载次数',
+   primary key (id)
+);
+
+alter table supply_offer_order_uploading_log comment '报价单上传历史记录';
+
+alter table supply_offer_order_uploading_log add constraint FK_Reference_55 foreign key (offer_order_id)
+      references supply_offer_order (id);
+
+
+drop table if exists supply_offer_order;
+
+/*==============================================================*/
+/* Table: supply_offer_order                                    */
+/*==============================================================*/
+create table supply_offer_order
+(
+   id                   national varchar(64) not null,
+   offer_telephone      national varchar(32) not null comment '手机号',
+   main_url             national varchar(128) not null comment '此手机号报价单上传地址',
+   offer_date           datetime not null comment '上传时间',
+   total_download_count int(10) unsigned not null default 0 comment '下载的总次数',
+   offer_user_id        national varchar(64) not null comment '上传人',
+   update_date          datetime not null comment '更新时间',
+   last_order_log_id    national varchar(64) not null comment '最新上传的exel的id',
+   primary key (id)
+);
+
+alter table supply_offer_order comment '报价单记录';
+
+
+drop table if exists supply_demand_spec;
+
+/*==============================================================*/
+/* Table: supply_demand_spec                                    */
+/*==============================================================*/
+create table supply_demand_spec
+(
+   id                   national varchar(64) not null,
+   spec_name            national varchar(128) not null comment '属性名字',
+   spec_value           national varchar(255) not null comment '规格值',
+   supply_demand_id     national varchar(64) not null comment '供求id',
+   gcategory_id         int(10) unsigned not null,
+   spec_id              int(10) unsigned not null,
+   spec_value_id        int(10) unsigned,
+   order_item           int(10) unsigned,
+   primary key (id)
+);
+
+alter table supply_demand_spec comment '供求规格表';
+
+alter table supply_demand_spec add constraint FK_Reference_69 foreign key (supply_demand_id)
+      references supply_demand_info (id);
+
+alter table supply_demand_spec add constraint FK_Reference_70 foreign key (spec_value_id)
+      references goods_spec_value (id);
+drop table if exists goods_spec_value;
+
+/*==============================================================*/
+/* Table: goods_spec_value                                      */
+/*==============================================================*/
+create table goods_spec_value
+(
+   id                   int(10) unsigned not null,
+   spec_id              int(10) unsigned not null,
+   gvalue               national varchar(100) not null,
+   gcategory_id         int(10) unsigned not null,
+   order_item           int(10) unsigned comment '????',
+   create_date          datetime not null,
+   update_date          datetime not null,
+   create_by            national varchar(64) not null,
+   update_by            national varchar(64) not null,
+   del_flag             national char(1) not null default '0',
+   primary key (id)
+);
+
+alter table goods_spec_value comment '规格值表';
+
+alter table goods_spec_value add constraint FK_Reference_61 foreign key (spec_id)
+      references goods_spec (id);
+drop table if exists goods_spec;
+
+/*==============================================================*/
+/* Table: goods_spec                                            */
+/*==============================================================*/
+create table goods_spec
+(
+   id                   int(10) unsigned not null,
+   name                 national varchar(100) not null,
+   code                 national varchar(100),
+   gcategory_id         int(10) unsigned not null comment '???ID',
+   order_item           int(10) unsigned comment '????',
+   create_date          datetime not null,
+   update_date          datetime not null,
+   create_by            national varchar(64) not null,
+   update_by            national varchar(64) not null,
+   remarks              national varchar(255) comment '????????',
+   del_flag             national char(1) not null default '0',
+   primary key (id)
+);
+
+alter table goods_spec comment '商品规格表';
+
+alter table goods_spec add constraint FK_Reference_47 foreign key (gcategory_id)
+      references goods_gcategory (id);
+
+
+drop table if exists goods_gcategory;
+
+/*==============================================================*/
+/* Table: goods_gcategory                                       */
+/*==============================================================*/
+create table goods_gcategory
+(
+   id                   int(10) unsigned not null auto_increment,
+   name                 national varchar(100) not null,
+   code                 national varchar(100),
+   parent_id            int(10) unsigned not null comment '父
+            类别ID',
+   parent_ids           national varchar(64) not null,
+   sort                 int(10) unsigned,
+   create_date          datetime not null,
+   update_date          datetime not null,
+   create_by            national varchar(64) not null,
+   update_by            national varchar(64) not null,
+   remarks              national varchar(255) comment '备注',
+   del_flag             national char(1) not null default '0',
+   image_path           national varchar(128) comment '图片',
+   show_spec            national char(1) comment '本类别是否展示规格',
+   primary key (id)
+);
+
+alter table goods_gcategory comment '商品类别表';
+
+
+drop table if exists gcategory_relation;
+
+/*==============================================================*/
+/* Table: gcategory_relation                                    */
+/*==============================================================*/
+create table gcategory_relation
+(
+   id                   national varchar(64) not null,
+   gcate_id             int(10) unsigned not null comment '类型',
+   relation_gcate_id    int(10) unsigned not null comment '关系类型',
+   relation_id          int(10) unsigned not null comment '关系 cate_id',
+   primary key (id)
+);
+
+alter table gcategory_relation comment '商品类别之间的关系（产业带）';
+
+alter table gcategory_relation add constraint FK_Reference_29 foreign key (relation_gcate_id)
+      references goods_gcategory (id);
+
+alter table gcategory_relation add constraint FK_Reference_30 foreign key (gcate_id)
+      references goods_gcategory (id);
+
+alter table gcategory_relation add constraint FK_Reference_31 foreign key (relation_id)
+      references sys_mdict (id);
+
+
+
+
+
+drop table if exists supply_demand_unit_relation;
+
+/*==============================================================*/
+/* Table: supply_demand_unit_relation                           */
+/*==============================================================*/
+create table supply_demand_unit_relation
+(
+   id                   int(10) unsigned not null,
+   from_unit            int(10) unsigned not null,
+   to_unit              int(10) unsigned not null,
+   multiplier           double(10,2) not null comment '乘数（from_unit*multiplier=to_unit）',
+   primary key (id)
+);
+
+alter table supply_demand_unit_relation comment '单位之间的转换关系表';
+
+alter table supply_demand_unit_relation add constraint FK_Reference_39 foreign key (from_unit)
+      references sys_mdict (id);
+
+alter table supply_demand_unit_relation add constraint FK_Reference_40 foreign key (to_unit)
+      references sys_mdict (id);
+
+
+drop table if exists supply_demand_unit_category;
+
+/*==============================================================*/
+/* Table: supply_demand_unit_category                           */
+/*==============================================================*/
+create table supply_demand_unit_category
+(
+   id                   int(10) unsigned not null,
+   gcategory_id         int(10) unsigned not null comment '产品id',
+   unit_value           national varchar(128) not null comment '单位 从sys_mdict中所有单位中选择',
+   create_date          datetime not null,
+   update_date          datetime not null,
+   create_by            national varchar(64) not null,
+   update_by            national varchar(64) not null,
+   order_item           int(10) unsigned,
+   is_default           int(1) not null comment '是否是类型的默认单位(默认0：否，1：是。一个类型只有一个默认的单位，用于统计报表时，单位的统一)',
+   primary key (id)
+);
+
+alter table supply_demand_unit_category comment '供求单位码表（与产品有关系）';
+
+alter table supply_demand_unit_category add constraint FK_Reference_38 foreign key (gcategory_id)
+      references goods_gcategory (id);
+
+
+drop table if exists supply_demand_info;
+
+/*==============================================================*/
+/* Table: supply_demand_info                                    */
+/*==============================================================*/
+create table supply_demand_info
+(
+   id                   national varchar(64) not null,
+   goods_name           national varchar(255) not null comment '产品，gcategory表的name',
+   pgoods_alias         national varchar(255) comment '产品别名',
+   goods_id             national varchar(64) comment '产品id，商品类型表外键',
+   pgoods_id            national varchar(64) comment '产品上级id',
+   pgoods_name          national varchar(255) not null comment '产品上级name',
+   pids                 national char(10) comment '产品pids 代码',
+   price_unit_id        int(10) unsigned comment '价格单元id',
+   number_unit_id       int(10) unsigned comment '数量单元id',
+   price_unit_value     national varchar(64) comment '价格单元',
+   number_unit_value    national varchar(64) comment '数量单元',
+   number               double(10,2) comment '数量',
+   from_per_price       decimal(10,2),
+   to_per_price         decimal(10,2),
+   specs                text comment '手动填写的规格',
+   remarks              text comment '商品描述',
+   create_date          datetime not null,
+   update_date          datetime not null,
+   create_by            national varchar(64) not null,
+   update_by            national varchar(64) not null,
+   statue               int(1) default 0 comment '状态(默认0：待审核，1：已审核通过，-1：审核未通过，-2：删除,2:正在洽谈,3：等待打款，4：交易成功)',
+   statue_intro         text comment '审核说明',
+   type                 varchar(32) not null comment '供求类型（supply:供应，demand:求购）',
+   is_entrust           int(1) unsigned default 0 comment '是否是委托（默认0：否，1：是）',
+   entrust_supply_demand_id national varchar(64) comment '委托的供求信息id',
+   entrust_organization_id national varchar(64) comment '委托人公司id',
+   address_id           national varchar(64) comment '地址ID',
+   validate_start_date  datetime comment '消息有效开始时间(非委托必填)',
+   validate_end_date    datetime comment '消息有效结束时间（非委托必填）',
+   production_province  national varchar(64) comment '生产省份',
+   production_city      national varchar(64) comment '生产城市',
+   production_area      national varchar(64) comment '生产地区',
+   production_detail_area national varchar(500) comment '生产详细地区',
+   order_uploading_id   national varchar(64) comment '报价单历史表',
+   publish_user         national varchar(64) not null comment '消息所属人员id',
+   check_record_id      national varchar(64) comment 'supply_demand_info_check审核记录id',
+   production_province_name national varchar(255) comment '生产省份名字',
+   production_city_name national varchar(255) comment '生产城市名字',
+   production_area_name national varchar(255) comment '生产地区名字',
+   primary key (id)
+);
+
+alter table supply_demand_info comment '供求信息';
+
+
+
+alter table supply_demand_info add constraint FK_Reference_42 foreign key (price_unit_id)
+      references supply_demand_unit_category (id);
+
+alter table supply_demand_info add constraint FK_Reference_44 foreign key (number_unit_id)
+      references supply_demand_unit_category (id);
+
+alter table supply_demand_info add constraint s foreign key (order_uploading_id)
+      references supply_offer_order_uploading_log (id);
+
+
+drop table if exists supply_demand_image;
+
+/*==============================================================*/
+/* Table: supply_demand_image                                   */
+/*==============================================================*/
+create table supply_demand_image
+(
+   id                   national varchar(64) not null,
+   supply_demand_id     national varchar(64) not null comment '供求id',
+   image_path           national varchar(128) not null,
+   create_date          datetime,
+   update_date          datetime,
+   create_by            national varchar(64),
+   update_by            national varchar(64),
+   primary key (id)
+);
+
+alter table supply_demand_image comment '供求信息图片表';
+
+alter table supply_demand_image add constraint FK_Reference_41 foreign key (supply_demand_id)
+      references supply_demand_info (id);
+
+
+drop table if exists supply_demand_info_check;
+
+/*==============================================================*/
+/* Table: supply_demand_info_check                              */
+/*==============================================================*/
+create table supply_demand_info_check
+(
+   id                   national varchar(64) not null,
+   record_id            national varchar(64) not null comment '记录ids',
+   goods_name           national varchar(255) not null comment '产品，gcategory表的name',
+   pgoods_alias         national varchar(255) comment '产品别名',
+   goods_id             national varchar(64) comment '产品id，商品类型表外键',
+   pgoods_id            national varchar(64) comment '产品上级id',
+   pgoods_name          national varchar(255) not null comment '产品上级name',
+   pids                 national char(10) comment '产品pids 代码',
+   price_unit_id        int(10) unsigned comment '价格单元id',
+   number_unit_id       int(10) unsigned comment '数量单元id',
+   price_unit_value     national varchar(64) comment '价格单元',
+   number_unit_value    national varchar(64) comment '数量单元',
+   number               double(10,2) comment '数量',
+   from_per_price       decimal(10,2),
+   to_per_price         decimal(10,2),
+   specs                text comment '手动填写的规格',
+   remarks              text comment '商品描述',
+   create_date          datetime not null,
+   update_date          datetime not null,
+   create_by            varchar(64) not null,
+   update_by            varchar(64) not null,
+   statue               int(1) comment '状态(默认0：待审核，1：已审核通过，-1：审核未通过，-2：删除)',
+   statue_intro         text comment '审核说明',
+   type                 national varchar(32) not null comment '供求类型（supply:供应，demand:求购）',
+   is_entrust           int(1) unsigned default 0 comment '是否是委托（默认0：否，1：是）',
+   entrust_supply_demand_id national varchar(64) comment '委托的供求信息id',
+   entrust_organization_id national varchar(64) comment '委托人公司id',
+   address_id           national varchar(64) comment '地址id',
+   validate_start_date  datetime comment '消息有效开始时间(非委托必填)',
+   validate_end_date    datetime comment '消息有效结束时间（非委托必填）',
+   production_province  national varchar(64) comment '生产省份',
+   production_city      national varchar(64) comment '生产城市',
+   production_area      national varchar(64) comment '生产地区',
+   production_detail_area national varchar(500) comment '生产详细地区',
+   order_uploading_id   national varchar(64) comment '报价单历史表',
+   publish_user         national varchar(64) comment '发布者',
+   check_record_id      national varchar(64) comment 'supply_demand_info_check审核记录id',
+   production_province_name national varchar(255) comment '生产省份名字',
+   production_city_name national varchar(255) comment '生产城市名字',
+   production_area_name national varchar(255) comment '生产地区名字',
+   record_date          datetime comment '记录时间',
+   primary key (id)
+);
+
+alter table supply_demand_info_check comment '供求信息检查后表';
+
+
+drop table if exists trade_order;
+
+/*==============================================================*/
+/* Table: trade_order                                           */
+/*==============================================================*/
+create table trade_order
+(
+   id                   national varchar(64) not null,
+   order_id             national varchar(64) not null comment '订单号',
+   order_flow_id        national varchar(64),
+   statue               int(10) not null default 1 comment '订单状态(数据字典)',
+   supply_user_id       national varchar(64) comment '卖方id',
+   supply_user_name     national varchar(255) comment '卖方name',
+   demand_user_id       national varchar(64) comment '买方id',
+   demand_name          national varchar(255) comment '买方name',
+   add_date             datetime comment '下单时间',
+   ship_time            datetime comment '发货时间',
+   invoice_no           national varchar(255) comment '发票号',
+   finish_time          datetime comment '完成时间',
+   goods_amount         decimal(10,2) comment '总价钱',
+   evaluation_status    int(1) unsigned not null default 0 comment '评价状态（默认0：未评价，1：已经评价）',
+   evaluation_time      datetime comment '评价时间',
+   evaluation_content   text comment '评价内容',
+   receive_province     national varchar(64) comment '收货省份',
+   receive_city         national varchar(64) comment '收货城市',
+   receive_area         national varchar(64) comment '收货地区',
+   receive_detail_area  national varchar(64) comment '收货详细地区',
+   remarks              national varchar(64) comment '备注',
+   completestatus       national varchar(64) comment '完成状态',
+   primary key (id)
+);
+
+alter table trade_order comment '订单表';
+
+
+drop table if exists trade_order_supply_demand;
+
+/*==============================================================*/
+/* Table: trade_order_supply_demand                             */
+/*==============================================================*/
+create table trade_order_supply_demand
+(
+   id                   national varchar(64) not null,
+   order_id             national varchar(64) not null comment '订单Id',
+   supply_id            national varchar(64) not null comment '供应信息id',
+   demand_id            national varchar(64) not null comment '求购信息id',
+   total_price          decimal(10,2) not null comment '总价',
+   per_price            decimal(10,2) not null comment '单价',
+   number               decimal(10,2) not null comment '数量',
+   image_path           national varchar(128) comment '图片',
+   price_unit_id        int(10) not null comment '价格单元id',
+   number_unit_id       int(10) unsigned not null comment '数量单元id',
+   price_unit_value     national varchar(64) not null comment '价格单元',
+   number_unit_value    national varchar(64) not null comment '数量单元',
+   primary key (id)
+);
+
+alter table trade_order_supply_demand comment '订单供求信息表';
+
+alter table trade_order_supply_demand add constraint FK_Reference_52 foreign key (order_id)
+      references trade_order (id);
+
+
+
+drop table if exists trade_order_logistics;
+
+/*==============================================================*/
+/* Table: trade_order_logistics                                 */
+/*==============================================================*/
+create table trade_order_logistics
+(
+   id                   national varchar(64) not null,
+   deliver_province     national varchar(64) not null comment '发货省份',
+   deliver_city         national varchar(64) not null comment '发货城市',
+   deliver_area         national varchar(64) not null comment '发货地区',
+   deliver_detail_area  national varchar(500) not null comment '发货详细地区',
+   receive_province     national varchar(64) not null comment '求购省份',
+   receive_city         national varchar(64) not null,
+   receive_area         national varchar(64) not null,
+   receive_detail_area  national varchar(500) not null,
+   create_by            national varchar(64) not null,
+   update_by            national varchar(64) not null,
+   create_date          datetime not null,
+   update_date          datetime not null,
+   shipping_id          int(10) unsigned not null comment '发货方式（数据字典）',
+   shipping_name        national varchar(128) not null comment '发货方式名字',
+   order_id             national varchar(64) not null comment '订单id',
+   receive_user         national varchar(64) comment '收货联系人',
+   postcode             national varchar(32) comment '邮编',
+   recive_phone         national varchar(32) comment '收货人电话',
+   shipping_fee         decimal(10,2) comment '货运费用',
+   driver_name          national varchar(128) comment '司机名字',
+   driver_phone         national varchar(32) comment '司机电话',
+   car_num              national varchar(32) comment '司机车牌号',
+   transport_detail_area national varchar(500) comment '目前所货运地址',
+   transport_province   national varchar(64) comment '货运省份',
+   transport_city       national varchar(64) comment '货运城市',
+   transport_area       national varchar(64) comment '货运地区',
+   primary key (id)
+);
+
+alter table trade_order_logistics comment '订单物流信息';
+
+alter table trade_order_logistics add constraint FK_Reference_54 foreign key (order_id)
+      references trade_order (id);
+
+
+drop table if exists trade_order_supply_demand_log;
+
+/*==============================================================*/
+/* Table: trade_order_supply_demand_log                         */
+/*==============================================================*/
+create table trade_order_supply_demand_log
+(
+   id                   national varchar(64) not null,
+   order_id             national varchar(64) not null comment '订单Id',
+   supply_id            national varchar(64) not null comment '供应信息id',
+   demand_id            national varchar(64) not null comment '求购信息id',
+   total_price          decimal(10,2) not null comment '总价',
+   per_price            decimal(10,2) not null comment '单价',
+   number               decimal(10,2) not null comment '数量',
+   image_path           national varchar(128) comment '图片',
+   price_unit_id        int(10) not null comment '价格单元id',
+   number_unit_id       int(10) unsigned not null comment '数量单元id',
+   price_unit_value     national varchar(64) not null comment '价格单元',
+   number_unit_value    national varchar(64) not null comment '数量单元',
+   primary key (id)
+);
+
+alter table trade_order_supply_demand_log comment '订单供求信息流水表';
+
+alter table trade_order_supply_demand_log add constraint FK_Reference_53 foreign key (order_id)
+      references trade_order_log (id);
+
+
+drop table if exists trade_order_log;
+
+/*==============================================================*/
+/* Table: trade_order_log                                       */
+/*==============================================================*/
+create table trade_order_log
+(
+   id                   national varchar(64) not null,
+   order_number         national varchar(64) not null comment '订单号',
+   statue               int(10) not null comment '订单状态(数据字典)',
+   supply_user_id       national varchar(64) comment '卖方id',
+   supply_user_name     national varchar(255) comment '卖方name',
+   demand_user_id       national varchar(64) comment '买方id',
+   demand_name          national varchar(255) comment '买方name',
+   add_date             datetime comment '下单时间',
+   ship_time            datetime comment '发货时间',
+   invoice_no           national varchar(255) comment '发票号',
+   finish_time          datetime comment '完成时间',
+   goods_amount         decimal(10,2) comment '总价钱',
+   evaluation_status    int(1) unsigned not null default 0 comment '评价状态（默认0：未评价，1：已经评价）',
+   evaluation_time      datetime comment '评价时间',
+   evaluation_content   text comment '评价内容',
+   receive_province     national varchar(64) comment '收货省份',
+   receive_city         national varchar(64) comment '收货城市',
+   receive_area         national varchar(64) comment '收货地区',
+   receive_detail_area  national varchar(64) comment '收货详细地区',
+   primary key (id)
+);
+
+alter table trade_order_log comment '订单表流水';
+
+
+drop table if exists user_address_info;
+
+/*==============================================================*/
+/* Table: user_address_info                                     */
+/*==============================================================*/
+create table user_address_info
+(
+   id                   national varchar(64) not null,
+   province_id          national varchar(64) not null comment '省份',
+   city_id              national varchar(64) not null comment '城市',
+   area_id              national varchar(64) not null comment '区/县',
+   warehouse            national varchar(128) comment '仓库',
+   detail_area          national varchar(500) comment '详细地址',
+   user_id              national varchar(64) comment '此用户id的地址维护',
+   user_name            national varchar(500) not null comment '收获联系人',
+   telephone            national varchar(32) not null comment '手机号码',
+   update_by            national varchar(64) comment '更新者',
+   is_defalt            int(1) unsigned comment '是否默认(默认0：否，1：是)',
+   del_flag             national char(1) not null default '0',
+   postcode             national varchar(32) comment '邮编',
+   type                 national varchar(64) comment '类型（supply:供应方，demand:求购方）',
+   province_name        national varchar(255) not null,
+   city_name            national varchar(255) not null,
+   area_name            national varchar(255) not null,
+   primary key (id)
+);
+
+alter table user_address_info comment '用户地址管理';
+
+alter table user_address_info add constraint FK_Reference_10 foreign key (user_id)
+      references sys_user (id);
+
+
+
+
+drop table if exists sys_user;
+
+/*==============================================================*/
+/* Table: sys_user                                              */
+/*==============================================================*/
+create table sys_user
+(
+   id                   national varchar(64) not null comment '编号',
+   company_id           national varchar(64) not null comment '归属公司',
+   office_id            national varchar(64) not null comment '归属部门',
+   login_name           national varchar(100) not null comment '登录名',
+   password             national varchar(100) not null comment '密码',
+   no                   national varchar(100) comment '工号',
+   name                 national varchar(100) not null comment '姓名',
+   email                national varchar(200) comment '邮箱',
+   phone                national varchar(200) comment '电话',
+   mobile               national varchar(200) comment '手机',
+   user_type            national char(1) comment '用户类型',
+   photo                national varchar(1000) comment '用户头像',
+   login_ip             national varchar(100) comment '最后登陆IP',
+   login_date           datetime comment '最后登陆时间',
+   login_flag           national varchar(64) comment '是否可登录',
+   create_by            national varchar(64) not null comment '创建者',
+   create_date          datetime not null comment '创建时间',
+   update_by            national varchar(64) not null comment '更新者',
+   update_date          datetime not null comment '更新时间',
+   remarks              national varchar(255) comment '备注信息',
+   del_flag             national char(1) not null default '0' comment '删除标记',
+   organization_id      national varchar(64) comment '所属机构id',
+   primary key (id)
+);
+
+alter table sys_user comment '用户表';
+
+*/
+
+
+drop table if exists user_contanct_person;
+
+/*==============================================================*/
+/* Table: user_contanct_person                                  */
+/*==============================================================*/
+create table user_contanct_person
+(
+   id                   national varchar(64) not null,
+   name                 national varchar(128) not null comment '好友名字',
+   contanct_person_id   national varchar(64) not null comment '联系人id',
+   group_id             national varchar(64) not null comment '好友组id',
+   phone_tel            national varchar(32) comment '手机号',
+   organization_name    national varchar(128) comment '公司名',
+   phone_mob            national varchar(32) comment '手机号',
+   organization_main_goods national varchar(500) comment '组织主营业务',
+   province_id          national varchar(64) comment '省份',
+   city_id              national varchar(64) comment '城市',
+   area_id              national varchar(64) comment '区县',
+   detail_area          national varchar(255) comment '详细地区',
+   primary key (id)
+);
+
+alter table user_contanct_person comment '用户联系人';
+
+
+drop table if exists sys_area;
+
+/*==============================================================*/
+/* Table: sys_area                                              */
+/*==============================================================*/
+create table sys_area
+(
+   id                   national varchar(64) not null comment '编号',
+   parent_id            national varchar(64) not null comment '父级编号',
+   parent_ids           national varchar(2000) not null comment '所有父级编号',
+   name                 national varchar(100) not null comment '名称',
+   sort                 decimal(10,0) not null comment '排序',
+   code                 national varchar(100) comment '区域编码',
+   type                 national char(1) comment '区域类型',
+   create_by            national varchar(64) not null comment '创建者',
+   create_date          datetime not null comment '创建时间',
+   update_by            national varchar(64) not null comment '更新者',
+   update_date          datetime not null comment '更新时间',
+   remarks              national varchar(255) comment '备注信息',
+   del_flag             national char(1) not null default '0' comment '删除标记',
+   primary key (id)
+);
+
+alter table sys_area comment '区域表';
+
+drop table if exists organization_main_goods;
+
+/*==============================================================*/
+/* Table: organization_main_goods                               */
+/*==============================================================*/
+create table organization_main_goods
+(
+   id                   national varchar(64),
+   goods_type           int(10) comment '主营产品(数据字典)',
+   organization_id      national varchar(64)
+);
+
+alter table organization_main_goods comment '公司的主营产品';
+
+alter table organization_main_goods add constraint FK_Reference_43 foreign key (organization_id)
+      references organization_info (id);
+
+
+drop table if exists organization_info;
+
+/*==============================================================*/
+/* Table: organization_info                                     */
+/*==============================================================*/
+create table organization_info
+(
+   id                   national varchar(64) not null,
+   name                 national varchar(255) not null,
+   type                 int(10) not null comment '公司类型 (数据字典)',
+   image_path           national varchar(128),
+   create_date          datetime not null,
+   update_date          datetime not null,
+   create_by            national varchar(64) not null,
+   update_by            national varchar(64) not null,
+   regist_date          datetime comment '注册时间',
+   is_entrust           int(10) unsigned default 0 comment '是否是委托人（没有注册）的公司信息(默认0:否，1：是)',
+   regist_number        national varchar(32) comment '注册号',
+   province_id          national varchar(32) comment '省份',
+   city_id              national varchar(32) comment '城市',
+   area_id              national varchar(32) comment '区/县',
+   detail_area          national varchar(32) comment '详细地区',
+   postcode             national varchar(32) comment '邮编',
+   fax_number           national varchar(32) comment '传真',
+   remarks              text comment '备注',
+   person_name          national varchar(255) comment '默认联系人',
+   phone_mob            national varchar(32) comment '默认手机号',
+   phone_tel            national varchar(32) comment '默认座机号',
+   qq_number            national varchar(32) comment '默认qq',
+   email                national varchar(64) comment '默认邮箱',
+   primary key (id)
+);
+
+alter table organization_info comment '机构信息';
+
+
+drop table if exists organization_person;
+
+/*==============================================================*/
+/* Table: organization_person                                   */
+/*==============================================================*/
+create table organization_person
+(
+   id                   national varchar(64) not null,
+   person_name          national varchar(255) not null comment '联系人姓名',
+   phone_mob            national varchar(32) not null comment '联系人手机号',
+   phone_tel            national varchar(32) comment '联系人座机',
+   organization_id      national varchar(64) not null comment '组织id',
+   qq_number            national varchar(32) comment 'qq号',
+   email                national varchar(64) comment 'email',
+   primary key (id)
+);
+
+alter table organization_person comment '公司联系人';
+
+alter table organization_person add constraint FK_Reference_66 foreign key (organization_id)
+      references organization_info (id);
+
+
+drop table if exists organization_phone_tels;
+
+/*==============================================================*/
+/* Table: organization_phone_tels                               */
+/*==============================================================*/
+create table organization_phone_tels
+(
+   id                   national varchar(64) not null,
+   phone_tel            national varchar(32) not null comment '座机',
+   organization_id      national varchar(64) not null comment '机构',
+   primary key (id)
+);
+
+alter table organization_phone_tels comment '公司座机号';
+
+alter table organization_phone_tels add constraint FK_Reference_67 foreign key (organization_id)
+      references organization_info (id);
+
+
+drop table if exists sys_navigation_info;
+
+/*==============================================================*/
+/* Table: sys_navigation_info                                   */
+/*==============================================================*/
+create table sys_navigation_info
+(
+   id                   national varchar(64) not null,
+   name                 national varchar(128) not null comment '名字',
+   code                 national varchar(128) comment '标识',
+   order_item           int(10) unsigned comment '排序',
+   remarks              text,
+   url                  national varchar(255) not null comment '链接地址',
+   create_date          datetime not null,
+   update_date          datetime not null,
+   create_by            national varchar(64) not null,
+   update_by            national varchar(64) not null,
+   del_flag             national char(1) default '0',
+   primary key (id)
+);
+
+alter table sys_navigation_info comment '导航栏信息';
+
+
+drop table if exists feed_back_log;
+
+/*==============================================================*/
+/* Table: feed_back_log                                         */
+/*==============================================================*/
+create table feed_back_log
+(
+   id                   national varchar(64) not null,
+   create_by            national varchar(64) not null comment '反馈人员',
+   create_user_telephone national varchar(32) not null comment '手机号',
+   create_user_name     national varchar(128) not null comment '反馈人员名字',
+   content              text not null comment '反馈内容',
+   status               int(1) not null default 0 comment '状态（默认0：未处理，1：已经处理）',
+   remark               text comment '备注',
+   update_by            national varchar(64),
+   update_date          datetime not null,
+   create_date          datetime not null,
+   primary key (id)
+);
+
+alter table feed_back_log comment '反馈表';
+
+
+drop table if exists sys_news_template;
+
+/*==============================================================*/
+/* Table: sys_news_template                                     */
+/*==============================================================*/
+create table sys_news_template
+(
+   id                   national varchar(64) not null,
+   create_by            national varchar(64),
+   code                 national varchar(255) not null,
+   content              text comment '摸版内容',
+   create_date          datetime not null,
+   remarks              text,
+   update_date          datetime not null,
+   del_flag             national char(1) default '0',
+   type                 national varchar(64) not null comment '(SMS、WX、EMAIL、PLATFORM)',
+   update_by            national varchar(64),
+   primary key (id)
+);
+
+alter table sys_news_template comment '消息摸版';
+
+
+drop table if exists sys_news_history_info;
+
+/*==============================================================*/
+/* Table: sys_news_history_info                                 */
+/*==============================================================*/
+create table sys_news_history_info
+(
+   id                   national varchar(64) not null,
+   send_to              national varchar(32) not null comment 'telephone',
+   send_content         text not null,
+   start_time           datetime not null comment '定时发送时间',
+   end_time             datetime comment '发送结束时间',
+   statue               int(1) comment '发送状态',
+   sent_time            datetime comment '真实发送时间',
+   primary key (id)
+);
+
+alter table sys_news_history_info comment '消息表';
+
+
+drop table if exists supply_demand_recommend_tag;
+
+/*==============================================================*/
+/* Table: supply_demand_recommend_tag                           */
+/*==============================================================*/
+create table supply_demand_recommend_tag
+(
+   id                   national varchar(64) not null,
+   image_path           national varchar(128) comment '推荐的图片',
+   tag                  national varchar(500) not null comment '标签',
+   recommend_id         national varchar(64) not null comment '推荐id',
+   primary key (id)
+);
+
+alter table supply_demand_recommend_tag comment '推荐标签';
+
+alter table supply_demand_recommend_tag add constraint FK_Reference_59 foreign key (recommend_id)
+      references supply_demand_recommend (id);
+
+
+drop table if exists supply_demand_recommend;
+
+/*==============================================================*/
+/* Table: supply_demand_recommend                               */
+/*==============================================================*/
+create table supply_demand_recommend
+(
+   id                   national varchar(64) not null,
+   create_date          datetime comment '推荐时间',
+   recommend_user       national varchar(64) not null comment '推荐人',
+   recommend_type       national varchar(64) not null comment '推荐类型（platform:平台推荐，company:机构推荐）',
+   status               int(1) not null default 0 comment '状态（默认0:正常，-1：取消推荐）',
+   object_type          int(1) not null comment '0:供求信息，1：供应商，2：求购商）',
+   object_id            national varchar(64) not null comment '供求id或者用户id',
+   position_id          national char(10),
+   url                  national varchar(10),
+   start_time           datetime comment '推荐开始时间',
+   end_time             datetime comment '推荐结束时间',
+   primary key (id)
+);
+
+alter table supply_demand_recommend comment '推荐表';
+
+alter table supply_demand_recommend add constraint FK_Reference_71 foreign key (position_id)
+      references sys_position (id);
+
+
+drop table if exists sys_position;
+
+/*==============================================================*/
+/* Table: sys_position                                          */
+/*==============================================================*/
+create table sys_position
+(
+   id                   national varchar(64) not null,
+   platform_id          national varchar(64) not null comment '平台',
+   system               national varchar(128) not null comment '平台下的系统',
+   left_p               national varchar(128) not null comment '距离左侧位置',
+   top_p                national varchar(128) not null comment '距离顶部距离',
+   create_by            national varchar(64) not null,
+   update_by            national varchar(64) not null,
+   create_date          datetime not null,
+   update_date          datetime not null,
+   del_flag             national char(1) not null default '0',
+   primary key (id)
+);
+
+alter table sys_position comment '位置表';
+
+
+drop table if exists supply_demand_relation;
+
+/*==============================================================*/
+/* Table: supply_demand_relation                                */
+/*==============================================================*/
+create table supply_demand_relation
+(
+   id                   national varchar(64) not null,
+   create_date          datetime not null,
+   create_by            national varchar(64),
+   check_date           datetime not null,
+   check_by             national varchar(64) not null,
+   del_flag             national char(1) not null default '0',
+   supply_id            national varchar(64) not null,
+   demand_id            national varchar(64) not null,
+   check_statue         int(1) not null default 0 comment '审核状态(默认0：未审核，1：审核通过，-1：审核未通过)',
+   primary key (id)
+);
+
+alter table supply_demand_relation comment '供求关系表';
+
+
+drop table if exists matching_attr;
+
+/*==============================================================*/
+/* Table: matching_attr                                         */
+/*==============================================================*/
+create table matching_attr
+(
+   id                   national varchar(64) not null comment '匹配属性id',
+   matching_name        national varchar(255) comment '匹配属性名称',
+   remark               national varchar(255),
+   create_by            national varchar(255) comment '创建人',
+   create_date          datetime comment '创建时间',
+   matching_status      int(1) comment '0是精确匹配、1是模糊匹配、2是范围匹配',
+   matching_table       national varchar(255) comment '匹配的表名',
+   entity_name          national varchar(255) comment '对应的实体类的属性',
+   primary key (id)
+);
+
+
+drop table if exists matching_attr_relation;
+
+/*==============================================================*/
+/* Table: matching_attr_relation                                */
+/*==============================================================*/
+create table matching_attr_relation
+(
+   id                   national varchar(64) not null,
+   relation_id          national varchar(64),
+   matchattr_id         national varchar(64),
+   weight               int(11),
+   primary key (id)
+);
+
+
+drop table if exists supply_demand_relation_matching;
+
+/*==============================================================*/
+/* Table: supply_demand_relation_matching                       */
+/*==============================================================*/
+create table supply_demand_relation_matching
+(
+   id                   national varchar(64) not null,
+   relation_name        national varchar(255),
+   relation_remark      national varchar(255),
+   remarks              national varchar(255) comment '说明',
+   matching_object      national varchar(255),
+   sort_order           int(11),
+   if_matching          tinyint(4),
+   create_date          datetime,
+   update_date          datetime,
+   create_by            national varchar(64),
+   update_by            national varchar(64),
+   primary key (id)
+);
+
+alter table supply_demand_relation_matching comment '供求信息，匹配规范';

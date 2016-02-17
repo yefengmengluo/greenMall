@@ -1,0 +1,31 @@
+/* CSS Document */
+
+*{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+  color: #333;
+  font-size: .12rem;
+  font-family: 'Microsoft YaHei',"Myriad Set Pro","Lucida Grande","Helvetica Neue","Helvetica","Arial","Verdana","sans-serif";
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+body{ color:#CCC;}
+
+/*--定义1rem单位大小--*/
+html{
+  font-size: 100px;
+}
+@media screen and (min-width: 375px){
+  html{ font-size: 117.1875px }
+}
+@media screen and (min-width: 414px){
+  html{ font-size: 129.375px }
+}
+@media screen and (max-height: 480px){
+  html{ font-size: 90px; }
+}
+@media screen and (min-width: 768px){
+}
+
+

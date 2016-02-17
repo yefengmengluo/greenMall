@@ -1,0 +1,21 @@
+#!/bin/bash
+cd ../
+echo "1.开始清理本地文件"
+mvn clean
+
+echo "2.打包本地文件"
+mvn -Dmaven.test.skip=true package
+
+echo "3.停掉远程tomcat,回车确认"
+read
+
+echo "4.开始清理远程文件"
+ssh root@test rm -rf /root/apache-tomcat-8.0.30/webapps/greenMall* ;
+ssh root@test rm -rf /root/apache-tomcat-8.0.30/temp/greenmall/* ;
+ssh root@test rm -rf /root/apache-tomcat-8.0.30/work/Catalina/localhost/* ;
+
+echo "5.开始往服务器发送文件"
+scp ./target/greenMall.war root@test:/root/apache-tomcat-8.0.30/webapps ;
+
+echo "3.开启远程tomcat"
+read

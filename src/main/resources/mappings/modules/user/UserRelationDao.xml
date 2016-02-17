@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.user.dao.UserRelationDao">
+    
+	<sql id="userRelationColumns">
+		a.id AS "id",
+		a.the_user AS "theUser",
+		a.other_user AS "otherUser",
+		a.relation_type AS "relationType",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="userRelationJoins">
+		LEFT JOIN sys_user u2 ON u2.id = a.the_user
+		LEFT JOIN sys_user u3 ON u3.id = a.other_user
+	</sql>
+    
+	<select id="get" resultType="UserRelation">
+		SELECT 
+			<include refid="userRelationColumns"/>
+		FROM user_relation a
+		<include refid="userRelationJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="UserRelation">
+		SELECT 
+			<include refid="userRelationColumns"/>
+		FROM user_relation a
+		<include refid="userRelationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="theUser != null and theUser != ''">
+				AND a.the_user = #{theUser}
+			</if>
+			<if test="otherUser != null and otherUser != ''">
+				AND a.other_user = #{otherUser}
+			</if>
+			<if test="relationType != null and relationType != ''">
+				AND a.relation_type = #{relationType}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="UserRelation">
+		SELECT 
+			<include refid="userRelationColumns"/>
+		FROM user_relation a
+		<include refid="userRelationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO user_relation(
+			id,
+			the_user,
+			other_user,
+			relation_type,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{theUser},
+			#{otherUser},
+			#{relationType},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE user_relation SET 	
+			the_user = #{theUser},
+			other_user = #{otherUser},
+			relation_type = #{relationType},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE user_relation SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+    <select id="findCountUserByTheId" resultType="java.lang.Integer">
+        SELECT count(a.other_user) FROM user_relation a WHERE a.the_user=#{currentId} AND relation_type='bussiness'
+    </select>
+
+    <select id="findBussinessUserByOtherId" resultType="java.lang.String">
+        SELECT a.the_user FROM user_relation a WHERE a.other_user=#{id} AND relation_type='bussiness'
+    </select>
+
+    <update id="deleteRelationByOtherUser">
+        DELETE FROM user_relation WHERE other_user=#{userId}
+    </update>
+</mapper>

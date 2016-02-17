@@ -1,0 +1,1343 @@
+SET SESSION FOREIGN_KEY_CHECKS=0;
+
+
+drop table if exists sys_mdict;
+
+/*==============================================================*/
+/* Table: sys_mdict                                             */
+/*==============================================================*/
+create table sys_mdict
+(
+   id                   int(10) unsigned not null auto_increment,
+   parent_id            int(10) unsigned not null,
+   parent_ids           varchar(2000) character set utf8 not null,
+   name                 varchar(100) character set utf8 not null,
+   sort                 decimal(10) not null,
+   description          varchar(100) character set utf8,
+   create_by            varchar(64) character set utf8 not null,
+   update_by            varchar(64) character set utf8 not null,
+   create_date          datetime not null,
+   update_date          datetime not null,
+   remarks              varchar(255) character set utf8 not null,
+   del_flag             char(1) not null default '0',
+   primary key (id)
+)charset = UTF8;
+
+alter table sys_mdict comment '数据类别（字典）';
+
+
+drop table if exists user_allocation_trader;
+
+/*==============================================================*/
+/* Table: user_allocation_trader                                */
+/*==============================================================*/
+create table user_allocation_trader
+(
+   id                   varchar(64) character set utf8 not null,
+   trader_id            varchar(64) character set utf8 not null comment '客服id',
+   user_id              varchar(64) character set utf8 not null comment '商户',
+   create_date          datetime not null,
+   status               int(1) not null default 0 comment '状态管理（默认，0：正常，-1：拉黑；-2：删除）',
+   update_date          datetime not null,
+   remark               varchar(500),
+   primary key (id)
+)charset = UTF8;
+
+alter table user_allocation_trader comment '用户分配交易员';
+
+alter table user_allocation_trader add constraint FK_Reference_49 foreign key (trader_id)
+      references sys_user (id) on delete restrict on update restrict;
+
+alter table user_allocation_trader add constraint FK_Reference_50 foreign key (user_id)
+      references sys_user (id) on delete restrict on update restrict;
+
+
+
+drop table if exists user_group;
+
+/*==============================================================*/
+/* Table: user_group                                            */
+/*==============================================================*/
+create table user_group
+(
+   id                   varchar(64) character set utf8 not null,
+   user_id              varchar(64) character set utf8 not null,
+   name                 varchar(128) not null comment '分组名字',
+   create_date          datetime not null,
+   update_date          datetime not null,
+   primary key (id)
+)charset = UTF8;
+
+alter table user_group comment '用户组';
+
+alter table user_group add constraint FK_Reference_19 foreign key (user_id)
+      references sys_user (id) on delete restrict on update restrict;
+
+
+drop table if exists user_contanct_person;
+
+/*==============================================================*/
+/* Table: user_contanct_person                                  */
+/*==============================================================*/
+create table user_contanct_person
+(
+   id                   varchar(64) character set utf8 not null,
+   name                 varchar(128) not null comment '好友名字',
+   contanct_person_id   varchar(64) character set utf8 not null comment '联系人id',
+   group_id             varchar(64) character set utf8 not null comment '好友组id',
+   phone_tel            varchar(32) character set utf8 comment '手机号',
+   organization_name    varchar(128) comment '公司名',
+   phone_mob            varchar(32) character set utf8 comment '手机号',
+   organization_main_goods varchar(500) comment '组织主营业务',
+   province_id          varchar(64) character set utf8 comment '省份',
+   city_id              varchar(64) character set utf8 comment '城市',
+   area_id              varchar(64) character set utf8 comment '区县',
+   detail_area          varchar(255) character set utf8 comment '详细地区',
+   primary key (id)
+)charset = UTF8;
+
+alter table user_contanct_person comment '用户联系人';
+
+alter table user_contanct_person add constraint FK_Reference_20 foreign key (group_id)
+      references user_group (id) on delete restrict on update restrict;
+
+
+drop table if exists user_contanct_person;
+
+/*==============================================================*/
+/* Table: user_contanct_person                                  */
+/*==============================================================*/
+create table user_contanct_person
+(
+   id                   varchar(64) character set utf8 not null,
+   name                 varchar(128) not null comment '好友名字',
+   contanct_person_id   varchar(64) character set utf8 not null comment '联系人id',
+   group_id             varchar(64) character set utf8 not null comment '好友组id',
+   phone_tel            varchar(32) character set utf8 comment '手机号',
+   organization_name    varchar(128) comment '公司名',
+   phone_mob            varchar(32) character set utf8 comment '手机号',
+   organization_main_goods varchar(500) comment '组织主营业务',
+   province_id          varchar(64) character set utf8 comment '省份',
+   city_id              varchar(64) character set utf8 comment '城市',
+   area_id              varchar(64) character set utf8 comment '区县',
+   detail_area          varchar(255) character set utf8 comment '详细地区',
+   primary key (id)
+)charset = UTF8;
+
+alter table user_contanct_person comment '用户联系人';
+
+alter table user_contanct_person add constraint FK_Reference_20 foreign key (group_id)
+      references user_group (id) on delete restrict on update restrict;
+
+
+drop table if exists organization_info;
+
+/*==============================================================*/
+/* Table: organization_info                                     */
+/*==============================================================*/
+create table organization_info
+(
+   id                   varchar(64) character set utf8 not null,
+   name                 varchar(255) character set utf8 not null,
+   type                 int(10) not null comment '公司类型 (数据字典)',
+   image_path           varchar(128),
+   create_date          datetime not null,
+   update_date          datetime not null,
+   create_by            varchar(64) character set utf8 not null,
+   update_by            varchar(64) character set utf8 not null,
+   regist_date          datetime comment '注册时间',
+   is_entrust           int(0) unsigned default 0 comment '是否是委托人（没有注册）的公司信息(默认0:否，1：是)',
+   regist_number        varchar(32) character set utf8 comment '注册号',
+   province_id          varchar(32) character set utf8 comment '省份',
+   city_id              varchar(32) character set utf8 comment '城市',
+   area_id              varchar(32) character set utf8 comment '区/县',
+   detail_area          varchar(32) character set utf8 comment '详细地区',
+   postcode             varchar(32) character set utf8 comment '邮编',
+   fax_number           varchar(32) character set utf8 comment '传真',
+   remarks              text character set utf8 comment '备注',
+   person_name          varchar(255) character set utf8 comment '默认联系人',
+   phone_mob            varchar(32) character set utf8 comment '默认手机号',
+   phone_tel            varchar(32) character set utf8 comment '默认座机号',
+   qq_number            varchar(32) character set utf8 comment '默认qq',
+   email                varchar(64) character set utf8 comment '默认邮箱',
+   primary key (id)
+)charset = UTF8;
+
+alter table organization_info comment '机构信息';
+
+
+
+drop table if exists organization_main_goods;
+
+/*==============================================================*/
+/* Table: organization_main_goods                               */
+/*==============================================================*/
+create table organization_main_goods
+(
+   id                   varchar(64) character set utf8,
+   goods_type           int(10) comment '主营产品(数据字典)',
+   organization_id      varchar(64) character set utf8
+)charset = UTF8;
+
+alter table organization_main_goods comment '公司的主营产品';
+
+alter table organization_main_goods add constraint FK_Reference_43 foreign key (organization_id)
+      references organization_info (id) on delete restrict on update restrict;
+
+
+
+drop table if exists organization_person;
+
+/*==============================================================*/
+/* Table: organization_person                                   */
+/*==============================================================*/
+create table organization_person
+(
+   id                   varchar(64) character set utf8 not null,
+   person_name          varchar(255) character set utf8 not null comment '联系人姓名',
+   phone_mob            varchar(32) character set utf8 not null comment '联系人手机号',
+   phone_tel            varchar(32) character set utf8 comment '联系人座机',
+   organization_id      varchar(64) character set utf8 not null comment '组织id',
+   qq_number            varchar(32) character set utf8 comment 'qq号',
+   email                varchar(64) character set utf8 comment 'email',
+   primary key (id)
+)charset = UTF8;
+
+alter table organization_person comment '公司联系人';
+
+alter table organization_person add constraint FK_Reference_66 foreign key (organization_id)
+      references organization_info (id) on delete restrict on update restrict;
+
+
+
+drop table if exists organization_phone_tels;
+
+/*==============================================================*/
+/* Table: organization_phone_tels                               */
+/*==============================================================*/
+create table organization_phone_tels
+(
+   id                   varchar(64) character set utf8 not null,
+   phone_tel            varchar(32) character set utf8 not null comment '座机',
+   organization_id      varchar(64) character set utf8 not null comment '机构',
+   primary key (id)
+)charset = UTF8;
+
+alter table organization_phone_tels comment '公司座机号';
+
+alter table organization_phone_tels add constraint FK_Reference_67 foreign key (organization_id)
+      references organization_info (id) on delete restrict on update restrict;
+
+
+drop table if exists supply_demand_info;
+
+/*==============================================================*/
+/* Table: supply_demand_info                                    */
+/*==============================================================*/
+create table supply_demand_info
+(
+   id                   varchar(64) character set utf8 not null,
+   goods_name           varchar(255) character set utf8 not null comment '产品，gcategory表的name',
+   pgoods_alias         varchar(255) character set utf8 comment '产品别名',
+   goods_id             varchar(64) character set utf8 comment '产品id，商品类型表外键',
+   pgoods_id            varchar(64) character set utf8 comment '产品上级id',
+   pgoods_name          varchar(255) character set utf8 not null comment '产品上级name',
+   pids                 char(10) comment '产品pids 代码',
+   price_unit_id        int(10) unsigned comment '价格单元id',
+   number_unit_id       int(10) unsigned comment '数量单元id',
+   price_unit_value     varchar(64) character set utf8 comment '价格单元',
+   number_unit_value    varchar(64) character set utf8 comment '数量单元',
+   number               double(10,2) comment '数量',
+   from_per_price       decimal(10,2),
+   to_per_price         decimal(10,2),
+   specs                text character set utf8 comment '手动填写的规格',
+   remarks              text character set utf8 comment '商品描述',
+   create_date          datetime not null,
+   update_date          datetime not null,
+   create_by            varchar(64) character set utf8 not null,
+   update_by            varchar(64) character set utf8 not null,
+   statue               int(1) comment '状态(默认0：待审核，1：已审核通过，-1：审核未通过，-2：删除)',
+   statue_intro         text character set utf8 comment '审核说明',
+   type                 varchar(32) character set utf8 not null comment '供求类型（supply:供应，demand:求购）',
+   is_entrust           int(1) unsigned default 0 comment '是否是委托（默认0：否，1：是）',
+   entrust_supply_demand_id varchar(64) character set utf8 not null default '0' comment '委托的供求信息id',
+   entrust_organization_id varchar(64) character set utf8 comment '委托人公司id',
+   supply_address_id    varchar(64) character set utf8 comment '发货id',
+   demand_address_id    varchar(64) character set utf8 comment '收货id',
+   validate_start_date  datetime comment '消息有效开始时间(非委托必填)',
+   validate_end_date    datetime comment '消息有效结束时间（非委托必填）',
+   production_province  varchar(64) character set utf8 comment '生产省份',
+   production_city      varchar(64) character set utf8 comment '生产城市',
+   production_area      varchar(64) character set utf8 comment '生产地区',
+   production_detail_area varchar(500) comment '生产详细地区',
+   order_uploading_id   varchar(64) character set utf8 comment '报价单历史表',
+   primary key (id)
+)charset = UTF8;
+
+alter table supply_demand_info comment '供求信息';
+
+alter table supply_demand_info add constraint FK_Reference_32 foreign key (entrust_organization_id)
+      references organization_info (id) on delete restrict on update restrict;
+
+alter table supply_demand_info add constraint FK_Reference_34 foreign key (supply_address_id)
+      references user_address_info (id) on delete restrict on update restrict;
+
+alter table supply_demand_info add constraint FK_Reference_35 foreign key (demand_address_id)
+      references user_address_info (id) on delete restrict on update restrict;
+
+alter table supply_demand_info add constraint FK_Reference_42 foreign key (price_unit_id)
+      references supply_demand_unit_category (id) on delete restrict on update restrict;
+
+alter table supply_demand_info add constraint FK_Reference_44 foreign key (number_unit_id)
+      references supply_demand_unit_category (id) on delete restrict on update restrict;
+
+alter table supply_demand_info add constraint FK_Reference_46 foreign key (entrust_supply_demand_id)
+      references supply_demand_info (id) on delete restrict on update restrict;
+
+alter table supply_demand_info add constraint FK_Reference_72 foreign key (order_uploading_id)
+      references supply_offer_order_uploading_log (id) on delete restrict on update restrict;
+
+
+drop table if exists organization_info;
+
+/*==============================================================*/
+/* Table: organization_info                                     */
+/*==============================================================*/
+create table organization_info
+(
+   id                   varchar(64) character set utf8 not null,
+   name                 varchar(255) character set utf8 not null,
+   type                 int(10) not null comment '公司类型 (数据字典)',
+   image_path           varchar(128),
+   create_date          datetime not null,
+   update_date          datetime not null,
+   create_by            varchar(64) character set utf8 not null,
+   update_by            varchar(64) character set utf8 not null,
+   regist_date          datetime comment '注册时间',
+   is_entrust           int(0) unsigned default 0 comment '是否是委托人（没有注册）的公司信息(默认0:否，1：是)',
+   regist_number        varchar(32) character set utf8 comment '注册号',
+   province_id          varchar(32) character set utf8 comment '省份',
+   city_id              varchar(32) character set utf8 comment '城市',
+   area_id              varchar(32) character set utf8 comment '区/县',
+   detail_area          varchar(32) character set utf8 comment '详细地区',
+   postcode             varchar(32) character set utf8 comment '邮编',
+   fax_number           varchar(32) character set utf8 comment '传真',
+   remarks              text character set utf8 comment '备注',
+   person_name          varchar(255) character set utf8 comment '默认联系人',
+   phone_mob            varchar(32) character set utf8 comment '默认手机号',
+   phone_tel            varchar(32) character set utf8 comment '默认座机号',
+   qq_number            varchar(32) character set utf8 comment '默认qq',
+   email                varchar(64) character set utf8 comment '默认邮箱',
+   primary key (id)
+)charset = UTF8;
+
+alter table organization_info comment '机构信息';
+
+
+
+drop table if exists user_address_info;
+
+/*==============================================================*/
+/* Table: user_address_info                                     */
+/*==============================================================*/
+create table user_address_info
+(
+   id                   varchar(64) character set utf8 not null,
+   province_id          varchar(64) character set utf8 not null comment '省份',
+   city_id              varchar(64) character set utf8 not null comment '城市',
+   area_id              varchar(64) character set utf8 not null comment '区/县',
+   warehouse            varchar(128) comment '仓库',
+   detail_area          varchar(500) comment '详细地址',
+   user_id              varchar(64) character set utf8 comment '此用户id的地址维护',
+   user_name            varchar(500) not null comment '收获联系人',
+   telephone            varchar(32) character set utf8 not null comment '手机号码',
+   update_by            varchar(64) character set utf8 comment '更新者',
+   is_defalt            int(1) unsigned comment '是否默认(默认0：否，1：是)',
+   del_flag             char(1) not null default '0',
+   postcode             varchar(32) character set utf8 comment '邮编',
+   type                 varchar(64) character set utf8 comment '类型（supply:供应方，demand:求购方）',
+   primary key (id)
+)charset = UTF8;
+
+alter table user_address_info comment '用户地址管理';
+
+alter table user_address_info add constraint FK_Reference_10 foreign key (user_id)
+      references sys_user (id) on delete restrict on update restrict;
+
+
+drop table if exists supply_demand_image;
+
+/*==============================================================*/
+/* Table: supply_demand_image                                   */
+/*==============================================================*/
+create table supply_demand_image
+(
+   id                   varchar(64) character set utf8 not null,
+   supply_demand_id     varchar(64) character set utf8 not null comment '供求id',
+   image_path           varchar(128) not null,
+   create_date          datetime,
+   update_date          datetime,
+   create_by            varchar(64) character set utf8,
+   update_by            varchar(64) character set utf8,
+   primary key (id)
+)charset = UTF8;
+
+alter table supply_demand_image comment '供求信息图片表';
+
+alter table supply_demand_image add constraint FK_Reference_41 foreign key (supply_demand_id)
+      references supply_demand_info (id) on delete restrict on update restrict;
+
+
+
+drop table if exists supply_offer_order;
+
+/*==============================================================*/
+/* Table: supply_offer_order                                    */
+/*==============================================================*/
+create table supply_offer_order
+(
+   id                   varchar(64) character set utf8 not null,
+   offer_telephone      varchar(32) character set utf8 not null comment '手机号',
+   main_url             varchar(128) not null comment '此手机号报价单上传地址',
+   offer_date           datetime not null comment '上传时间',
+   total_download_count int(10) unsigned not null default 0 comment '下载的总次数',
+   offer_user_id        varchar(64) character set utf8 not null comment '上传人',
+   update_date          datetime not null comment '更新时间',
+   last_order_log_id    varchar(64) character set utf8 not null comment '最新上传的exel的id',
+   primary key (id)
+)charset = UTF8;
+
+alter table supply_offer_order comment '报价单记录';
+
+
+
+drop table if exists supply_offer_order_uploading_log;
+
+/*==============================================================*/
+/* Table: supply_offer_order_uploading_log                      */
+/*==============================================================*/
+create table supply_offer_order_uploading_log
+(
+   id                   varchar(64) character set utf8 not null,
+   offer_user_id        varchar(64) character set utf8 not null comment '上传人',
+   offer_telephone      varchar(32) character set utf8 not null comment '上传人手机号',
+   url                  varchar(128) comment '上传路径',
+   offer_order_id       varchar(32) character set utf8 comment '主的报价单id',
+   offer_date           datetime comment '上传时间',
+   download_count       int(10) not null comment '下载次数',
+   primary key (id)
+)charset = UTF8;
+
+alter table supply_offer_order_uploading_log comment '报价单上传历史记录';
+
+alter table supply_offer_order_uploading_log add constraint FK_Reference_55 foreign key (offer_order_id)
+      references supply_offer_order (id) on delete restrict on update restrict;
+
+
+
+
+drop table if exists supply_offer_order_download_log;
+
+/*==============================================================*/
+/* Table: supply_offer_order_download_log                       */
+/*==============================================================*/
+create table supply_offer_order_download_log
+(
+   id                   varchar(64) character set utf8 not null,
+   order_id             varchar(64) character set utf8 not null comment '某人总的报价单',
+   uploading_log_id     varchar(64) character set utf8 not null comment '上传的order_ID',
+   download_user        varchar(255) character set utf8 comment '下载人',
+   ip                   varchar(128) not null comment '下载ip',
+   download_time        datetime not null,
+   primary key (id)
+)charset = UTF8;
+
+alter table supply_offer_order_download_log comment '报价单下载历史记录';
+
+alter table supply_offer_order_download_log add constraint FK_Reference_62 foreign key (order_id)
+      references supply_offer_order (id) on delete restrict on update restrict;
+
+alter table supply_offer_order_download_log add constraint FK_Reference_63 foreign key (uploading_log_id)
+      references supply_offer_order_uploading_log (id) on delete restrict on update restrict;
+
+
+drop table if exists sys_position;
+
+/*==============================================================*/
+/* Table: sys_position                                          */
+/*==============================================================*/
+create table sys_position
+(
+   id                   varchar(64) character set utf8 not null,
+   platform_id          varchar(64) character set utf8 not null comment '平台',
+   system               varchar(128) not null comment '平台下的系统',
+   left_p                 varchar(128) not null comment '距离左侧位置',
+   top_p                  varchar(128) not null comment '距离顶部距离',
+   create_by            varchar(64) character set utf8 not null,
+   update_by            varchar(64) character set utf8 not null,
+   create_date          datetime not null,
+   update_date          datetime not null,
+   del_flag             char(1) not null default '0',
+   primary key (id)
+)charset = UTF8;
+
+alter table sys_position comment '位置表';
+
+
+drop table if exists supply_demand_recommend;
+
+/*==============================================================*/
+/* Table: supply_demand_recommend                               */
+/*==============================================================*/
+create table supply_demand_recommend
+(
+   id                   varchar(64) character set utf8 not null,
+   create_date          datetime comment '推荐时间',
+   recommend_user       varchar(64) character set utf8 not null comment '推荐人',
+   recommend_type       varchar(64) character set utf8 not null comment '推荐类型（platform:平台推荐，company:机构推荐）',
+   status               int(1) not null default 0 comment '状态（默认0:正常，-1：取消推荐）',
+   object_type          int(1) not null comment '0:供求信息，1：供应商，2：求购商）',
+   object_id            varchar(64) character set utf8 not null comment '供求id或者用户id',
+   position_id          char(10),
+   url                  varchar(10),
+   start_time           datetime comment '推荐开始时间',
+   end_time             datetime comment '推荐结束时间',
+   primary key (id)
+)charset = UTF8;
+
+alter table supply_demand_recommend comment '推荐表';
+
+alter table supply_demand_recommend add constraint FK_Reference_71 foreign key (position_id)
+      references sys_position (id) on delete restrict on update restrict;
+
+
+drop table if exists supply_demand_recommend_tag;
+
+/*==============================================================*/
+/* Table: supply_demand_recommend_tag                           */
+/*==============================================================*/
+create table supply_demand_recommend_tag
+(
+   id                   varchar(64) character set utf8 not null,
+   image_path           varchar(128) comment '推荐的图片',
+   tag                  varchar(500) not null comment '标签',
+   recommend_id         varchar(64) character set utf8 not null comment '推荐id',
+   primary key (id)
+)charset = UTF8;
+
+alter table supply_demand_recommend_tag comment '推荐标签';
+
+alter table supply_demand_recommend_tag add constraint FK_Reference_59 foreign key (recommend_id)
+      references supply_demand_recommend (id) on delete restrict on update restrict;
+
+
+drop table if exists supply_demand_unit_relation;
+
+/*==============================================================*/
+/* Table: supply_demand_unit_relation                           */
+/*==============================================================*/
+create table supply_demand_unit_relation
+(
+   id                   int(10) unsigned not null,
+   from_unit            int(10) unsigned not null,
+   to_unit              int(10) unsigned not null,
+   multiplier           double(10,2) not null comment '乘数（from_unit*multiplier=to_unit）',
+   primary key (id)
+)charset = UTF8;
+
+alter table supply_demand_unit_relation comment '单位之间的转换关系表';
+
+alter table supply_demand_unit_relation add constraint FK_Reference_39 foreign key (from_unit)
+      references sys_mdict (id) on delete restrict on update restrict;
+
+alter table supply_demand_unit_relation add constraint FK_Reference_40 foreign key (to_unit)
+      references sys_mdict (id) on delete restrict on update restrict;
+
+
+drop table if exists goods_gcategory;
+
+/*==============================================================*/
+/* Table: goods_gcategory                                       */
+/*==============================================================*/
+create table goods_gcategory
+(
+   id                   int(10) unsigned not null auto_increment,
+   name                 varchar(100) character set utf8 not null,
+   code                 varchar(100) character set utf8,
+   pid                  int(10) unsigned not null comment '没有父id为0',
+   pids                 varchar(64) character set utf8 not null comment '所有的父类多个以,分割',
+   order_item           int(10) unsigned comment '排序',
+   create_date          datetime not null,
+   update_date          datetime not null,
+   create_by            varchar(64) character set utf8 not null,
+   update_by            varchar(64) character set utf8 not null,
+   remarks              varchar(255) character set utf8 comment '商品描述',
+   del_flag             char(1) not null default '0',
+   image_path           varchar(128) comment '图片弟子',
+   primary key (id)
+)charset = UTF8;
+
+alter table goods_gcategory comment '商品类别';
+
+
+
+
+drop table if exists supply_demand_unit_category;
+
+/*==============================================================*/
+/* Table: supply_demand_unit_category                           */
+/*==============================================================*/
+create table supply_demand_unit_category
+(
+   id                   int(10) unsigned not null,
+   gcategory_id         int(10) unsigned not null comment '产品id',
+   unit_value           varchar(128) not null comment '单位 从sys_mdict中所有单位中选择',
+   create_date          datetime not null,
+   update_date          datetime not null,
+   create_by            varchar(64) character set utf8 not null,
+   update_by            varchar(64) character set utf8 not null,
+   order_item           int(10) unsigned,
+   is_default           int(1) not null comment '是否是类型的默认单位(默认0：否，1：是。一个类型只有一个默认的单位，用于统计报表时，单位的统一)',
+   primary key (id)
+)charset = UTF8;
+
+alter table supply_demand_unit_category comment '供求单位码表（与产品有关系）';
+
+alter table supply_demand_unit_category add constraint FK_Reference_38 foreign key (gcategory_id)
+      references goods_gcategory (id) on delete restrict on update restrict;
+
+
+
+
+drop table if exists goods_spec;
+
+/*==============================================================*/
+/* Table: goods_spec                                            */
+/*==============================================================*/
+create table goods_spec
+(
+   id                   int(10) unsigned not null,
+   name                 varchar(100) character set utf8 not null,
+   code                 varchar(100) character set utf8,
+   gcategory_id         int unsigned not null comment '类别ID',
+   order_item           int(10) unsigned comment '排序',
+   create_date          datetime not null,
+   update_date          datetime not null,
+   create_by            varchar(64) character set utf8 not null,
+   update_by            varchar(64) character set utf8 not null,
+   remarks              varchar(255) character set utf8 comment '属性描述',
+   del_flag             char(1) not null default '0',
+   primary key (id)
+)charset = UTF8;
+
+alter table goods_spec comment '规格表，与类别表多对一关联';
+
+alter table goods_spec add constraint FK_Reference_47 foreign key (gcategory_id)
+      references goods_gcategory (id) on delete restrict on update restrict;
+
+
+drop table if exists goods_spec_value;
+
+/*==============================================================*/
+/* Table: goods_spec_value                                      */
+/*==============================================================*/
+create table goods_spec_value
+(
+   id                   int(10) unsigned not null,
+   spec_id              int(10) unsigned not null,
+   value                varchar(100) character set utf8 not null,
+   gcategory_id         int(10) unsigned not null,
+   order_item           int(10) unsigned comment '排序',
+   create_date          datetime not null,
+   update_date          datetime not null,
+   create_by            varchar(64) character set utf8 not null,
+   update_by            varchar(64) character set utf8 not null,
+   del_flag             char(1) not null default '0',
+   primary key (id)
+)charset = UTF8;
+
+alter table goods_spec_value comment '规格值表（与规格表多对一）';
+
+alter table goods_spec_value add constraint FK_Reference_61 foreign key (spec_id)
+      references goods_spec (id) on delete restrict on update restrict;
+
+
+
+drop table if exists supply_demand_spec;
+
+/*==============================================================*/
+/* Table: supply_demand_spec                                    */
+/*==============================================================*/
+create table supply_demand_spec
+(
+   id                   varchar(64) character set utf8 not null,
+   spec_name            varchar(128) not null comment '属性名字',
+   spec_value           varchar(255) character set utf8 not null comment '规格值',
+   supply_demand_id     varchar(64) character set utf8 not null comment '供求id',
+   gcategory_id         int(10) unsigned not null,
+   spec_id              int(10) unsigned not null,
+   spec_value_id        int(10) unsigned,
+   order_item           int(10) unsigned,
+   primary key (id)
+)charset = UTF8;
+
+alter table supply_demand_spec comment '供求规格表';
+
+alter table supply_demand_spec add constraint FK_Reference_69 foreign key (supply_demand_id)
+      references supply_demand_info (id) on delete restrict on update restrict;
+
+alter table supply_demand_spec add constraint FK_Reference_70 foreign key (spec_value_id)
+      references goods_spec_value (id) on delete restrict on update restrict;
+
+
+
+drop table if exists gcategory_relation;
+
+/*==============================================================*/
+/* Table: gcategory_relation                                    */
+/*==============================================================*/
+create table gcategory_relation
+(
+   id                   varchar(64) character set utf8 not null,
+   gcate_id             int(10) unsigned not null comment '类型',
+   relation_gcate_id    int(10) unsigned not null comment '关系类型',
+   relation_id          int(10) unsigned not null comment '关系 cate_id',
+   primary key (id)
+)charset = UTF8;
+
+alter table gcategory_relation comment '商品类别之间的关系（产业带）';
+
+alter table gcategory_relation add constraint FK_Reference_29 foreign key (relation_gcate_id)
+      references goods_gcategory (id) on delete restrict on update restrict;
+
+alter table gcategory_relation add constraint FK_Reference_30 foreign key (gcate_id)
+      references goods_gcategory (id) on delete restrict on update restrict;
+
+alter table gcategory_relation add constraint FK_Reference_31 foreign key (relation_id)
+      references sys_mdict (id) on delete restrict on update restrict;
+
+
+
+drop table if exists supply_demand_relation_grade;
+
+/*==============================================================*/
+/* Table: supply_demand_relation_grade                          */
+/*==============================================================*/
+create table supply_demand_relation_grade
+(
+   id                   varchar(64) character set utf8 not null,
+   code                 varchar(64) character set utf8 not null comment '标示',
+   remarks              varchar(255) character set utf8 comment '描述',
+   create_date          datetime not null,
+   update_date          datetime not null,
+   create_by            varchar(64) character set utf8 not null,
+   update_by            varchar(64) character set utf8 not null,
+   del_flag             char(1) not null default '0',
+   primary key (id)
+)charset = UTF8;
+
+alter table supply_demand_relation_grade comment '关系级别表';
+
+
+
+drop table if exists supply_demand_relation_pipei;
+
+/*==============================================================*/
+/* Table: supply_demand_relation_pipei                          */
+/*==============================================================*/
+create table supply_demand_relation_pipei
+(
+   id                   varchar(64) character set utf8 not null,
+   pipei_attr           varchar(255) character set utf8 comment '匹配字段(goods_name、gcategory_id....)',
+   grade_id             varchar(64) character set utf8 comment '级别',
+   remarks              varchar(255) character set utf8 comment '说明',
+   create_date          datetime,
+   update_date          datetime,
+   create_by            varchar(64) character set utf8,
+   update_by            varchar(64) character set utf8,
+   primary key (id)
+)charset = UTF8;
+
+alter table supply_demand_relation_pipei comment '供求信息，匹配规范';
+
+alter table supply_demand_relation_pipei add constraint FK_Reference_26 foreign key (grade_id)
+      references supply_demand_relation_grade (id) on delete restrict on update restrict;
+
+
+
+drop table if exists supply_demand_relation;
+
+/*==============================================================*/
+/* Table: supply_demand_relation                                */
+/*==============================================================*/
+create table supply_demand_relation
+(
+   id                   varchar(64) character set utf8 not null,
+   grade_id             varchar(64) character set utf8 not null comment '匹配的级别',
+   create_date          datetime not null,
+   create_by            varchar(64) character set utf8,
+   check_date           datetime not null,
+   check_by             varchar(64) character set utf8 not null,
+   del_flag             char(1) not null default '0',
+   supply_id            varchar(64) character set utf8 not null,
+   demand_id            varchar(64) character set utf8 not null,
+   check_statue         int(1) not null default 0 comment '审核状态(默认0：未审核，1：审核通过，-1：审核未通过)',
+   primary key (id)
+)charset = UTF8;
+
+alter table supply_demand_relation comment '供求关系表';
+
+alter table supply_demand_relation add constraint FK_Reference_33 foreign key (grade_id)
+      references supply_demand_relation_grade (id) on delete restrict on update restrict;
+
+
+
+
+
+drop table if exists trade_order;
+
+/*==============================================================*/
+/* Table: trade_order                                           */
+/*==============================================================*/
+create table trade_order
+(
+   id                   varchar(64) character set utf8 not null,
+   order_number         varchar(64) character set utf8 not null comment '订单号',
+   statue               int(10) not null comment '订单状态(数据字典)',
+   supply_user_id       varchar(64) character set utf8 comment '卖方id',
+   supply_user_name     varchar(255) character set utf8 comment '卖方name',
+   demand_user_id       varchar(64) character set utf8 comment '买方id',
+   demand_name          varchar(255) character set utf8 comment '买方name',
+   add_date             datetime comment '下单时间',
+   ship_time            datetime comment '发货时间',
+   invoice_no           varchar(255) character set utf8 comment '发票号',
+   finish_time          datetime comment '完成时间',
+   goods_amount         decimal(10,2) comment '总价钱',
+   evaluation_status    int(1) unsigned not null default 0 comment '评价状态（默认0：未评价，1：已经评价）',
+   evaluation_time      datetime comment '评价时间',
+   evaluation_content   text character set utf8 comment '评价内容',
+   receive_province     varchar(64) character set utf8 comment '收货省份',
+   receive_city         varchar(64) character set utf8 comment '收货城市',
+   receive_area         varchar(64) character set utf8 comment '收货地区',
+   receive_detail_area  varchar(64) character set utf8 comment '收货详细地区',
+   primary key (id)
+)charset = UTF8;
+
+alter table trade_order comment '订单表';
+
+
+
+drop table if exists trade_order_logistics;
+
+/*==============================================================*/
+/* Table: trade_order_logistics                                 */
+/*==============================================================*/
+create table trade_order_logistics
+(
+   id                   varchar(64) character set utf8 not null,
+   deliver_province     varchar(64) character set utf8 not null comment '发货省份',
+   deliver_city         varchar(64) character set utf8 not null comment '发货城市',
+   deliver_area         varchar(64) character set utf8 not null comment '发货地区',
+   deliver_detail_area  varchar(500) not null comment '发货详细地区',
+   receive_province     varchar(64) character set utf8 not null comment '求购省份',
+   receive_city         varchar(64) character set utf8 not null,
+   receive_area         varchar(64) character set utf8 not null,
+   receive_detail_area  varchar(500) not null,
+   create_by            varchar(64) character set utf8 not null,
+   update_by            varchar(64) character set utf8 not null,
+   create_date          datetime not null,
+   update_date          datetime not null,
+   shipping_id          int(10) unsigned not null comment '发货方式（数据字典）',
+   shipping_name        varchar(128) not null comment '发货方式名字',
+   order_id             varchar(64) character set utf8 not null comment '订单id',
+   receive_user         varchar(64) character set utf8 comment '收货联系人',
+   postcode             varchar(32) character set utf8 comment '邮编',
+   recive_phone         varchar(32) character set utf8 comment '收货人电话',
+   shipping_fee         decimal(10,2) comment '货运费用',
+   driver_name          varchar(128) comment '司机名字',
+   driver_phone         varchar(32) character set utf8 comment '司机电话',
+   car_num              varchar(32) character set utf8 comment '司机车牌号',
+   transport_detail_area varchar(500) comment '目前所货运地址',
+   transport_province   varchar(64) character set utf8 comment '货运省份',
+   transport_city       varchar(64) character set utf8 comment '货运城市',
+   transport_area       varchar(64) character set utf8 comment '货运地区',
+   primary key (id)
+)charset = UTF8;
+
+alter table trade_order_logistics comment '订单物流信息';
+
+alter table trade_order_logistics add constraint FK_Reference_54 foreign key (order_id)
+      references trade_order (id) on delete restrict on update restrict;
+
+
+drop table if exists trade_order_log;
+
+/*==============================================================*/
+/* Table: trade_order_log                                       */
+/*==============================================================*/
+create table trade_order_log
+(
+   id                   varchar(64) character set utf8 not null,
+   order_number         varchar(64) character set utf8 not null comment '订单号',
+   statue               int(10) not null comment '订单状态(数据字典)',
+   supply_user_id       varchar(64) character set utf8 comment '卖方id',
+   supply_user_name     varchar(255) character set utf8 comment '卖方name',
+   demand_user_id       varchar(64) character set utf8 comment '买方id',
+   demand_name          varchar(255) character set utf8 comment '买方name',
+   add_date             datetime comment '下单时间',
+   ship_time            datetime comment '发货时间',
+   invoice_no           varchar(255) character set utf8 comment '发票号',
+   finish_time          datetime comment '完成时间',
+   goods_amount         decimal(10,2) comment '总价钱',
+   evaluation_status    int(1) unsigned not null default 0 comment '评价状态（默认0：未评价，1：已经评价）',
+   evaluation_time      datetime comment '评价时间',
+   evaluation_content   text character set utf8 comment '评价内容',
+   receive_province     varchar(64) character set utf8 comment '收货省份',
+   receive_city         varchar(64) character set utf8 comment '收货城市',
+   receive_area         varchar(64) character set utf8 comment '收货地区',
+   receive_detail_area  varchar(64) character set utf8 comment '收货详细地区',
+   primary key (id)
+)charset = UTF8;
+
+alter table trade_order_log comment '订单表流水';
+
+
+drop table if exists trade_order_supply_demand_log;
+
+/*==============================================================*/
+/* Table: trade_order_supply_demand_log                         */
+/*==============================================================*/
+create table trade_order_supply_demand_log
+(
+   id                   varchar(64) character set utf8 not null,
+   order_id             varchar(64) character set utf8 not null comment '订单Id',
+   supply_id            varchar(64) character set utf8 not null comment '供应信息id',
+   demand_id            varchar(64) character set utf8 not null comment '求购信息id',
+   total_price          decimal(10,2) not null comment '总价',
+   per_price            decimal(10,2) not null comment '单价',
+   number               decimal(10,2) not null comment '数量',
+   image_path           varchar(128) comment '图片',
+   price_unit_id        int(10) not null comment '价格单元id',
+   number_unit_id       int(10) unsigned not null comment '数量单元id',
+   price_unit_value     varchar(64) character set utf8 not null comment '价格单元',
+   number_unit_value    varchar(64) character set utf8 not null comment '数量单元',
+   primary key (id)
+)charset = UTF8;
+
+alter table trade_order_supply_demand_log comment '订单供求信息流水表';
+
+alter table trade_order_supply_demand_log add constraint FK_Reference_53 foreign key (order_id)
+      references trade_order_log (id) on delete restrict on update restrict;
+
+
+
+
+drop table if exists trade_order_supply_demand;
+
+/*==============================================================*/
+/* Table: trade_order_supply_demand                             */
+/*==============================================================*/
+create table trade_order_supply_demand
+(
+   id                   varchar(64) character set utf8 not null,
+   order_id             varchar(64) character set utf8 not null comment '订单Id',
+   supply_id            varchar(64) character set utf8 not null comment '供应信息id',
+   demand_id            varchar(64) character set utf8 not null comment '求购信息id',
+   total_price          decimal(10,2) not null comment '总价',
+   per_price            decimal(10,2) not null comment '单价',
+   number               decimal(10,2) not null comment '数量',
+   image_path           varchar(128) comment '图片',
+   price_unit_id        int(10) not null comment '价格单元id',
+   number_unit_id       int(10) unsigned not null comment '数量单元id',
+   price_unit_value     varchar(64) character set utf8 not null comment '价格单元',
+   number_unit_value    varchar(64) character set utf8 not null comment '数量单元',
+   primary key (id)
+)charset = UTF8;
+
+alter table trade_order_supply_demand comment '订单供求信息表';
+
+alter table trade_order_supply_demand add constraint FK_Reference_52 foreign key (order_id)
+      references trade_order (id) on delete restrict on update restrict;
+
+
+
+
+
+drop table if exists sys_authentication;
+
+/*==============================================================*/
+/* Table: sys_authentication                                    */
+/*==============================================================*/
+create table sys_authentication
+(
+   id                   varchar(64) character set utf8 not null,
+   auth_type            int(10) UNSIGNED not null comment '认证类型',
+   auth_orgonization    varchar(128) not null comment '认证机构',
+   auth_result          varchar(128) not null comment '认证结果',
+   auth_time            datetime not null comment '认证时间',
+   object_type          varchar(64) character set utf8 comment '认证对象类型（user，company）',
+   object_id            varchar(64) character set utf8 comment '认证对象id',
+   create_by            varchar(64) character set utf8 not null,
+   update_by            varchar(64) character set utf8 not null,
+   create_date          datetime not null,
+   update_date          datetime not null,
+   status               int(1) not null default 0 comment '状态（默认0：未认证，1：认证通过，-1：认证不通过）',
+   remarks              text character set utf8 comment '备注信息',
+   primary key (id)
+)charset = UTF8;
+
+alter table sys_authentication comment '认证信息';
+
+alter table sys_authentication add constraint FK_Reference_68 foreign key (auth_type)
+      references sys_mdict (id) on delete restrict on update restrict;
+
+
+
+drop table if exists sys_authentication_images;
+
+/*==============================================================*/
+/* Table: sys_authentication_images                             */
+/*==============================================================*/
+create table sys_authentication_images
+(
+   id                   varchar(64) character set utf8 not null,
+   authentication_id    varchar(64) character set utf8 comment '认证id',
+   before_image_path    varchar(128) not null comment '认证需要的图片',
+   after_image_path     varchar(128) comment '认证后的图片',
+   primary key (id)
+)charset = UTF8;
+
+alter table sys_authentication_images comment '认证需要的图片，以及认证后的图片';
+
+alter table sys_authentication_images add constraint FK_Reference_57 foreign key (authentication_id)
+      references sys_authentication (id) on delete restrict on update restrict;
+
+
+
+drop table if exists user_collect;
+
+/*==============================================================*/
+/* Table: user_collect                                          */
+/*==============================================================*/
+create table user_collect
+(
+   id                   varchar(64) character set utf8  not null,
+   user_id              varchar(64) character set utf8 not null comment '收藏user_id',
+   object_type          varchar(64) character set utf8  not null comment '收藏类型（store：商铺，goods：产品，news:消息）',
+   object_id            varchar(64) character set utf8 not null comment '收藏的店铺或者商品的id，供求信息id',
+   create_date          datetime,
+   update_date          datetime,
+   del_flag             char(1) not null default '0',
+   remarks              text character set utf8 comment '备注',
+   primary key (id)
+)charset = UTF8;
+
+alter table user_collect comment '收藏信息表（店铺、商品、供求信息）';
+
+
+
+drop table if exists user_collect_tag;
+
+/*==============================================================*/
+/* Table: user_collect_tag                                      */
+/*==============================================================*/
+create table user_collect_tag
+(
+   id                   varchar(64) character set utf8 not null,
+   tag                  varchar(500) not null comment '标签',
+   collect_id           varchar(64) character set utf8 not null comment '收藏id',
+   primary key (id)
+)charset = UTF8;
+
+alter table user_collect_tag comment '用户收藏标签表';
+
+alter table user_collect_tag add constraint FK_Reference_60 foreign key (collect_id)
+      references user_collect (id) on delete restrict on update restrict;
+
+
+drop table if exists sys_news_history_info;
+
+/*==============================================================*/
+/* Table: sys_news_history_info                                 */
+/*==============================================================*/
+create table sys_news_history_info
+(
+   id                   varchar(64) character set utf8 not null,
+   send_to              varchar(32) character set utf8 not null comment 'telephone',
+   send_content         text character set utf8 not null,
+   start_time           datetime not null comment '定时发送时间',
+   end_time             datetime comment '发送结束时间',
+   statue               int(1) comment '发送状态',
+   sent_time            datetime comment '真实发送时间',
+   primary key (id)
+)charset = UTF8;
+
+alter table sys_news_history_info comment '消息表';
+
+
+
+drop table if exists sys_validcode;
+
+/*==============================================================*/
+/* Table: sys_validcode                                         */
+/*==============================================================*/
+create table sys_validcode
+(
+   id                   varchar(64) character set utf8 not null,
+   code_status          varchar(255) character set utf8 not null comment '验证码状态（yes:发送成功，no:发送不成功）',
+   code_type            varchar(255) character set utf8 not null comment '验证码类型 register/backpwd',
+   telephone            varchar(32) character set utf8 not null comment '手机号',
+   send_time            datetime not null comment '发送验证码的时间',
+   vaild_code           varchar(255) character set utf8 not null comment '生成的验证码',
+   primary key (id)
+)charset = UTF8;
+
+alter table sys_validcode comment '验证码';
+
+
+drop table if exists sys_navigation_info;
+
+/*==============================================================*/
+/* Table: sys_navigation_info                                   */
+/*==============================================================*/
+create table sys_navigation_info
+(
+   id                   varchar(64) character set utf8 not null,
+   name                 varchar(128) not null comment '名字',
+   code                 varchar(128) comment '标识',
+   order_item           int(10) unsigned comment '排序',
+   remarks              text character set utf8,
+   url                  varchar(255) character set utf8 not null comment '链接地址',
+   create_date          datetime not null,
+   update_date          datetime not null,
+   create_by            varchar(64) character set utf8 not null,
+   update_by            varchar(64) character set utf8 not null,
+   del_flag             char(1) default '0',
+   primary key (id)
+)charset = UTF8;
+
+alter table sys_navigation_info comment '导航栏信息';
+
+
+
+drop table if exists feed_back_log;
+
+/*==============================================================*/
+/* Table: feed_back_log                                         */
+/*==============================================================*/
+create table feed_back_log
+(
+   id                   varchar(64) character set utf8 not null,
+   create_by            varchar(64) character set utf8 not null comment '反馈人员',
+   create_user_telephone varchar(32) character set utf8 not null comment '手机号',
+   create_user_name     varchar(128) not null comment '反馈人员名字',
+   content              text character set utf8 not null comment '反馈内容',
+   status               int(1) not null default 0 comment '状态（默认0：未处理，1：已经处理）',
+   remark               text character set utf8 comment '备注',
+   update_by            varchar(64) character set utf8,
+   update_date          datetime not null,
+   create_date          datetime not null,
+   primary key (id)
+)charset = UTF8;
+
+alter table feed_back_log comment '反馈表';
+
+
+
+drop table if exists sys_news_template;
+
+/*==============================================================*/
+/* Table: sys_news_template                                     */
+/*==============================================================*/
+create table sys_news_template
+(
+   id                   varchar(64) character set utf8 not null,
+   create_by            varchar(64) character set utf8,
+   code                 varchar(255) character set utf8 not null,
+   content              text character set utf8 comment '摸版内容',
+   create_date          datetime not null,
+   remarks              text character set utf8,
+   update_date          datetime not null,
+   del_flag             char(1) default '0',
+   type                 varchar(64) character set utf8 not null comment '(SMS、WX、EMAIL、PLATFORM)',
+   update_by            varchar(64) character set utf8,
+   primary key (id)
+)charset = UTF8;
+
+alter table sys_news_template comment '消息摸版';
+
+
+
+drop table if exists article_info;
+
+/*==============================================================*/
+/* Table: article_info                                          */
+/*==============================================================*/
+create table article_info
+(
+   id                   varchar(64) character set utf8 not null,
+   code                 varchar(20),
+   title                varchar(100) character set utf8 not null,
+   mdic_id              int(10) not null default 0 comment '文章类型',
+   link                 varchar(255) character set utf8,
+   content              text character set utf8,
+   order_item           int(10) unsigned,
+   is_show              tinyint(3) unsigned not null default 1 comment '是否显示（0：默认是，-1：否）',
+   create_date          datetime  not null,
+   update_date          datetime not null,
+   create_by            varchar(64) character set utf8 not null,
+   update_by            varchar(64) character set utf8 not null,
+   default_image_path   varchar(128) comment '默认图片地址',
+   primary key (id)
+)charset = UTF8;
+
+alter table article_info comment '文章表';
+
+
+
+drop table if exists article_share_log;
+
+/*==============================================================*/
+/* Table: article_share_log                                     */
+/*==============================================================*/
+create table article_share_log
+(
+   id                   varchar(64) character set utf8 not null,
+   platform             varchar(128) not null comment '分享的平台',
+   share_time           datetime not null comment '分享时间',
+   platform_user_num    varchar(128) not null comment '分享平台的账号',
+   share_user_id        varchar(64) character set utf8 not null comment '分享人',
+   primary key (id)
+)charset = UTF8;
+
+alter table article_share_log comment '分享日志记录';
+
+alter table article_share_log add constraint FK_Reference_64 foreign key (id)
+      references article_info (id) on delete restrict on update restrict;
+
+
+
+
+
+
+ALTER TABLE `user_address_info`
+ADD COLUMN `province_name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `type`,
+ADD COLUMN `city_name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `province_name`,
+ADD COLUMN `area_name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `city_name`;
+
+
+ALTER TABLE `sys_user`
+ADD COLUMN `organization_id`  varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '所属机构id' AFTER `del_flag`;
+
+
+ALTER TABLE `goods_gcategory`
+CHANGE COLUMN `pid` `parent_id`  int(10) UNSIGNED NOT NULL COMMENT '父
+类别ID',
+CHANGE COLUMN `pids` `parent_ids`  varchar(64) CHARACTER SET utf8
+COLLATE utf8_general_ci NOT NULL ,
+CHANGE COLUMN `order_item` `sort`  int(10) UNSIGNED NULL DEFAULT NULL ,
+ADD COLUMN `show_spec`  char(1) NULL COMMENT '本类别是否展示规格' ;
+
+
+ALTER TABLE `supply_demand_info`
+ADD COLUMN `publish_user`  varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '消息所属人员id' AFTER `order_uploading_id`;
+
+
+ALTER TABLE `goods_spec_value`
+CHANGE COLUMN `value` `val`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `spec_id`;
+
+ALTER TABLE `supply_demand_info`
+MODIFY COLUMN `entrust_supply_demand_id`  varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '委托的供求信息id' AFTER `is_entrust`;
+ALTER TABLE `goods_spec_value`
+MODIFY COLUMN `id`  int(10) UNSIGNED NOT NULL AUTO_INCREMENT FIRST ;
+ALTER TABLE `goods_spec`
+MODIFY COLUMN `id`  int(10) UNSIGNED NOT NULL AUTO_INCREMENT FIRST ;
+
+-- 委托信息id 可以为空
+ALTER TABLE `supply_demand_info`
+MODIFY COLUMN `entrust_supply_demand_id`  varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '委托的供求信息id' AFTER `is_entrust`;
+
+-- 完善状态
+ALTER TABLE `supply_demand_info`
+MODIFY COLUMN `statue`  int(1) NULL DEFAULT NULL COMMENT '状态(默认0：待审核，1：已审核通过，-1：审核未通过，-2：删除,2:正在洽谈,3：等待打款，4：交易成功)' AFTER `update_by`;
+
+-- 增加发布者因为有 打电话给交易员让交易员帮忙添加的情况
+ALTER TABLE `supply_demand_info`
+ADD COLUMN `publish_user`  varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '发布者' AFTER `order_uploading_id`;
+
+ALTER TABLE `supply_demand_info` DROP FOREIGN KEY `FK_Reference_34`;
+
+ALTER TABLE `supply_demand_info` DROP FOREIGN KEY `FK_Reference_35`;
+-- 合并地址Id    增加审核记录id
+ALTER TABLE `supply_demand_info`
+DROP COLUMN `supply_address_id`,
+CHANGE COLUMN `demand_address_id` `address_id`  varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地址ID' AFTER `entrust_organization_id`;
+ALTER TABLE `supply_demand_info`
+ADD COLUMN `check_record_id` varchar(64) DEFAULT NULL COMMENT 'supply_demand_info_check审核记录id';
+
+-- 供求审核记录表
+DROP TABLE IF EXISTS `supply_demand_info_check`;
+CREATE TABLE `supply_demand_info_check` (
+  `id` varchar(64) NOT NULL,
+  record_id varchar(64) NOT NULL COMMENT '记录ids',
+  `goods_name` varchar(255) NOT NULL COMMENT '产品，gcategory表的name',
+  `pgoods_alias` varchar(255) DEFAULT NULL COMMENT '产品别名',
+  `goods_id` varchar(64) DEFAULT NULL COMMENT '产品id，商品类型表外键',
+  `pgoods_id` varchar(64) DEFAULT NULL COMMENT '产品上级id',
+  `pgoods_name` varchar(255) NOT NULL COMMENT '产品上级name',
+  `pids` char(10) DEFAULT NULL COMMENT '产品pids 代码',
+  `price_unit_id` int(10) unsigned DEFAULT NULL COMMENT '价格单元id',
+  `number_unit_id` int(10) unsigned DEFAULT NULL COMMENT '数量单元id',
+  `price_unit_value` varchar(64) DEFAULT NULL COMMENT '价格单元',
+  `number_unit_value` varchar(64) DEFAULT NULL COMMENT '数量单元',
+  `number` double(10,2) DEFAULT NULL COMMENT '数量',
+  `from_per_price` decimal(10,2) DEFAULT NULL,
+  `to_per_price` decimal(10,2) DEFAULT NULL,
+  `specs` text COMMENT '手动填写的规格',
+  `remarks` text COMMENT '商品描述',
+  `create_date` datetime NOT NULL,
+  `update_date` datetime NOT NULL,
+  `create_by` varchar(64) NOT NULL,
+  `update_by` varchar(64) NOT NULL,
+  `statue` int(1) DEFAULT NULL COMMENT '状态(默认0：待审核，1：已审核通过，-1：审核未通过，-2：删除)',
+  `statue_intro` text COMMENT '审核说明',
+  `type` varchar(32) NOT NULL COMMENT '供求类型（supply:供应，demand:求购）',
+  `is_entrust` int(1) unsigned DEFAULT '0' COMMENT '是否是委托（默认0：否，1：是）',
+  `entrust_supply_demand_id` varchar(64) DEFAULT NULL COMMENT '委托的供求信息id',
+  `entrust_organization_id` varchar(64) DEFAULT NULL COMMENT '委托人公司id',
+  `address_id` varchar(64) DEFAULT NULL COMMENT '地址id',
+  `validate_start_date` datetime DEFAULT NULL COMMENT '消息有效开始时间(非委托必填)',
+  `validate_end_date` datetime DEFAULT NULL COMMENT '消息有效结束时间（非委托必填）',
+  `production_province` varchar(64) DEFAULT NULL COMMENT '生产省份',
+  `production_city` varchar(64) DEFAULT NULL COMMENT '生产城市',
+  `production_area` varchar(64) DEFAULT NULL COMMENT '生产地区',
+  `production_detail_area` varchar(500) DEFAULT NULL COMMENT '生产详细地区',
+  `order_uploading_id` varchar(64) DEFAULT NULL COMMENT '报价单历史表',
+  `publish_user` varchar(64) DEFAULT NULL COMMENT '发布者',
+  `check_record_id` varchar(64) DEFAULT NULL COMMENT 'supply_demand_info_check审核记录id',
+  record_date datetime DEFAULT NULL COMMENT '记录时间',
+  PRIMARY KEY (`id`)
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供求信息';
+
+ALTER TABLE `goods_gcategory`
+MODIFY COLUMN `code`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `name`,
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`id`, `code`);
+
+ALTER TABLE `supply_demand_info`
+MODIFY COLUMN `pids`  char(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '产品pids 代码' AFTER `pgoods_name`;
+
+
+
+-- 增加生产 省、市、区   名字  冗余字段
+ALTER TABLE `supply_demand_info`
+ADD COLUMN `production_province_name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '生产省份名字' AFTER `check_record_id`,
+ADD COLUMN `production_city_name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '生产城市名字' AFTER `production_province_name`,
+ADD COLUMN `production_area_name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '生产地区名字' AFTER `production_city_name`;
+
+ALTER TABLE `supply_demand_info_check`
+ADD COLUMN `production_province_name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '生产省份名字' AFTER `check_record_id`,
+ADD COLUMN `production_city_name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '生产城市名字' AFTER `production_province_name`,
+ADD COLUMN `production_area_name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '生产地区名字' AFTER `production_city_name`;
+

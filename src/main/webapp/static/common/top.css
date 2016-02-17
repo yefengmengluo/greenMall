@@ -1,0 +1,20 @@
+/*页头*/
+.head{width: 100%;height: 181px;background-color: #fefefe;}
+.head_top{width: 100%;height: 35px;background-color: #f2f2f2;padding: 1px;border-bottom: 1px solid #e8e8e8;}
+.head_top_content{height: 9.5px;padding: 8.5px;margin:auto;color: #9a9a9a;font-size:12px;}
+.head_top_content a{color: #9a9a9a;}
+.head_top_content a:hover{color: #f08300;text-decoration: none;}
+.head_top_content .img1{float: left;}
+.head_top_content span{font-size:12px;margin-left: 10px;}
+.head_top_content h6{float: left;margin-left: 0.7%;margin-top: 2px;}
+/*.space{margin-left: 280px;}*/
+.styleOne{font-size: 18px;margin-top: 25px;display: inline-block;color: #969696;}
+/*页头logo*/
+.head_bottom_content_img{margin-top: 13px;margin-right: 66px;float: left;}
+.size1{font-size: 12px;}.size1{color: #009944;}.size2{font-size: 16px;}
+.color1{color: #f08300;}.color2{color: #f08300;}
+.color2{color: #dbdbdb;}
+.margin-left{margin-left: 300px;}.margin-left1{margin-left: 1px;}.margin-left2{margin-left: 10px;}.margin-left3{margin-left: 19px;}
+.float-l{float: left;}.float-r{float: right;}
+.border{border-left: 2px dashed #e5e5e5;}
+.xianImg{width: 100%;height: 430px;}

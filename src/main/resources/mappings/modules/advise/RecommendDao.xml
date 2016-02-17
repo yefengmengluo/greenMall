@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.advise.dao.RecommendDao">
+	<sql id="sqlColumns">
+	    id,
+		create_date,
+		recommend_user as user_id,
+		recommend_type,
+		`status`,
+		object_type,
+		object_id,
+		start_time,
+		end_time,
+		goods_type
+	</sql>
+    <!--推荐信息查询  -->
+	<select id="list" resultType="com.wk.p3.greenmall.modules.advise.entry.Recommend">
+	   SELECT <include refid="sqlColumns" /> FROM supply_demand_recommend WHERE 1=1 and status=0
+	   <if test="objectType!=null">
+	     AND object_type=#{objectType}
+	   </if>
+	   <if test="recommendType!=null">
+	     AND recommend_type=#{recommendType}
+	   </if>
+	   <if test="userid!=null">
+	     AND recommend_user=#{userid}
+	   </if>
+	   <if test="id!=null">
+	     AND object_id=#{id}
+	   </if>
+	   <if test="startTime!=null">
+	   <![CDATA[   AND start_time >=  #{startTime} ]]>   
+	   </if>
+	   <if test="endTime!=null">
+	   <![CDATA[    AND end_time <=  #{endTime} ]]>   
+	   </if>
+	   <if test="goodsType!=null">
+	     AND goods_type=#{goodsType}
+	   </if>
+	</select>
+    
+	<insert id="insert" parameterType="com.wk.p3.greenmall.modules.advise.entry.Recommend">
+		INSERT INTO supply_demand_recommend(
+		  id,
+		  create_date,
+		  recommend_user,
+		  recommend_type,
+		  `status`,
+		  object_type,
+		  object_id,
+		  start_time,
+		  end_time,
+		  goods_type
+		)
+		VALUES(
+		#{recommend.id},
+		NOW(),
+		#{recommend.userId},
+		#{recommend.recommendType},
+		#{recommend.status},
+		#{recommend.objectType},
+		#{recommend.objectId},
+		#{recommend.startTime},
+		#{recommend.endTime},
+		#{recommend.goodsType}
+		)
+	</insert>
+	
+	<!--更新状态 -->
+	<update id="update">
+	  UPDATE supply_demand_recommend 
+	  <if test="isRecommnd==true">
+	     SET `status`=0
+	  </if>
+	  <if test="isRecommnd==false">
+	     SET `status`=-1
+	  </if>
+	     WHERE 1=1
+	  <if test="objectType!=null">
+	     AND object_type=#{objectType}
+	  </if>
+	  <if test="id!=null">
+	     AND object_id= #{id}
+	  </if>
+	  <if test="recommendType!=null">
+	     AND recommend_type=#{recommendType}
+	  </if>
+	   <if test="goodsType!=null">
+	     AND goods_type=#{goodsType}
+	  </if>
+	</update>
+
+
+
+
+</mapper>

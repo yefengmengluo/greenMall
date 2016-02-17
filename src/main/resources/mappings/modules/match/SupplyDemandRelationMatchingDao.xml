@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.match.dao.SupplyDemandRelationMatchingDao">
+    
+	<sql id="supplyDemandRelationMatchingColumns">
+		a.id AS "id",
+		a.relation_name AS "relationName",
+		a.relation_remark AS "relationRemark",
+		a.remarks AS "remarks",
+		a.matching_object AS "matchingObject",
+		a.sort_order AS "sortOrder",
+		a.if_matching AS "ifMatching",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.create_by AS "createBy.id",
+		a.update_by AS "updateBy.id",
+		a.is_entrust as isEntrust
+	</sql>
+	
+	<sql id="supplyDemandRelationMatchingJoins">
+	</sql>
+    
+	<select id="get" resultType="SupplyDemandRelationMatching">
+		SELECT 
+			<include refid="supplyDemandRelationMatchingColumns"/>
+		FROM supply_demand_relation_matching a
+		<include refid="supplyDemandRelationMatchingJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	<update id="ifMatchingNo">
+		UPDATE supply_demand_relation_matching SET if_matching=0 WHERE matching_object=#{matchingObject}
+	</update>
+	<select id="findRelationMatchingByObjectAndifMatching" resultType="SupplyDemandRelationMatching">
+		SELECT 
+			<include refid="supplyDemandRelationMatchingColumns"/>
+		FROM supply_demand_relation_matching a
+		<include refid="supplyDemandRelationMatchingJoins"/>
+		WHERE a.if_matching=1 AND a.matching_object=#{matchingObject} AND id!=#{id}
+	</select>
+	
+	<select id="findResultByName"  resultType="java.lang.Integer">
+		SELECT 
+			count(a.id)
+		FROM supply_demand_relation_matching a
+		<include refid="supplyDemandRelationMatchingJoins"/>
+		WHERE a.relation_name=#{relationName} AND a.id!=#{id}
+	</select>
+	
+	<select id="findList" resultType="SupplyDemandRelationMatching">
+		SELECT 
+			<include refid="supplyDemandRelationMatchingColumns"/>
+		FROM supply_demand_relation_matching a
+		<include refid="supplyDemandRelationMatchingJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="SupplyDemandRelationMatching">
+		SELECT 
+			<include refid="supplyDemandRelationMatchingColumns"/>
+		FROM supply_demand_relation_matching a
+		<include refid="supplyDemandRelationMatchingJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.sort_order
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO supply_demand_relation_matching(
+			id,
+			relation_name,
+			relation_remark,
+			remarks,
+			matching_object,
+			is_entrust,
+			sort_order,
+			if_matching,
+			create_date,
+			update_date,
+			create_by,
+			update_by
+		) VALUES (
+			#{id},
+			#{relationName},
+			#{relationRemark},
+			#{remarks},
+			#{matchingObject},
+			#{isEntrust},
+			#{sortOrder},
+			#{ifMatching},
+			#{createDate},
+			#{updateDate},
+			#{createBy.id},
+			#{updateBy.id}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE supply_demand_relation_matching SET 	
+			relation_name = #{relationName},
+			relation_remark = #{relationRemark},
+			remarks = #{remarks},
+			matching_object = #{matchingObject},
+			sort_order = #{sortOrder},
+			is_entrust = #{isEntrust},
+			if_matching = #{ifMatching},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM supply_demand_relation_matching
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteMatchRelationByRelationId">
+		DELETE FROM matching_attr_relation
+		WHERE relation_id = #{id}
+	</update>
+	
+</mapper>

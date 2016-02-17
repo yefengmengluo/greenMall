@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.info.dao.GcategoryDao">
+
+	<sql id="gcategoryColumns">
+		g.id,
+		g.name,
+		g.code,
+		g.sort,
+		g.parent_id AS "parent.id",
+		g.parent_ids,
+		g.remarks,
+		g.create_by AS "createBy.id",
+		g.create_date,
+		g.update_by AS "updateBy.id",
+		g.update_date,
+		g.del_flag,
+		g.show_spec,
+		g.image_path
+	</sql>
+
+	<select id="findAllList" resultType="Gcategory">
+		SELECT
+		<include refid="gcategoryColumns"/>
+		FROM goods_gcategory g
+		WHERE g.del_flag = #{DEL_FLAG_NORMAL}
+		ORDER BY g.sort
+	</select>
+
+	<select id="findByParentIdsLike" resultType="Gcategory">
+		SELECT
+		<include refid="gcategoryColumns"/>
+		FROM goods_gcategory g
+		WHERE g.del_flag = #{DEL_FLAG_NORMAL} AND g.parent_ids LIKE concat('%',#{parentIds},'%')
+		ORDER BY g.sort
+	</select>
+	<select id="getList" resultType="Gcategory">
+		SELECT
+		<include refid="gcategoryColumns"/>
+		FROM goods_gcategory g
+		WHERE g.del_flag = #{DEL_FLAG_NORMAL}
+		AND g.parent_id = #{parent.id}
+		ORDER BY g.sort
+	</select>
+	<select id="getListByParent" resultType="Gcategory">
+			SELECT
+			<include refid="gcategoryColumns"/>
+			FROM goods_gcategory g
+			WHERE g.del_flag = #{DEL_FLAG_NORMAL}
+			AND g.parent_id = #{id}
+			ORDER BY g.sort
+		</select>
+
+	<select id="get" resultType="Gcategory">
+		SELECT
+		<include refid="gcategoryColumns"/>
+		FROM goods_gcategory g
+		WHERE g.id = #{id}
+	</select>
+
+	<select id="getByCode" resultType="Gcategory">
+		SELECT
+		<include refid="gcategoryColumns"/>
+		FROM goods_gcategory g
+		WHERE g.code = #{code}
+		<if test="id!=null">
+			and g.id&lt;&gt;#{id}
+		</if>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO goods_gcategory(
+		parent_id,
+		parent_ids,
+		code,
+		name,
+		sort,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		show_spec,
+		image_path,
+		del_flag
+		) VALUES (
+		#{parent.id},
+		#{parentIds},
+		#{code},
+		#{name},
+		#{sort},
+		#{createBy.id},
+		#{createDate},
+		#{updateBy.id},
+		#{updateDate},
+		#{remarks},
+		#{showSpec},
+		#{imagePath},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update">
+		update goods_gcategory set
+		parent_id=#{parent.id},
+		parent_ids=#{parentIds},
+		code=#{code},
+		name=#{name},
+		sort=#{sort},
+		update_by=#{updateBy.id},
+		update_date=#{updateDate},
+		remarks=#{remarks},
+		show_spec=#{showSpec},
+		image_path=#{imagePath},
+		del_flag=#{delFlag}
+		where id=#{id}
+	</update>
+	<update id="delete">
+		UPDATE goods_gcategory SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+</mapper>

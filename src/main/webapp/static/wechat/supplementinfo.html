@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta charset="UTF-8">
+<title>完善资料</title>
+<link rel="stylesheet" href="css/public.css">
+<link rel="stylesheet" href="css/regis.css">
+<script src="js/jquery-1.7.min.js" type="text/javascript"></script>
+<script src="js/Area.js" type="text/javascript"></script>
+<script src="js/AreaData_min.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function (){
+	initComplexArea('seachprov', 'seachcity', 'seachdistrict', area_array, sub_array, '44', '0', '0');
+});
+
+
+//根据地区码查询地区名
+function getAreaNamebyID(areaID){
+	var areaName = "";
+	if(areaID.length == 2){
+		areaName = area_array[areaID];
+	}else if(areaID.length == 4){
+		var index1 = areaID.substring(0, 2);
+		areaName = area_array[index1] + " " + sub_array[index1][areaID];
+	}else if(areaID.length == 6){
+		var index1 = areaID.substring(0, 2);
+		var index2 = areaID.substring(0, 4);
+		areaName = area_array[index1] + " " + sub_array[index1][index2] + " " + sub_arr[index2][areaID];
+	}
+	return areaName;
+}
+</script>
+
+</head>
+<body>
+	
+<div class="perfect">
+	<h1>完善信息</h1>
+	<div class="myfrm-two">
+		<ul>
+			<li>
+				<label for="phone">您的身份：</label>
+				<input type="text" id="phone" placeholder="采购商">
+				<span href="javascript:void(0);" class="vlel-two"></span>
+			</li>
+			<li>
+				<label for="code-two">姓名：</label>
+				<input type="text" id="code-two" placeholder="请填写您的真实姓名">
+			</li>
+			<li>
+				<label for="ssdw">所属单位：</label>
+				<input type="password" id="ssdw" placeholder="请输入公司名称/市场名称/合作社">
+		  </li>
+			<li>
+				<label for="jjcp">经营产品：</label>
+				<input type="text" id="jjcp" placeholder="请选择您的经营产品 ">
+				<span href="javascript:void(0);" class="vlel-two"></span>
+			</li>
+			<li>
+				<label for="szdq">所在地区:</label>
+                <select id="seachprov" name="seachprov" onChange="changeComplexProvince(this.value, sub_array, 'seachcity', 'seachdistrict');"></select>&nbsp;&nbsp;
+                <select id="seachcity" name="homecity" onChange="changeCity(this.value,'seachdistrict','seachdistrict');"></select>&nbsp;&nbsp;
+                <select id="seachdistrict" name="seachdistrict"></select>
+                <!--<span href="javascript:void(0);" class="vlel-two"></span>-->
+			</li>
+			<li>
+				<label for="xxdz">详细地址：</label>
+                <input type="text" id="xxdz" maxlength="30" placeholder="请填写您的详细地址">
+			</li>
+		</ul>
+</div>
+
+	<div class="next-two">
+    <a class="next-icn next-icn-two"  href="#">注册完成</a>
+    <!-- 注册成功！请等待审核-->
+                <div class="account_bg">
+                    <div class="account_con">
+                        <p><img src="images/icon_nav_msg.png" alt="">注册成功！请等待审核</p>
+                        <a href="javascript:void(0);">确定</a>
+                    </div>
+                </div>
+    
+    <a class="next-two-tz" href="#">跳过</a></div>
+</div>
+
+</body>
+</html>

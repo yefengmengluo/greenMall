@@ -1,0 +1,102 @@
+/*页头*/
+.head{width: 100%;height: 181px;background-color: #fefefe;}
+.head_top{width: 100%;height: 35px;background-color: #f2f2f2;padding: 1px;border-bottom: 1px solid #e8e8e8;}
+.head_top_content{width: 1200px;height: 9.5px;padding: 8.5px;margin:auto;color: #9a9a9a;font-size:12px;}
+.head_top_content a{color: #9a9a9a;}
+.head_top_content a:hover{color: #009944;text-decoration: none;}
+.head_top_content img{float: left;}
+.head_top_content span{margin-left: 1.4%;font-size:12px;}
+.head_top_content h6{float: left;margin-left: 0.7%;}
+.space{padding-left: 228px;}
+.head_middle{margin: auto;width: 1200px;height: 106px;}
+.head_middle img{margin-top: -13px;margin-right: 66px;float: left;}
+.styleOne{font-size: 14px;}
+/*页头logo*/
+.head_bottom_content_img{margin-top: 13px;margin-right: 66px;float: left;}
+.size1{font-size: 12px;}.size1{color: #009944;}.size2{font-size: 16px;}
+.color1{color: #00b952;}.color2{color: #f08300;}
+.color2{color: #dbdbdb;}
+.margin-left{margin-left: 300px;}.margin-left1{margin-left: 1px;}.margin-left2{margin-left: 10px;}.margin-left3{margin-left: 19px;}
+.float-l{float: left;}.float-r{float: right;}
+.border{border-left: 2px dashed #e5e5e5;}
+.xianImg{width: 100%;height: 315px;}
+/* 顶部开始 */
+.head_middle{margin: auto;width: 1200px;height: 106px;padding-top: 10px;}
+.head_middle img{margin-top: -1px;margin-right: 66px;float: left;}
+.head_middle_content{width: 244px;height: 16px;margin-top: 8px;margin-left: 16px;float: left;font-size: 14px;}
+.head_middle_content a{text-decoration:none;color: black;}
+.line{color: #e1e1e1;}
+.head_middle input{float: left;color: #9a9a9a;width: 571px;height: 40px;border: 2px solid #e1e1e1;font-size: 14px;padding: 10px;margin-top: 17px;margin-left: -260px;}
+.head_middle .buttonOne{width: 98px;height: 40px;margin-left: -98px;border-style: none;margin-top: 17px;background: url(../images/glass.png);}
+.head_middle .buttonTwo{float: left;width: 100px;background-color: #ec8000;font-size: 14px;color: white;text-align: center;border-style: none;margin-left: 17px;margin-top: 17px;} 
+.head_middle .twoMa{margin-left: 18px;margin-right: 18px;float: left;margin-top: -10px; }
+.head_menu{width: 100%;height: 41px;background-color: #009944;}
+.head_menu_content{width: 1200px;height: 40px;margin: auto;}
+.menu_one{width: 201px;height: 40px;background-color: #ec8000;display: inline-block;float: left;color: white;font-size: 14px;text-align: center;padding-top: 12px;margin-left: 2px;}
+.head_menu ul {width: 939px;height: 41px;color: white;font-size: 14px;text-align: center;float: left;}
+.head_menu ul  li{width: 120px;height: 40px;padding-top: 12px;float: left;}
+.head_menu ul  li:hover{background-color: #008b3e}
+.head_menu ul  li a{text-decoration:none;color: white;}
+/*页面开始*/
+.bigImg{border-bottom: 1px dotted #e5e5e5;}
+.form-control{padding: 6px 30px;}
+.btn-default{background-color: #f08300;color: white;border: none;}
+.form-control1 {
+	margin-left: 46px;
+	margin-top: -30px;
+  display: block;
+  width: 525px;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555555;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+.form-control1:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+.form-control1::-moz-placeholder {
+  color: #999999;
+  opacity: 1;
+}
+.form-control1:-ms-input-placeholder {
+  color: #999999;
+}
+.form-control1::-webkit-input-placeholder {
+  color: #999999;
+}
+.form-control1[disabled],
+.form-control1[readonly],
+fieldset[disabled] .form-control1 {
+  background-color: #eeeeee;
+  opacity: 1;
+}
+.form-control1[disabled],
+fieldset[disabled] .form-control1 {
+  cursor: not-allowed;
+}
+textarea.form-control1 {
+  height: auto;
+}
+a{color: black;}
+a:hover{text-decoration: none;color:#009944; }
+
+/*页尾*/
+.footer{height: 300px;background-color: #fff;width: 100%;}
+.bottom_content1{font-size: 12px;color:#a1a1a1 ;width: 511px;height: 37px;margin-left: 220px;margin-top: 40px;}
+.bottom_content1 span{margin-right: 14px;margin-bottom: 10px;}
+.bottom_content1  p{margin-top: 10px;}
+.imgdiv{margin-top: 20px;margin-left: 150px;}
+.imgdiv img{margin-right:50px; }

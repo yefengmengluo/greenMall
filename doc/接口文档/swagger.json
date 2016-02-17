@@ -1,0 +1,1157 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "GreenMall REST API",
+    "description": "GreenMall对外api全部使用REST风格<br>返回码默认为http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml\n",
+    "contact": {
+      "name": "chenchao@99114.com"
+    }
+  },
+  "host": "待定",
+  "basePath": "/v1.0.0",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "https://GreenMall/oauth/authorize/?client_id=CLIENT-ID&redirect_uri=REDIRECT-URI&response_type=token",
+      "scopes": {
+        "basic": "任何GreenMall相关数据\n"
+      }
+    }
+  },
+  "paths": {
+    "/Area": {
+      "post": {
+        "tags": [
+          "area"
+        ],
+        "summary": "添加一个区域",
+        "description": "",
+        "operationId": "addArea",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "添加一个区域对象到系统中",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Area"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "oauth": [
+              "oauth"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "area"
+        ],
+        "summary": "更新一个存在的区域对象",
+        "description": "",
+        "operationId": "updateArea",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "更新一个存在的区域对象",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Area"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Area not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "oauth": [
+              "oauth"
+            ]
+          }
+        ]
+      }
+    },
+    "/offices": {
+      "post": {
+        "tags": [
+          "office"
+        ],
+        "summary": "添加一个归属机构",
+        "description": "",
+        "operationId": "addOffice",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "office object that needs to be added to ",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Office"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "oauth": [
+              "oauth"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Office"
+        ],
+        "summary": "更新一个存在的归属机构",
+        "description": "",
+        "operationId": "updateOffice",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Office object that needs to be added to the system",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Office"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "oauth": [
+              "oauth"
+            ]
+          }
+        ]
+      }
+    },
+    "/menus": {
+      "post": {
+        "tags": [
+          "menu"
+        ],
+        "summary": "添加一个菜单",
+        "description": "这里的菜单为后台管理菜单",
+        "operationId": "addMenu",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Menu object that needs to be added to system",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Menu"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "oauth": [
+              "oauth"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "menu"
+        ],
+        "summary": "更新一个存在的菜单",
+        "description": "",
+        "operationId": "updateMenu",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Menu object that needs to be added to the system",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Menu"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Menu not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "oauth": [
+              "oauth"
+            ]
+          }
+        ]
+      }
+    },
+    "/roles": {
+      "post": {
+        "tags": [
+          "role"
+        ],
+        "summary": "添加一个角色",
+        "description": "",
+        "operationId": "addRole",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Role object that needs to be added to ",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Role"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "oauth": [
+              "oauth"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "role"
+        ],
+        "summary": "更新一个存在的角色",
+        "description": "",
+        "operationId": "updateRole",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Role object that needs to be added to the store",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Role"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Role not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "oauth": [
+              "oauth"
+            ]
+          }
+        ]
+      }
+    },
+    "/users/findByRoles": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Finds users by role",
+        "description": "用户与角色是一对多的关系",
+        "operationId": "findUsersByRoles",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "roles",
+            "description": "Status values that need to be considered for filter",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid roles value"
+          }
+        },
+        "security": [
+          {
+            "oauth": [
+              "oauth"
+            ]
+          }
+        ]
+      }
+    },
+    "/users/role": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "place an role for a user",
+        "description": "",
+        "operationId": "placeRole",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "role for the user",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Role"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Invalid Order"
+          }
+        }
+      }
+    },
+    "/users/role/{roleId}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Find role for a user by ID",
+        "description": "",
+        "operationId": "getRolerById",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "roleId",
+            "description": "ID of role that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Role"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Role not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Delete role by ID",
+        "description": "",
+        "operationId": "deleteRole",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "roleId",
+            "description": "ID of the role that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Role not found"
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "createUser",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created user object",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Find user by ID",
+        "description": "Returns a user",
+        "operationId": "getUserById",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "description": "ID of user that needs to be fetched",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "security": [
+          {
+            "oauth": [
+              "oauth"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Updates a user in the store with form data",
+        "description": "",
+        "operationId": "updateUserWithForm",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "description": "ID of user that needs to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "name",
+            "description": "Updated name of the user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "status",
+            "description": "Updated status of the user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "oauth": [
+              "oauth"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Deletes a user",
+        "description": "",
+        "operationId": "deleteUser",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "api_key",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "UserId",
+            "description": "User id to delete",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid user value"
+          }
+        },
+        "security": [
+          {
+            "oauth": [
+              "oauth"
+            ]
+          }
+        ]
+      }
+    },
+    "/users/createWithList": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Creates list of users with given input array",
+        "description": "",
+        "operationId": "createUsersWithListInput",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "List of user object",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "loginUser",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "username",
+            "description": "The user name for login",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "password",
+            "description": "The password for login in clear text",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/users/logout": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs out current logged in user session",
+        "description": "",
+        "operationId": "logoutUser",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/users/{username}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get user by user name",
+        "description": "",
+        "operationId": "getUserByName",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "username",
+            "description": "The name that needs to be fetched. Use user1 for testing.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Updated user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "updateUser",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "username",
+            "description": "name that need to be deleted",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated user object",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid user supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Delete user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "deleteUser",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "username",
+            "description": "The name that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "id"
+        },
+        "loginName": {
+          "type": "string",
+          "description": "登陆名"
+        },
+        "password": {
+          "type": "string",
+          "description": "不可逆加密后的密码"
+        },
+        "no": {
+          "type": "string",
+          "description": "用户编号"
+        },
+        "name": {
+          "type": "string",
+          "description": "用户姓名"
+        },
+        "email": {
+          "type": "string",
+          "description": "邮箱"
+        },
+        "phone": {
+          "type": "string",
+          "description": "手机"
+        },
+        "loginFlag": {
+          "type": "string"
+        },
+        "userType": {
+          "type": "string",
+          "description": "用户类型"
+        },
+        "userStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "User Status"
+        },
+        "roleList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Role"
+          }
+        }
+      }
+    },
+    "Role": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string",
+          "description": "角色名称"
+        },
+        "ename": {
+          "type": "string",
+          "description": "英文名称"
+        },
+        "roleType": {
+          "type": "string",
+          "description": "权限类型"
+        },
+        "dataScope": {
+          "type": "string",
+          "enum": [
+            "DATA_SCOPE_ALL",
+            "DATA_SCOPE_COMPANY_AND_CHILD",
+            "DATA_SCOPE_COMPANY",
+            "DATA_SCOPE_OFFICE_AND_CHILD",
+            "DATA_SCOPE_OFFICE",
+            "DATA_SCOPE_SELF",
+            "DATA_SCOPE_CUSTOM"
+          ],
+          "description": "数据范围"
+        },
+        "menuList": {
+          "type": "array",
+          "description": "该角色关联的菜单",
+          "items": {
+            "$ref": "#/definitions/Menu"
+          }
+        },
+        "officeList": {
+          "type": "array",
+          "description": "该角色的归属机构",
+          "items": {
+            "$ref": "#/definitions/Office"
+          }
+        }
+      }
+    },
+    "Menu": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "parent": {
+          "$ref": "#/definitions/Menu",
+          "description": "父级菜单"
+        },
+        "permission": {
+          "type": "string",
+          "description": "权限标识"
+        },
+        "name": {
+          "type": "string",
+          "description": "名称"
+        },
+        "href": {
+          "type": "string",
+          "description": "链接"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32",
+          "description": "排序"
+        },
+        "isShow": {
+          "type": "string",
+          "enum": [
+            1,
+            0
+          ],
+          "description": "是否在菜单中显示（1：显示；0：不显示）"
+        },
+        "target": {
+          "type": "string",
+          "enum": [
+            "mainFrame",
+            "_blank",
+            "_self",
+            "_parent",
+            "_top"
+          ],
+          "description": "目标（ mainFrame、_blank、_self、_parent、_top）"
+        }
+      }
+    },
+    "Office": {
+      "type": "object",
+      "properties": {
+        "area": {
+          "$ref": "#/definitions/Area",
+          "description": "排序"
+        },
+        "code": {
+          "type": "string",
+          "description": "机构编码"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            1,
+            2,
+            3
+          ],
+          "description": "机构类型（1：公司；2：部门；3：小组）"
+        },
+        "grade": {
+          "type": "string",
+          "enum": [
+            1,
+            2,
+            3
+          ],
+          "description": "机构等级（1：一级；2：二级；3：三级；4：四级）"
+        },
+        "address": {
+          "type": "string",
+          "description": "联系地址"
+        },
+        "zipCode": {
+          "type": "string",
+          "description": "邮政编码"
+        },
+        "primaryPerson": {
+          "$ref": "#/definitions/User",
+          "description": "主要负责人"
+        },
+        "phone": {
+          "type": "string",
+          "description": "电话"
+        },
+        "fax": {
+          "type": "string",
+          "description": "传真"
+        },
+        "email": {
+          "type": "string",
+          "description": "邮箱"
+        }
+      }
+    },
+    "Area": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "区域编码"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "description": "区域类型（1：国家；2：省份、直辖市；3：地市；4：区县）"
+        }
+      }
+    },
+    "Category":{
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "主键"
+        },
+        "specs":{
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Spec"
+          }
+        }
+      }
+    },
+    "Spec":{
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "主键"
+        },
+        "value":{
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Value"
+          }
+        }
+      }
+    },
+    "Value":{
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "主键"
+        }
+      }
+    },
+    "Demand":{
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "主键"
+        }
+      }
+    },
+    "Supply":{
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "主键"
+        }
+      }
+    }
+  }
+}

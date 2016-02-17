@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.wechat.dao.mp.MpUserDao">
+    
+	<sql id="mpUserColumns">
+		a.id AS "id",
+		a.user_id AS "userId",
+		a.name AS "name",
+		a.subscribe AS "subscribe",
+		a.openid AS "openid",
+		a.unionid AS "unionid",
+		a.nickname AS "nickname",
+		a.sex AS "sex",
+		a.language AS "language",
+		a.city AS "city",
+		a.province AS "province",
+		a.country AS "country",
+		a.headimgurl AS "headimgurl",
+		a.remark AS "remark",
+		a.subscribetime AS "subscribetime",
+		a.sexid AS "sexid",
+		a.groupid AS "groupid",
+		a.create_by AS "createById",
+		a.create_date AS "createDate",
+		a.update_by AS "updateById",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="mpUserJoins">
+		LEFT JOIN sys_user u2 ON u2.id = a.user_id
+	</sql>
+    
+	<select id="get" resultType="MpUser">
+		SELECT 
+			<include refid="mpUserColumns"/>
+		FROM mp_user a
+		<include refid="mpUserJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="getByOpenId" resultType="MpUser">
+		SELECT
+		<include refid="mpUserColumns"/>
+		FROM mp_user a
+		<include refid="mpUserJoins"/>
+		WHERE a.openid = #{openid}
+	</select>
+	
+	<select id="findList" resultType="MpUser">
+		SELECT 
+			<include refid="mpUserColumns"/>
+		FROM mp_user a
+		<include refid="mpUserJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="MpUser">
+		SELECT 
+			<include refid="mpUserColumns"/>
+		FROM mp_user a
+		<include refid="mpUserJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO mp_user(
+			id,
+			user_id,
+			name,
+			subscribe,
+			openid,
+			unionid,
+			nickname,
+			sex,
+			language,
+			city,
+			province,
+			country,
+			headimgurl,
+			remark,
+			subscribetime,
+			sexid,
+			groupid,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{userId},
+			#{name},
+			#{subscribe},
+			#{openid},
+			#{unionid},
+			#{nickname},
+			#{sex},
+			#{language},
+			#{city},
+			#{province},
+			#{country},
+			#{headimgurl},
+			#{remark},
+			#{subscribetime},
+			#{sexid},
+			#{groupid},
+			#{createById},
+			#{createDate},
+			#{updateById},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE mp_user SET 	
+			user_id = #{userId},
+			name = #{name},
+			subscribe = #{subscribe},
+			openid = #{openid},
+			unionid = #{unionid},
+			nickname = #{nickname},
+			sex = #{sex},
+			language = #{language},
+			city = #{city},
+			province = #{province},
+			country = #{country},
+			headimgurl = #{headimgurl},
+			remark = #{remark},
+			subscribetime = #{subscribetime},
+			sexid = #{sexid},
+			groupid = #{groupid},
+			update_by = #{updateById},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE mp_user SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

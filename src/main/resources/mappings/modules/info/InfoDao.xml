@@ -1,0 +1,1091 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.info.dao.InfoDao">
+
+    <sql id="getColumns">
+        a.id,
+        a.goods_name,
+        a.pgoods_alias,
+        a.goods_id,
+        a.pgoods_id,
+        a.pgoods_name,
+        a.pids,
+        a.price_unit_id,
+        a.number_unit_id,
+        a.price_unit_value,
+        a.number_unit_value,
+        a.number,
+        a.from_per_price,
+        a.to_per_price,
+        a.specs,
+        a.statue,
+        a.statue_intro,
+        a.type,
+        a.is_entrust,
+        a.entrust_supply_demand_id,
+        a.entrust_organization_id,
+        a.address_id,
+        a.validate_start_date,
+        a.validate_end_date,
+        a.production_province,
+        a.production_city,
+        a.production_area,
+        a.production_detail_area,
+        a.order_uploading_id,
+        a.publish_user,
+        a.remarks,
+        a.production_province_name,
+        a.production_city_name,
+        a.production_area_name,
+        a.nonstandard_number_unit_name,
+        a.nonstandard_number_unit_id,
+        a.nonstandard_number,
+        a.update_date,GROUP_CONCAT(b.spec_value_id) as checked_specs_id,
+        a.create_by as "createBy.id",
+        a.update_by as "updateBy.id",
+        a.create_date,
+        case when GROUP_CONCAT(b.spec_value)  is not null then CONCAT(GROUP_CONCAT(b.spec_value),(case when a.specs is not null then CONCAT(',',a.specs) else '' END))  ELSE specs END as checked_specs,
+        c.province_name,c.city_name,c.area_name,c.detail_area,c.user_name,c.telephone,
+        c.province_id,c.city_id,c.area_id
+        ,e.organization_id,
+        case when a.publish_user is null then CONCAT(f.name) ELSE e.organization_name end as organization_name
+
+    </sql>
+
+    <sql id="queryBeforeCheckedInfo">
+        select
+        a.id,
+        a.goods_name,
+        a.pgoods_alias,
+        a.goods_id,
+        a.pgoods_id,
+        a.pgoods_name,
+        a.pids,
+        a.price_unit_id,
+        a.number_unit_id,
+        a.price_unit_value,
+        a.number_unit_value,
+        a.number,
+        a.from_per_price,
+        a.to_per_price,
+        a.specs,
+        a.statue,
+        a.statue_intro,
+        a.type,
+        a.is_entrust,
+        a.entrust_supply_demand_id,
+        a.entrust_organization_id,
+        a.address_id,
+        a.validate_start_date,
+        a.validate_end_date,
+        a.production_province,
+        a.production_city,
+        a.production_area,
+        a.production_detail_area,
+        a.order_uploading_id,
+        a.publish_user,
+        a.remarks,
+        a.nonstandard_number_unit_name,
+        a.nonstandard_number_unit_id,
+        a.nonstandard_number,
+        a.production_province_name,
+        a.production_city_name,
+        a.production_area_name,
+        a.create_by as "createBy.id",
+        a.update_by as "updateBy.id",
+        a.create_date,
+        a.update_date,
+        d.goods_name as "infoCheck.goodsName",
+        d.pgoods_alias as "infoCheck.pgoodsAlias",
+        d.goods_id as "infoCheck.goodsId",
+        d.pgoods_id as "infoCheck.pgoodsId",
+        d.pgoods_name as "infoCheck.pgoodsName",
+        d.pids as "infoCheck.pids",
+        d.price_unit_id as "infoCheck.priceUnitId",
+        d.number_unit_id as "infoCheck.numberUnitId",
+        d.price_unit_value as "infoCheck.priceUnitValue",
+        d.number_unit_value as "infoCheck.numberUnitValue",
+        d.number as "infoCheck.number",
+        d.from_per_price as "infoCheck.fromPerPrice",
+        d.to_per_price as "infoCheck.toPerPrice",
+        d.specs as "infoCheck.checkedSpecs",
+        d.remarks as "infoCheck.remarks",
+        d.create_date as "infoCheck.createDate",
+        d.update_date as "infoCheck.updateDate",
+        d.create_by as "infoCheck.createBy",
+        d.update_by as "infoCheck.updateBy",
+        d.statue as "infoCheck.statue",
+        d.statue_intro as "infoCheck.statueIntro",
+        d.type as "infoCheck.type",
+        d.is_entrust as "infoCheck.isEntrust",
+        d.entrust_supply_demand_id as "infoCheck.entrustSupplyDemandId",
+        d.entrust_organization_id as "infoCheck.entrustOrganizationId",
+        d.address_id as "infoCheck.addressId",
+        d.validate_start_date as "infoCheck.validateStartDate",
+        d.validate_end_date as "infoCheck.validateEndDate",
+        d.production_province as "infoCheck.productionProvince",
+        d.production_city as "infoCheck.productionCity",
+        d.production_area as "infoCheck.productionArea",
+        d.production_detail_area as "infoCheck.productionDetailArea",
+        d.order_uploading_id as "infoCheck.orderUploadingId",
+        d.publish_user as "infoCheck.publishUser",
+        d.check_record_id as "infoCheck.checkRecordId",
+        d.record_date as "infoCheck.recordDate",
+        d.id as "infoCheck.id",
+        d.nonstandard_number_unit_name as "infoCheck.nonstandardNumberUnitName",
+        d.nonstandard_number_unit_id as "infoCheck.nonstandardNumberUnitId",
+        d.nonstandard_number as "infoCheck.nonstandardNumber",
+        d.production_province_name as "infoCheck.productionProvinceName",
+        d.production_city_name as "infoCheck.productionCityName",
+        d.production_area_name as "infoCheck.productionAreaName",
+        d.province_name as "infoCheck.provinceName",
+        d.city_name as "infoCheck.cityName",
+        d.area_name as "infoCheck.areaName",
+        d.detail_area as "infoCheck.detailArea"
+
+        FROM supply_demand_info a left join supply_demand_info_check d ON a.check_record_id=d.id where TRUE
+        <if test="statue">
+            and a.statue=#{statue}
+            <if test="publishUser">
+                and a.publish_user=#{publishUser}
+            </if>
+        </if>
+    </sql>
+    <insert id="insert">
+        INSERT INTO supply_demand_info(
+        id,
+        goods_name,
+        pgoods_alias,
+        goods_id,
+        pgoods_id,
+        pgoods_name,
+        pids,
+        price_unit_id,
+        number_unit_id,
+        price_unit_value,
+        number_unit_value,
+        nonstandard_number,
+        nonstandard_number_unit_id,
+        nonstandard_number_unit_name,
+        number,
+        from_per_price,
+        to_per_price,
+        specs,
+        statue,
+        statue_intro,
+        type,
+        is_entrust,
+        entrust_supply_demand_id,
+        entrust_organization_id,
+        address_id,
+        validate_start_date,
+        validate_end_date,
+        production_province,
+        production_city,
+        production_area,
+        production_detail_area,
+        order_uploading_id,
+        publish_user,
+        production_province_name,
+        production_city_name,
+        production_area_name,
+        create_date,
+        update_date,
+        create_by,
+        update_by,
+        remarks
+        ) VALUES (
+        #{id},
+        #{goodsName},
+        #{pgoodsAlias},
+        #{goodsId},
+        #{pgoodsId},
+        #{pgoodsName},
+        #{pids},
+        #{priceUnitId},
+        #{numberUnitId},
+        #{priceUnitValue},
+        #{numberUnitValue},
+        #{nonstandardNumber},
+        #{nonstandardNumberUnitId},
+        #{nonstandardNumberUnitName},
+        #{number},
+        #{fromPerPrice},
+        #{toPerPrice},
+        #{specs},
+        #{statue},
+        #{statueIntro},
+        #{type},
+        #{isEntrust},
+        #{entrustSupplyDemandId},
+        #{entrustOrganizationId},
+        #{addressId},
+        #{validateStartDate},
+        #{validateEndDate},
+        #{productionProvince},
+        #{productionCity},
+        #{productionArea},
+        #{productionDetailArea},
+        #{orderUploadingId},
+        #{publishUser},
+         #{productionProvinceName},
+        #{productionCityName},
+        #{productionAreaName},
+        now(),
+        now(),
+        #{createBy.id},
+        #{updateBy.id},
+        #{remarks}
+        )
+    </insert>
+    <insert id="recordBeforeCheckedData">
+        INSERT INTO supply_demand_info_check(
+        id,
+        goods_name,
+        pgoods_alias,
+        goods_id,
+        pgoods_id,
+        pgoods_name,
+        pids,
+        price_unit_id,
+        nonstandard_number,
+        nonstandard_number_unit_id,
+        nonstandard_number_unit_name,
+        nonstandard_number_unit,
+        number_unit_id,
+        price_unit_value,
+        number_unit_value,
+        number,
+        from_per_price,
+        to_per_price,
+        specs,
+        remarks,
+        create_date,
+        update_date,
+        create_by,
+        update_by,
+        statue,
+        statue_intro,
+        type,
+        is_entrust,
+        entrust_supply_demand_id,
+        entrust_organization_id,
+        address_id,
+        validate_start_date,
+        validate_end_date,
+        production_province,
+        production_city,
+        production_area,
+        production_detail_area,
+        order_uploading_id,
+        publish_user,
+        production_province_name,
+        production_city_name,
+        production_area_name,
+        record_date,
+        province_id,
+        city_id,
+        area_id,
+        warehouse,
+        detail_area,
+        telephone,
+        postcode,
+        province_name,
+        city_name,
+        area_name,
+        user_name
+        ) value(
+        #{id},
+        #{goodsName},
+        #{pgoodsAlias},
+        #{goodsId},
+        #{pgoodsId},
+        #{pgoodsName},
+        #{pids},
+        #{priceUnitId},
+        #{nonstandardNumber},
+        #{nonstandardNumberUnitId},
+        #{nonstandardNumberUnitName},
+        #{nonstandardNumberUnit},
+        #{numberUnitId},
+        #{priceUnitValue},
+        #{numberUnitValue},
+        #{number},
+        #{fromPerPrice},
+        #{toPerPrice},
+        #{specs},
+        #{remarks},
+        #{createDate},
+        #{updateDate},
+        #{createBy.id},
+        #{updateBy.id},
+        #{statue},
+        #{statueIntro},
+        #{type},
+        #{isEntrust},
+        #{entrustSupplyDemandId},
+        #{entrustOrganizationId},
+        #{addressId},
+        #{validateStartDate},
+        #{validateEndDate},
+        #{productionProvince},
+        #{productionCity},
+        #{productionArea},
+        #{productionDetailArea},
+        #{orderUploadingId},
+        #{publishUser},
+        #{productionProvinceName},
+        #{productionCityName},
+        #{productionAreaName},
+        now(),
+        #{provinceId},
+        #{cityId},
+        #{areaId},
+        #{warehouse},
+        #{detailArea},
+        #{telephone},
+        #{postcode},
+        #{provinceName},
+        #{cityName},
+        #{areaName},
+        #{userName}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE supply_demand_info SET
+        goods_name = #{goodsName},
+        pgoods_alias = #{pgoodsAlias},
+        goods_id = #{goodsId},
+        pgoods_id = #{pgoodsId},
+        pgoods_name = #{pgoodsName},
+        pids = #{pids},
+        price_unit_id = #{priceUnitId},
+        price_unit_value = #{priceUnitValue},
+        number_unit_id = #{numberUnitId},
+        price_unit_value = #{priceUnitValue},
+        number_unit_value = #{numberUnitValue},
+        number = #{number},
+        check_record_id = #{checkRecordId},
+        nonstandard_number=#{nonstandardNumber},
+        nonstandard_number_unit_name=#{nonstandardNumberUnitName},
+        nonstandard_number_unit_id=#{nonstandardNumberUnitId},
+        from_per_price = #{fromPerPrice},
+        to_per_price = #{toPerPrice},
+        specs = #{specs},
+        statue = #{statue},
+        statue_intro = #{statueIntro},
+        type = #{type},
+        is_entrust = #{isEntrust},
+        entrust_supply_demand_id = #{entrustSupplyDemandId},
+        entrust_organization_id = #{entrustOrganizationId},
+        address_id = #{addressId},
+        validate_start_date = #{validateStartDate},
+        validate_end_date = #{validateEndDate},
+        production_province = #{productionProvince},
+        production_city = #{productionCity},
+        production_area = #{productionArea},
+        production_province_name = #{productionProvinceName},
+        production_city_name = #{productionCityName},
+        production_area_name = #{productionAreaName},
+        production_detail_area = #{productionDetailArea},
+        remarks=#{remarks},
+        <if test="orderUploadingId!=null and orderUploadingId!=''">
+            order_uploading_id = #{orderUploadingId},
+        </if>
+
+        publish_user = #{publishUser},
+        update_date = now(),
+        create_by = #{createBy.id},
+        update_by = #{updateBy.id}
+        WHERE id = #{id}
+    </update>
+    <update id="delete">
+        UPDATE supply_demand_info SET
+        statue = -2
+        WHERE id = #{id}
+    </update>
+    <update id="deleteInfoMessage">
+        UPDATE supply_demand_info_message SET
+        statue = -2
+        WHERE id = #{id}
+    </update>
+    <update id="updateInfoMessage">
+        UPDATE supply_demand_info_message SET
+        statue=#{statue},
+        supply_demand_id=#{supplyDemandId}
+        where id=#{id}
+    </update>
+    <insert id="insertInfoMessage">
+        insert INTO supply_demand_info_message(
+          id,
+          message,
+          create_by,
+          update_by,
+          create_date,
+          update_date,
+          remarks,
+          type,
+          is_entrust,
+          entrust_supply_demand_id,
+          publish_user
+        )value(
+          #{id},
+          #{message},
+          #{createBy.id},
+          #{updateBy.id},
+          #{createDate},
+          #{updateDate},
+          #{remarks},
+          #{type},
+          #{isEntrust},
+          #{entrustSupplyDemandId},
+          #{publishUser}
+        )
+
+    </insert>
+    <update id="updateInfoStatus">
+        UPDATE supply_demand_info SET
+        statue = #{statue}
+        WHERE id = #{id}
+    </update>
+
+    <select id="get" resultType="Info">
+        SELECT
+        <include refid="getColumns"/>
+        FROM supply_demand_info a left join supply_demand_spec b ON a.id=b.supply_demand_id and b.del_flag=0 left join
+        user_address_info c on a.address_id=c.id left join (select a.person_id as publish_user,b.id as
+        organization_id,b.name as organization_name from front_user a,organization_info b where a.organization_id=b.id) e
+        on a.publish_user=e.publish_user LEFT JOIN organization_info f ON a.entrust_organization_id=f.id
+        WHERE a.id = #{id}
+        group by a.id ORDER BY a.update_date DESC
+    </select>
+    <select id="findList" resultType="Info">
+        SELECT
+        <include refid="getColumns"/>
+        FROM supply_demand_info a left join supply_demand_spec b ON a.id=b.supply_demand_id and b.del_flag=0 left join
+        user_address_info c on a.address_id=c.id left join (select a.person_id as publish_user,b.id as
+        organization_id,b.name as organization_name from front_user a,organization_info b where a.organization_id=b.id) e
+        on a.publish_user=e.publish_user LEFT JOIN organization_info f ON a.entrust_organization_id=f.id
+
+        WHERE  true
+        <choose>
+            <when test="statue==999">
+                and a.statue IN (1,2)
+            </when>
+            <when test="statue!=null and statue!=''">
+                and a.statue=#{statue}
+            </when>
+            <otherwise>
+                and a.statue&lt;&gt;-2
+            </otherwise>
+        </choose>
+
+        <if test="goodsId and goodsId!=''">
+            and a.goods_id=#{goodsId}
+        </if>
+        <if test="pgoodsId and pgoodsId!=''">
+            and a.pgoods_id=#{pgoodsId}
+        </if>
+        <if test="provinceId and provinceId!=''">
+            and c.province_id=#{provinceId}
+        </if>
+        <if test="cityId and cityId!=''">
+            and c.city_id=#{cityId}
+        </if>
+        <if test="goodsName">
+            and a.goods_name like concat('%',#{goodsName},'%')
+        </if>
+        <if test="detailArea">
+            and c.detail_area like concat('%',#{detailArea},'%')
+        </if>
+        <if test="organizationName and organizationName!=null">
+            and (e.organization_name like concat('%',#{organizationName},'%') or f.name like concat('%',#{organizationName},'%'))
+        </if>
+        <if test="pgoodsName">
+            and a.pgoods_name like
+            concat('%',#{pgoodsName},'%')
+        </if>
+        <if test="pids">
+            and a.pids like
+            concat('%',#{pids},'%')
+        </if>
+        <if test="type">
+            and a.type=#{type}
+        </if>
+        <if test="publishUser and publishUser!=''">
+            and a.publish_user=#{publishUser}
+        </if>
+        <if test="ignoreIds">
+            and a.id NOT IN (#{ignoreIds})
+        </if>
+        <if test="entrustSupplyDemandId">
+            and a.entrust_supply_demand_id=#{entrustSupplyDemandId}
+        </if>
+        <if test="isFront and isFront==true">
+          and a.validate_end_date&gt;now()
+        </if>
+        <if test="isEntrust">
+          and a.is_entrust=#{isEntrust}
+        </if>
+        <if test="isEntrust==0">
+            and a.is_entrust=#{isEntrust}
+        </if>
+        group by a.id ORDER BY a.update_date DESC
+    </select>
+
+    <select id="getInfoMessages" resultType="InfoMessage">
+        select
+        a.id,
+        a.message,
+        a.create_by,
+        a.update_by,
+        a.create_date,
+        a.update_date,
+        a.statue,
+        a.remarks,
+        a.supply_demand_id,
+        a.publish_user,
+        a.entrust_supply_demand_id,
+        a.is_entrust,
+        b.name,
+        b.mobile AS "telephone"
+        from supply_demand_info_message a
+        left JOIN front_user b on a.publish_user=b.person_id
+        where true
+        <if test="message!=null and message!=''">
+            and a.message like
+            concat('%',#{message},'%')
+        </if>
+        <if test="type!=null and type!=''">
+            and a.type=#{type}
+        </if>
+        <choose>
+            <when test="statue==999">
+                and a.statue IN (0,1)
+            </when>
+            <when test="statue!=null">
+                and a.statue=#{statue}
+            </when>
+            <otherwise>
+                and a.statue&lt;&gt;-2
+            </otherwise>
+        </choose>
+        <!--<if test="statue!=null and statue!=''">-->
+            <!--and statue=#{statue}-->
+        <!--</if>-->
+        <!--<if test="statue==0">-->
+            <!--and statue=#{statue}-->
+        <!--</if>-->
+        <!--<if test="statue==null">-->
+            <!--and statue&lt;&gt;-2-->
+        <!--</if>-->
+        <!--<if test="statue==''">-->
+            <!--and statue&lt;&gt;-2-->
+        <!--</if>-->
+        <if test="id and id!=''">
+            and a.id=#{id}
+        </if>
+        <if test="publishUser and publishUser!=''">
+            and a.publish_user=#{publishUser}
+        </if>
+        <if test="telephone and telephone!=''">
+            and b.mobile like concat('%',#{telephone},'%')
+        </if>
+        <if test="isEntrust and isEntrust!=''">
+            and a.is_entrust=#{isEntrust}
+        </if>
+        <if test="supplyDemandId and supplyDemandId!=''">
+            and a.supply_demand_id=#{supplyDemandId}
+        </if>
+
+        order by update_date DESC
+    </select>
+    <select id="getInfoMessage" resultType="InfoMessage">
+        select
+        id,
+        message,
+        create_by,
+        update_by,
+        create_date,
+        update_date,
+        publish_user,
+        entrust_supply_demand_id,
+        is_entrust,
+        statue,
+        remarks,
+        supply_demand_id
+        from supply_demand_info_message
+        where id=#{id}
+    </select>
+
+    <select id="getInfos" resultType="Info">
+        SELECT
+        <include refid="getColumns"/>
+        FROM
+        <choose>
+            <when test="telephone==null and userName==null">
+                supply_demand_info a
+                left join user_address_info c on a.address_id=c.id
+            </when>
+
+            <otherwise>
+                user_address_info c
+                ,supply_demand_info a
+            </otherwise>
+        </choose>
+
+
+        left join supply_demand_spec b ON a.id=b.supply_demand_id and b.del_flag=0 left join (select a.person_id as publish_user,b.id as
+        organization_id,b.name as organization_name from front_user a,organization_info b where a.organization_id=b.id) e
+        on a.publish_user=e.publish_user LEFT JOIN organization_info f ON a.entrust_organization_id=f.id
+
+        WHERE  true and a.type=#{type}
+        <choose>
+            <when test="telephone==null and userName==null">
+
+            </when>
+            <otherwise>
+                <if test="telephone and telephone!=''">
+                    and c.telephone=#{telephone}
+
+                </if>
+                <if test="userName and userName!=''">
+                    and c.user_name like concat('%',#{userName},'%')
+                </if>
+                and a.address_id=c.id
+            </otherwise>
+        </choose>
+
+
+        <if test="statue!=null and statue!=''">
+            and a.statue=#{statue}
+        </if>
+        <if test="statue==0">
+            and a.statue=#{statue}
+        </if>
+        <if test="statue==null">
+            and a.statue&lt;&gt;-2
+        </if>
+        <if test="statue==''">
+            and a.statue&lt;&gt;-2
+        </if>
+        <if test="goodsId and goodsId!=''">
+            and a.goods_id=#{goodsId}
+        </if>
+        <if test="id and id!=''">
+            and a.id=#{id}
+        </if>
+        <if test="goodsName">
+            and a.goods_name like concat('%',#{goodsName},'%')
+        </if>
+        <if test="pgoodsName">
+            and a.pgoods_name like
+            concat('%',#{pgoodsName},'%')
+        </if>
+        <if test="isFront==true">
+            and a.validate_end_date&gt;now()
+        </if>
+        <if test="isEntrust">
+            and a.is_entrust=#{isEntrust}
+        </if>
+        <if test="isEntrust==0">
+            and a.is_entrust=#{isEntrust}
+        </if>
+        group by a.id ORDER BY a.update_date DESC
+    </select>
+
+
+    <select id="getCheckedInfos" resultType="Info">
+        SELECT
+        a.*,GROUP_CONCAT(b.spec_value_id) as checked_specs_id,case when GROUP_CONCAT(b.spec_value) is not null then
+        CONCAT(GROUP_CONCAT(b.spec_value),(case when a.specs is not null then CONCAT(',',a.specs) else '' END)) ELSE
+        specs END as checked_specs,
+        c.province_name,c.city_name,c.area_name,c.detail_area,c.user_name,c.telephone,
+        c.province_id,c.city_id,c.area_id
+        FROM
+        <choose>
+            <when test="telephone==null and userName==null">
+                (
+                <include refid="queryBeforeCheckedInfo"/>
+
+                ) a
+                left join user_address_info c on a.address_id=c.id
+            </when>
+            <otherwise>
+                user_address_info c
+                ,(
+                <include refid="queryBeforeCheckedInfo"/>
+                ) a
+            </otherwise>
+        </choose>
+
+
+        left join supply_demand_spec b ON a.id=b.supply_demand_id and b.del_flag=0 left join (select a.person_id as
+        publish_user,b.id as organization_id,b.name as organization_name from front_user a,organization_info b where
+        a.organization_id=b.id) e on a.publish_user=e.publish_user
+
+        WHERE true and a.type=#{type}
+        <choose>
+            <when test="telephone==null and userName==null">
+
+            </when>
+            <otherwise>
+                <if test="telephone and telephone!=''">
+                    and c.telephone=#{telephone}
+
+                </if>
+                <if test="userName and userName!=''">
+                    and c.user_name like concat('%',#{userName},'%')
+                </if>
+                and a.address_id=c.id
+            </otherwise>
+        </choose>
+
+
+        <if test="statue!=null and statue!=''">
+            and a.statue=#{statue}
+        </if>
+        <if test="statue==0">
+            and a.statue=#{statue}
+        </if>
+        <if test="statue==null">
+            and a.statue&lt;&gt;-2
+        </if>
+        <if test="statue==''">
+            and a.statue&lt;&gt;-2
+        </if>
+        <if test="goodsId and goodsId!=''">
+            and a.goods_id=#{goodsId}
+        </if>
+        <if test="id and id!=''">
+            and a.id=#{id}
+        </if>
+        <if test="goodsName">
+            and a.goods_name like concat('%',#{goodsName},'%')
+        </if>
+        <if test="pgoodsName">
+            and a.pgoods_name like
+            concat('%',#{pgoodsName},'%')
+        </if>
+        <if test="publishUser and publishUser!=''">
+            and a.publish_user=#{publishUser}
+        </if>
+        <if test="isFront==true">
+            and a.validate_end_date&gt;now()
+        </if>
+        <if test="isEntrust">
+            and a.is_entrust=#{isEntrust}
+        </if>
+        <if test="isEntrust==0">
+            and a.is_entrust=#{isEntrust}
+        </if>
+        group by a.id ORDER BY a.update_date DESC
+    </select>
+
+
+
+
+
+    <select id="findInfoCount" resultType="long">
+        SELECT
+        COUNT(1)
+        FROM supply_demand_info a
+        WHERE a.statue&lt;&gt;-2 and true
+        <choose>
+            <when test="statue==999">
+                and a.statue IN (1,2)
+            </when>
+            <when test="statue!=null and statue!=''">
+                and a.statue=#{statue}
+            </when>
+            <otherwise>
+                and a.statue&lt;&gt;-2
+            </otherwise>
+        </choose>
+        <if test="type">
+            and a.type=#{type}
+        </if>
+        <if test="publishUser and publishUser!='' ">
+            and a.publish_user=#{publishUser}
+        </if>
+        <if test="isFront and isFront==true">
+            and a.validate_end_date&gt;now()
+        </if>
+    </select>
+    <select id="findSupplyAndDemandCount" parameterType="Info" resultType="java.lang.Integer">
+        SELECT COUNT(a.id) FROM supply_demand_info a WHERE 1=1
+        <if test="type!=null">
+            AND a.type=#{type}
+        </if>
+        <if test="statue!=null">
+            AND a.statue=#{statue}
+        </if>
+    </select>
+
+
+    <sql id="entrustColumns">
+        f.id as "entrustSupplyDemand.id",
+        f.goods_name as "entrustSupplyDemand.goodsName",
+        f.pgoods_alias as "entrustSupplyDemand.pgoodsAlias",
+        f.goods_id as "entrustSupplyDemand.goodsId",
+        f.pgoods_id as "entrustSupplyDemand.pgoodsId",
+        f.pgoods_name as "entrustSupplyDemand.pgoodsName",
+        f.pids as "entrustSupplyDemand.pids",
+        f.price_unit_id as "entrustSupplyDemand.priceUnitId",
+        f.number_unit_id as "entrustSupplyDemand.numberUnitId",
+        f.price_unit_value as "entrustSupplyDemand.priceUnitValue",
+        f.number_unit_value as "entrustSupplyDemand.numberUnitValue",
+        f.number as "entrustSupplyDemand.number",
+        f.from_per_price as "entrustSupplyDemand.fromPerPrice",
+        f.to_per_price as "entrustSupplyDemand.toPerPrice",
+        f.specs as "entrustSupplyDemand.specs",
+        f.statue as "entrustSupplyDemand.statue",
+        f.statue_intro as "entrustSupplyDemand.statueIntro",
+        f.type as "entrustSupplyDemand.type",
+        f.is_entrust as "entrustSupplyDemand.isEntrust",
+        f.entrust_supply_demand_id as "entrustSupplyDemand.entrustSupplyDemandId",
+        f.entrust_organization_id as "entrustSupplyDemand.entrustOrganizationId",
+        f.address_id as "entrustSupplyDemand.addressId",
+        f.validate_start_date as "entrustSupplyDemand.validateStartDate",
+        f.validate_end_date as "entrustSupplyDemand.validateEndDate",
+        f.production_province as "entrustSupplyDemand.productionProvince",
+        f.production_city as "entrustSupplyDemand.productionCity",
+        f.production_area as "entrustSupplyDemand.productionArea",
+        f.production_detail_area as "entrustSupplyDemand.productionDetailArea",
+        f.order_uploading_id as "entrustSupplyDemand.orderUploadingId",
+        f.publish_user AS "entrustSupplyDemand.publishUser",
+        f.remarks as "entrustSupplyDemand.remarks",
+        f.production_province_name as "entrustSupplyDemand.productionProvinceName",
+        f.production_city_name as "entrustSupplyDemand.productionCityName",
+        f.production_area_name as "entrustSupplyDemand.productionAreaName",
+        f.nonstandard_number_unit_name as "entrustSupplyDemand.nonstandardNumberUnitName",
+        f.nonstandard_number_unit_id as "entrustSupplyDemand.nonstandardNumberUnitId",
+        f.nonstandard_number as "entrustSupplyDemand.nonstandardNumber",
+        f.update_date as "entrustSupplyDemand.updateDate",
+        f.create_by as "entrustSupplyDemand.createBy.id",
+        f.update_by as "entrustSupplyDemand.updateBy.id"
+    </sql>
+
+
+
+    <select id="getEntrustDemandPage" resultType="Info">
+        SELECT
+        a.*,GROUP_CONCAT(b.spec_value_id) as checked_specs_id,case when GROUP_CONCAT(b.spec_value) is not null then
+        CONCAT(GROUP_CONCAT(b.spec_value),(case when a.specs is not null then CONCAT(',',a.specs) else '' END)) ELSE
+        a.specs END as checked_specs,
+        c.province_name,c.city_name,c.area_name,c.detail_area,c.user_name,c.telephone,
+        c.province_id,c.city_id,c.area_id,
+        <include refid="entrustColumns"/>
+        FROM
+        <choose>
+            <when test="telephone==null and userName==null">
+                <choose>
+                    <when test="statue==0">
+                        supply_demand_info a
+                    </when>
+                    <otherwise>
+                        (
+                        <include refid="queryBeforeCheckedInfo"/>
+
+                        ) a
+                    </otherwise>
+                </choose>
+
+                left join user_address_info c on a.address_id=c.id
+            </when>
+            <otherwise>
+                user_address_info c,
+                <choose>
+                    <when test="statue==0">
+                        supply_demand_info a
+                    </when>
+                    <otherwise>
+                        (
+                        <include refid="queryBeforeCheckedInfo"/>
+
+                        ) a
+                    </otherwise>
+                </choose>
+
+            </otherwise>
+        </choose>
+
+
+        left join supply_demand_spec b ON a.id=b.supply_demand_id and b.del_flag=0 left join (select a.person_id as
+        publish_user,b.id as organization_id,b.name as organization_name from front_user a,organization_info b where
+        a.organization_id=b.id) e on a.publish_user=e.publish_user
+        LEFT JOIN supply_demand_info f on a.entrust_supply_demand_id=f.id and f.statue&lt;&gt;-2
+
+        WHERE true and a.type='demand' and a.is_entrust=1
+        <choose>
+            <when test="telephone==null and userName==null">
+
+            </when>
+            <otherwise>
+                <if test="telephone and telephone!=''">
+                    and c.telephone=#{telephone}
+
+                </if>
+                <if test="userName and userName!=''">
+                    and c.user_name like concat('%',#{userName},'%')
+                </if>
+                and a.address_id=c.id
+            </otherwise>
+        </choose>
+
+
+        <if test="statue!=null and statue!=''">
+            and a.statue=#{statue}
+        </if>
+        <if test="statue==0">
+            and a.statue=#{statue}
+        </if>
+        <if test="statue==null">
+            and a.statue&lt;&gt;-2
+        </if>
+        <if test="statue==''">
+            and a.statue&lt;&gt;-2
+        </if>
+        <if test="goodsId and goodsId!=''">
+            and a.goods_id=#{goodsId}
+        </if>
+        <if test="id and id!=''">
+            and a.id=#{id}
+        </if>
+        <if test="goodsName">
+            and a.goods_name like concat('%',#{goodsName},'%')
+        </if>
+        <if test="pgoodsName">
+            and a.pgoods_name like
+            concat('%',#{pgoodsName},'%')
+        </if>
+        <if test="isFront==true">
+            and a.validate_end_date&gt;now()
+        </if>
+        <if test="isEntrust">
+            and a.is_entrust=#{isEntrust}
+        </if>
+        <if test="isEntrust==0">
+            and a.is_entrust=#{isEntrust}
+        </if>
+        group by a.id ORDER BY a.update_date DESC
+    </select>
+
+
+
+    <select id="getEntrustSupplyPage" resultType="Info">
+        SELECT
+        a.*,GROUP_CONCAT(b.spec_value_id) as checked_specs_id,case when GROUP_CONCAT(b.spec_value) is not null then
+        CONCAT(GROUP_CONCAT(b.spec_value),(case when a.specs is not null then CONCAT(',',a.specs) else '' END)) ELSE
+        a.specs END as checked_specs,
+        c.province_name,c.city_name,c.area_name,c.detail_area,c.user_name,c.telephone,
+        c.province_id,c.city_id,c.area_id,
+        <include refid="entrustColumns"/>
+        FROM
+        <choose>
+            <when test="telephone==null and userName==null">
+                supply_demand_info a
+                left join user_address_info c on a.address_id=c.id
+            </when>
+            <otherwise>
+                user_address_info c
+                ,supply_demand_info a
+            </otherwise>
+        </choose>
+
+
+        left join supply_demand_spec b ON a.id=b.supply_demand_id and b.del_flag=0 left join (select a.person_id as
+        publish_user,b.id as organization_id,b.name as organization_name from front_user a,organization_info b where
+        a.organization_id=b.id) e on a.publish_user=e.publish_user
+        LEFT JOIN supply_demand_info f on a.entrust_supply_demand_id=f.id and f.statue&lt;&gt;-2
+
+        WHERE true and a.type='supply' and a.is_entrust=1
+        <choose>
+            <when test="telephone==null and userName==null">
+
+            </when>
+            <otherwise>
+                <if test="telephone and telephone!=''">
+                    and c.telephone=#{telephone}
+
+                </if>
+                <if test="userName and userName!=''">
+                    and c.user_name like concat('%',#{userName},'%')
+                </if>
+                and a.address_id=c.id
+            </otherwise>
+        </choose>
+
+
+        <if test="statue!=null and statue!=''">
+            and a.statue=#{statue}
+        </if>
+        <if test="statue==0">
+            and a.statue=#{statue}
+        </if>
+        <if test="statue==null">
+            and a.statue&lt;&gt;-2
+        </if>
+        <if test="statue==''">
+            and a.statue&lt;&gt;-2
+        </if>
+        <if test="goodsId and goodsId!=''">
+            and a.goods_id=#{goodsId}
+        </if>
+        <if test="id and id!=''">
+            and a.id=#{id}
+        </if>
+        <if test="goodsName">
+            and a.goods_name like concat('%',#{goodsName},'%')
+        </if>
+        <if test="pgoodsName">
+            and a.pgoods_name like
+            concat('%',#{pgoodsName},'%')
+        </if>
+
+        <if test="isFront==true">
+            <if test="publishUser and publishUser.id">
+                and a.publish_user=#{publishUser.id}
+            </if>
+            <if test="publishUserId">
+                and a.publish_user=#{publishUserId}
+            </if>
+        </if>
+        <if test="isFront==true">
+            and a.validate_end_date&gt;now()
+        </if>
+        <if test="isEntrust">
+            and a.is_entrust=#{isEntrust}
+        </if>
+        <if test="isEntrust==0">
+            and a.is_entrust=#{isEntrust}
+        </if>
+        group by a.id ORDER BY a.update_date DESC
+    </select>
+
+    <insert id="saveInfoImage" parameterType="InfoImage">
+        insert INTO supply_demand_image(
+          id,
+          supply_demand_id,
+          image_path,
+          create_by,
+          update_by,
+          create_date,
+          update_date
+        )value(
+          #{id},
+          #{infoId},
+          #{path},
+          #{createBy.id},
+          #{updateBy.id},
+          #{createDate},
+          #{updateDate}
+        )
+    </insert>
+    <select id="getImagesByInfoId" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT a.image_path FROM supply_demand_image a WHERE a.supply_demand_id=#{id}
+    </select>
+
+
+</mapper>

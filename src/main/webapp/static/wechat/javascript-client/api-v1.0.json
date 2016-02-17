@@ -1,0 +1,971 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "name": "guoguo114.com",
+    "description": "guoguo114.com Api",
+    "version": "1.0.0",
+    "title": "guoguo114.com-api",
+    "termsOfService": "http://www.99114.com",
+    "contact": {
+      "name": "chenchao@99114.com"
+    }
+  },
+  "host": "guoguo114.com",
+  "basePath": "/v1",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/loginToken": {
+      "post": {
+        "tags": [
+          "loginToken"
+        ],
+        "summary": "注册用户",
+        "description": "在http的Post请求中携带一个LoginToken实例对象,在后台添加一个登陆凭证",
+        "operationId": "loginToken",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "loginToken",
+            "in": "body",
+            "description": "注册用户,参数放到body中",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoginToken"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "添加用户成功",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "用户名或密码格式有误"
+          }
+        }
+      }
+    },
+    "/loginToken/login": {
+      "post": {
+        "tags": [
+          "loginToken"
+        ],
+        "summary": "使用LoginToken实例登陆系统",
+        "description": "登陆系统",
+        "operationId": "loginUser",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "loginToken",
+            "in": "body",
+            "description": "LoginToken放在post请求中,发送到服务器实现登陆",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoginToken"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "登陆成功",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "登陆失败,用户名或密码错误"
+          }
+        }
+      }
+    },
+    "/loginToken/logout": {
+      "post": {
+        "tags": [
+          "loginToken"
+        ],
+        "summary": "注销",
+        "description": "退出登陆",
+        "operationId": "logoutUser",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "loginToken",
+            "in": "body",
+            "description": "使用用户名和密码实现退出登录",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoginToken"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "退出登陆成功",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "用户名和密码错误"
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "获得用户",
+        "description": "根据personId获得用户Id",
+        "operationId": "getUserByUserId",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The name that needs to be fetched. Use user1 for testing.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Updated user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "updateUser",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "用户名，用户查询出登陆凭证",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "要添加的用户放到post请求body中,提交给后台",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid user supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/organizations/{username}": {
+      "get": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Get Organization by user name",
+        "description": "Get Organization by user name",
+        "operationId": "getOrganizationByName",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The organizations which is related to the username of user that needs to be fetched ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Organization"
+            }
+          },
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "Organization not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Updated Organization",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "updateOrganization",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "Organization that need to be update",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated Organization object",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Organization"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid user supplied"
+          },
+          "404": {
+            "description": "Organization not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Delete Organization",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "deleteOrganization",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The Organization that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "Organization not found"
+          }
+        }
+      }
+    },
+    "/area/{pid}": {
+      "get": {
+        "tags": [
+          "Area"
+        ],
+        "summary": "Get Area by level",
+        "description": "get Area list by level",
+        "operationId": "getAreaListByPid",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "pid",
+            "in": "path",
+            "description": "取pid为给定值的所有area的list",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Area"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid level supplied"
+          },
+          "404": {
+            "description": "Area list not found"
+          }
+        }
+      }
+    },
+    "/category/{pid}": {
+      "get": {
+        "tags": [
+          "Area"
+        ],
+        "summary": "获得产品分类",
+        "description": "通过parentId获得产品分类",
+        "operationId": "getCategoryByPid",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "pid",
+            "in": "path",
+            "description": "取pid为给定值的所有Gcategory的list",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Gcategory"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid level supplied"
+          },
+          "404": {
+            "description": "Area list not found"
+          }
+        }
+      }
+    },
+    "/info/{id}": {
+      "get": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "Get Info by Info id",
+        "description": "",
+        "operationId": "getInfoById",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The Info that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Info"
+            }
+          },
+          "400": {
+            "description": "Invalid id supplied"
+          },
+          "404": {
+            "description": "Info not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "Update Info",
+        "description": "Update Info ,This can only be done by the logged in user.",
+        "operationId": "updateInfo",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Info that need to be update",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated Info object",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Info"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid Info supplied"
+          },
+          "404": {
+            "description": "Info not found"
+          }
+        }
+      }
+    },
+    "/info": {
+      "post": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "Add Info",
+        "description": "Add Info,This can only be done by the logged in user.",
+        "operationId": "Add Info",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Add Info object",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Info"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid Info supplied"
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/info/publishInfo/{infoId}": {
+      "post": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "指定某条信息发布一条纯文本供求",
+        "description": "{infoId}为某条供(求)的id,body中的info为某条info求(供)的json对象，针对没有发布产品的情况",
+        "operationId": "publishInfo",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "infoId",
+            "in": "path",
+            "description": "针对某条供(求)id，发布一条求(供)消息",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Add Info object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Info"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid Info supplied"
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/info/clickInfo/{infoId}": {
+      "post": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "点击添加",
+        "description": "{infoId}为某条用户曾经发送的供(求)id,body中的info为与之对应的info求(供)的json对象(只需要id即可)",
+        "operationId": "addClickInfo",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "针对某条供(求)id，发布一条求(供)消息",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Add Info object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Info"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid Info supplied"
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/info/infoList": {
+      "get": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "Get Info list by infoId",
+        "description": "",
+        "operationId": "getInfoListBySpecificInfo",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "根据某个供(求)信息，获得push过来的求(供)信息列表",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Info"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Info"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid id supplied"
+          },
+          "404": {
+            "description": "Info not found"
+          }
+        }
+      }
+    },
+    "/info/guessList": {
+      "get": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "Get Info list by infoId",
+        "description": "",
+        "operationId": "guessList",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Info"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid id supplied"
+          },
+          "404": {
+            "description": "Info not found"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    },
+    "wk_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://petstore.swagger.io/api/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write_pets": "modify user in your account",
+        "read_pets": "read your user"
+      }
+    }
+  },
+  "definitions": {
+    "LoginToken": {
+      "type": "object",
+      "description": "登陆凭证实体类",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "loginName": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "userType": {
+          "type": "string",
+          "description": "用户登陆类型"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "roleType": {
+          "type": "string",
+          "enum": [
+            "supply",
+            "demand",
+            "agent"
+          ],
+          "description": "角色类型:supply为供应商,demand为求购商,经济人为agent"
+        },
+        "address": {
+          "$ref": "#/definitions/Address",
+          "description": "详细地址"
+        },
+        "userStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "用户状态，是否审核通过等"
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Product"
+          },
+          "description": "主营产品"
+        },
+        "organization": {
+          "$ref": "#/definitions/Organization",
+          "description": "组织机构"
+        }
+      }
+    },
+    "Gcategory": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string",
+          "description": "规格分类名称"
+        },
+        "code": {
+          "type": "string",
+          "description": "规格分类值"
+        },
+        "gspec": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Gspec"
+          }
+        },
+        "child": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Gcategory"
+          }
+        }
+      },
+      "description": "分类，树形结构"
+    },
+    "Gspec": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "gvalue": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Gvalue"
+          }
+        },
+        "description": "规格，树形结构"
+      }
+    },
+    "Gvalue": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "order": {
+          "type": "string",
+          "description": "排序字段"
+        },
+        "value": {
+          "type": "string"
+        },
+        "description": "规格值，一个规格有多个规格值"
+      }
+    },
+    "Area": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "childArea": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Area"
+          },
+          "description": "子区域，比如国家的子区域是各个省"
+        }
+      }
+    },
+    "Order": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        }
+      }
+    },
+    "Address": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string",
+          "description": "地址详情字符串"
+        },
+        "province": {
+          "$ref": "#/definitions/Area",
+          "description": "省"
+        },
+        "city": {
+          "$ref": "#/definitions/Area",
+          "description": "市"
+        },
+        "area": {
+          "$ref": "#/definitions/Area",
+          "description": "区"
+        }
+      },
+      "description": "详细地址信息"
+    },
+    "Organization": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "组织名称"
+        }
+      },
+      "description": "与用户关联的组织单位"
+    },
+    "Unit": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string",
+          "description": "单位代码"
+        },
+        "name": {
+          "type": "string",
+          "description": "单位名称"
+        }
+      },
+      "description": "用户交易的品种单位"
+    },
+    "Info": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "supply",
+            "demand"
+          ],
+          "description": "角色类型:supply为供应商,demand为求购商,经济人为agent"
+        },
+        "value": {
+          "type": "string",
+          "description": "发布的一条供求信息"
+        },
+        "user": {
+          "$ref": "#/definitions/User",
+          "description": "发布人"
+        },
+        "agent": {
+          "$ref": "#/definitions/User",
+          "description": "中间人，可以为空"
+        },
+        "infoDetail": {
+          "$ref": "#/definitions/InfoDetail",
+          "description": "审核后的详细商机"
+        }
+      },
+      "description": "发布的供求信息"
+    },
+    "InfoDetail": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "Info": {
+          "$ref": "#/definitions/Info"
+        },
+        "n": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Unit单位对应的数量"
+        },
+        "Unit": {
+          "$ref": "#/definitions/Unit"
+        },
+        "gcategory": {
+          "$ref": "#/definitions/Gcategory"
+        }
+      },
+      "description": "人工确认后的供求详情，包括精确的消息分类，规格等"
+    },
+    "Product": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "gcategory": {
+          "$ref": "#/definitions/Gcategory",
+          "description": "主营产品的分类"
+        }
+      },
+      "description": "主营产品"
+    },
+    "Response": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64",
+          "description": "状态值"
+        },
+        "message": {
+          "type": "string",
+          "description": "状态消息"
+        }
+      },
+      "description": "返回的信息"
+    }
+  }
+}

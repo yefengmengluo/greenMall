@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.deal.dao.TradeOrderFlowDao">
+    
+	<sql id="tradeOrderFlowColumns">
+		a.id AS "id",
+		a.order_flow_id AS "orderFlowId",
+		a.order_id AS "orderId",
+		a.statue AS "statue",
+		a.supply_user_id AS "supplyUserId",
+		a.supply_user_name AS "supplyUserName",
+		a.demand_user_id AS "demandUserId",
+		a.demand_name AS "demandName",
+		a.add_date AS "addDate",
+		a.ship_time AS "shipTime",
+		a.invoice_no AS "invoiceNo",
+		a.finish_time AS "finishTime",
+		a.goods_amount AS "goodsAmount",
+		a.evaluation_status AS "evaluationStatus",
+		a.evaluation_time AS "evaluationTime",
+		a.evaluation_content AS "evaluationContent",
+		a.receive_province AS "receiveProvince",
+		a.receive_city AS "receiveCity",
+		a.receive_area AS "receiveArea",
+		a.receive_detail_area AS "receiveDetailArea"
+	</sql>
+	
+	<sql id="tradeOrderFlowJoins">
+	</sql>
+    
+	<select id="get" resultType="TradeOrderFlow">
+		SELECT 
+			<include refid="tradeOrderFlowColumns"/>
+		FROM trade_order_flow a
+		<include refid="tradeOrderFlowJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="TradeOrderFlow">
+		SELECT 
+			<include refid="tradeOrderFlowColumns"/>
+		FROM trade_order_flow a
+		<include refid="tradeOrderFlowJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="TradeOrderFlow">
+		SELECT 
+			<include refid="tradeOrderFlowColumns"/>
+		FROM trade_order_flow a
+		<include refid="tradeOrderFlowJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO trade_order_flow(
+			id,
+			order_flow_id,
+			order_id,
+			statue,
+			supply_user_id,
+			supply_user_name,
+			demand_user_id,
+			demand_name,
+			add_date,
+			ship_time,
+			invoice_no,
+			finish_time,
+			goods_amount,
+			evaluation_status,
+			evaluation_time,
+			evaluation_content,
+			receive_province,
+			receive_city,
+			receive_area,
+			receive_detail_area
+		) VALUES (
+			#{id},
+			#{orderFlowId},
+			#{orderId},
+			#{statue},
+			#{supplyUserId},
+			#{supplyUserName},
+			#{demandUserId},
+			#{demandName},
+			#{addDate},
+			#{shipTime},
+			#{invoiceNo},
+			#{finishTime},
+			#{goodsAmount},
+			#{evaluationStatus},
+			#{evaluationTime},
+			#{evaluationContent},
+			#{receiveProvince},
+			#{receiveCity},
+			#{receiveArea},
+			#{receiveDetailArea}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE trade_order_flow SET 	
+			order_flow_id = #{orderFlowId},
+			order_id = #{orderId},
+			statue = #{statue},
+			supply_user_id = #{supplyUserId},
+			supply_user_name = #{supplyUserName},
+			demand_user_id = #{demandUserId},
+			demand_name = #{demandName},
+			add_date = #{addDate},
+			ship_time = #{shipTime},
+			invoice_no = #{invoiceNo},
+			finish_time = #{finishTime},
+			goods_amount = #{goodsAmount},
+			evaluation_status = #{evaluationStatus},
+			evaluation_time = #{evaluationTime},
+			evaluation_content = #{evaluationContent},
+			receive_province = #{receiveProvince},
+			receive_city = #{receiveCity},
+			receive_area = #{receiveArea},
+			receive_detail_area = #{receiveDetailArea}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM trade_order_flow
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

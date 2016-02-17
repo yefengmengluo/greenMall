@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.user.dao.AdminUserDao">
+	<sql id="adminUserClumns">
+		su.id AS userId,
+		su.organization_id AS organizationId,
+		su.statue AS statue,
+		su.name AS userName,
+		su.mobile AS mobile,
+		su.create_date AS createDate,
+        su.login_ip AS loginIp,
+        su.remarks AS remarks,
+		sm.name AS organizationType,
+		oi.name AS organizationName,
+		sa.name AS province,
+		sa2.name AS city,
+		sa3.name AS area,
+		oi.detail_area AS detailArea,
+        su.remarks AS remark
+	</sql>
+	<sql id="adminUserJoins">
+		LEFT JOIN organization_info oi ON su.organization_id=oi.id 
+		LEFT JOIN sys_area sa on sa.id=oi.province_id 
+		LEFT JOIN sys_area sa2 on sa2.id=oi.city_id
+		LEFT JOIN sys_area sa3 on sa3.id=oi.area_id
+		LEFT JOIN sys_mdict sm on oi.type=sm.id
+    </sql>
+    <select id="userList" resultType="com.wk.p3.greenmall.modules.user.entity.AdminUser">
+   		SELECT 
+   		<include refid="adminUserClumns"/>
+        FROM front_user su
+   		<include refid="adminUserJoins"/>
+        where 1=1
+		<if test="mobile != null and mobile !=''">
+			and su.mobile like '%${mobile}%'
+		</if>
+		<if test="userName != null and userName !=''">
+			and su.name like '%${userName}%'
+		</if>
+        <if test="statue != null and statue !=''">
+            and su.statue = #{statue}
+        </if>
+   		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY su.create_date DESC
+			</otherwise>
+		</choose>
+    </select>
+    <update id="approveUser">
+        UPDATE front_user su SET su.statue=#{statue} WHERE su.id=#{userId}
+    </update>
+</mapper>

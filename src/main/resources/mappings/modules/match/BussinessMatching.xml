@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.match.dao.BussinessMatchingDao">
+	<insert id="saveRelation">
+		INSERT INTO matching_attr_relation(
+			id,
+			relation_id,
+			matchattr_id,
+			weight
+		)
+		VALUES(
+			#{id},
+			#{relationId},
+			#{matchAttrId},
+			#{weight}
+		)
+	</insert>
+	<select id="findMatchRelationByRealtionId" resultType="com.wk.p3.greenmall.modules.match.entity.MatchingAttr">
+		SELECT a.matchattr_id AS id,a.weight AS weight FROM matching_attr_relation a WHERE a.relation_id=#{id}
+	</select>
+	<select id="findGoodsTypeByUser" resultType="java.lang.String">
+		SELECT omg.goods_type AS goodsType from sys_user su
+		LEFT JOIN organization_info oi ON su.company_id=oi.id
+		LEFT JOIN organization_main_goods omg on oi.id=omg.organization_id WHERE su.id=#{id}
+	</select>
+	<select id="findAddressByUser" resultType="map">
+		SELECT ua.province_name AS provinceName,ua.city_name AS cityName,ua.area_name AS areaName from sys_user su
+		LEFT JOIN user_address_info ua on su.id=ua.id where su.id=#{id}
+	</select>
+	<update id="deleteRealtionByMatchingId">
+		DELETE FROM matching_attr_relation  WHERE relation_id=#{id}
+	</update>
+</mapper>

@@ -1,0 +1,13 @@
+.t2029-top{width: 100%;margin: 0 auto;overflow: hidden;height: 100px;background: #f08300;margin-top: 36px;}
+.t2029-common-nav-category-w1190{margin: 0 auto;height: 100px;width: 1190px;}
+.common-nav-left{width: 185px;height: 100px;background: #f08300 url(../../images/home/logo1.png) left center no-repeat;border-right: 1px solid #cc7000;float: left;}
+.common-nav-right{width: 1003px;float: left;position: relative;}
+.common-nav-right span.title{color: #FFFFFF;font-size: 16px;font-family: "微软雅黑";display: block;height: 100px;line-height: 100px;padding-left: 25px;width: 200px;float: left;}
+.common-nav-right ul{position: absolute;top: 0;right: 0;}
+.common-nav-right ul li{height: 100px;float: left;width: 122px;line-height: 86px;}
+.common-nav-right ul li.li1{background: url(../../images/home/sd.png) 0px 25px no-repeat;padding-left: 55px;}
+.common-nav-right ul li.li2{background: url(../../images/home/hd.png) 0px 25px no-repeat;padding-left: 55px;}
+.common-nav-right ul li.li3{background: url(../../images/home/money.png) 0px 25px no-repeat;padding-left: 55px;}
+.common-nav-right ul li span{font-weight: bold;font-size: 20px;}
+.common-nav-right ul li p{position: absolute;top: 20px;}
+.common-nav-right ul li a,.common-nav-right ul li a:hover{color: #000000;}

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.match.dao.MatchingAttrDao">
+	<sql id="matchingAttrColumns">
+		a.id AS "id",
+		a.matching_name AS "matchingName",
+		a.remark AS "remark",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate"
+	</sql>
+	<select id="findAllList" resultType="MatchingAttr">
+		SELECT 
+			<include refid="matchingAttrColumns"/>
+		FROM matching_attr a
+		<include refid="matchingAttrJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	<sql id="matchingAttrJoins">
+	</sql>
+    
+	<select id="get" resultType="MatchingAttr">
+		SELECT 
+			<include refid="matchingAttrColumns"/>
+		FROM matching_attr a
+		<include refid="matchingAttrJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="MatchingAttr">
+		SELECT 
+			<include refid="matchingAttrColumns"/>
+		FROM matching_attr a
+		<include refid="matchingAttrJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO matching_attr(
+			id,
+			matching_name,
+			remark,
+			create_by,
+			create_date,
+			if_matching
+		) VALUES (
+			#{id},
+			#{matchingName},
+			#{remark},
+			#{createBy.id},
+			#{createDate},
+			#{ifMatching}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE matching_attr SET 	
+			matching_name = #{matchingName},
+			remark = #{remark},
+			if_matching = #{ifMatching},
+			matching_status = #{matchingStatus},
+			matching_table = #{matchingTable},
+			entity_name = #{entityName}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM matching_attr
+		WHERE id = #{id}
+	</update>
+	<select id="findMathcingRelationByType" resultType="com.wk.p3.greenmall.modules.match.entity.MatchingAttr">
+		SELECT <include refid="matchingAttrColumns"/> ,b.weight AS weight,c.is_entrust as isEntrust
+		from supply_demand_relation_matching c 
+		RIGHT JOIN matching_attr_relation b on c.id=b.relation_id 
+		RIGHT JOIN matching_attr a on b.matchattr_id=a.id
+		where c.matching_object=#{type} AND c.if_matching=1
+	</select>
+</mapper>

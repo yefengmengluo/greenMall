@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.info.dao.BrowseLogDao">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO browse_log(
+        id,
+        ip,
+        map_longitude,
+        map_latitude,
+        access_type,
+        os,
+        browser,
+        target_type,
+        target_id,
+        user_id,
+        user_type,
+        create_date
+        ) VALUES (
+        #{id},
+        #{ip},
+        #{mapLongitude},
+        #{mapLatitude},
+        #{accessType},
+        #{os},
+        #{browser},
+        #{targetType},
+        #{targetId},
+        #{userId},
+        #{userType},
+        now()
+        )
+    </insert>
+
+    <select id="count" parameterType="BrowseLog" resultType="java.lang.Integer">
+        SELECT count(1) FROM browse_log a
+		WHERE true
+        <if test="targetType">
+            and a.target_type=#{targetType}
+        </if>
+        <if test="targetId">
+        and a.target_id=#{targetId}
+        </if>
+    </select>
+</mapper>

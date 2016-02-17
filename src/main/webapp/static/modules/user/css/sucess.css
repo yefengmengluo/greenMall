@@ -1,0 +1,59 @@
+.btn{width: 140px;}
+.zhuce-padding{margin-left: 350px;}
+.sucess-div{
+	margin-top: 200px;
+	width: 1200px;
+	height: 150px;
+	margin-left: 300px;
+}
+.color7{color: #00a0e9;}/*蓝色*/
+.btn2{
+	width: 140px;
+	background-color: #009944;
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: white;
+  margin-top: 20px;
+}
+.btn1 {
+	width: 140px;
+	background-color: #00a0e9;
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: white;
+  margin-top: 20px;
+}

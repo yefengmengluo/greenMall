@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.deal.dao.TradeOrderSupplyDemandDao">
+    
+	<sql id="tradeOrderSupplyDemandColumns">
+		a.id AS "id",
+		a.order_id AS "orderId",
+		a.supply_id AS "supplyId",
+		a.demand_id AS "demandId",
+		a.total_price AS "totalPrice",
+		a.per_price AS "perPrice",
+		a.number AS "number",
+		a.image_path AS "imagePath",
+		a.price_unit_id AS "priceUnitId",
+		a.number_unit_id AS "numberUnitId",
+		a.price_unit_value AS "priceUnitValue",
+		a.number_unit_value AS "numberUnitValue",
+		a.remarks AS "remarks",
+		a.spec AS "spec",
+		a.update_date AS "updateDate",
+		a.delflag AS "delFlag",
+		a.supply_remarks AS "supplyRemarks",
+		a.goods_name AS "goodsName",
+		a.pgoods_name AS "pgoodsName"
+	</sql>
+	
+	<sql id="detailsColumns">		
+	    a.id AS "tradeOrder.id",
+		a.order_number AS "tradeOrder.OrderNumber",
+		a.statue AS "tradeOrder.statue",
+		a.supply_user_id AS "tradeOrder.supplyUserId",
+		a.supply_user_name AS "tradeOrder.supplyUserName",
+		a.demand_user_id AS "tradeOrder.demandUserId",
+		a.demand_name AS "tradeOrder.demandName",
+		a.add_date AS "tradeOrder.addDate",
+		a.ship_time AS "tradeOrder.shipTime",
+		a.invoice_no AS "tradeOrder.invoiceNo",
+		a.finish_time AS "tradeOrder.finishTime",
+		a.goods_amount AS "tradeOrder.goodsAmount",
+		a.evaluation_status AS "tradeOrder.evaluationStatus",
+		a.evaluation_time AS "tradeOrder.evaluationTime",
+		a.evaluation_content AS "tradeOrder.evaluationContent",
+		a.receive_province AS "tradeOrder.receiveProvince",
+		a.receive_city AS "tradeOrder.receiveCity",
+		a.receive_area AS "tradeOrder.receiveArea",
+		a.receive_detail_area AS "tradeOrder.receiveDetailArea",
+		a.remarks AS "tradeOrder.remarks",
+		a.ordertotal AS "tradeOrder.ordertotal",
+		a.poundage AS "tradeOrder.poundage",
+		a.distribution_fee AS "tradeOrder.distributionfee",
+		a.goods_total_money AS "tradeOrder.goodstotalmoney",
+		a.paymenttype AS "tradeOrder.paymenttype",
+		a.payment AS "tradeOrder.payment",
+		a.distribution AS "tradeOrder.distribution",
+		a.goods_account_payable AS "tradeOrder.goodsaccountpayable",
+		a.cash_pledge AS "tradeOrder.cash_pledge",
+		a.demand_returncash AS "tradeOrder.demandreturncash",
+		a.supply_commission AS "tradeOrder.supplycommission",
+		a.transactiontype AS "tradeOrder.transactiontype",
+		a.update_date AS "tradeOrder.updateDate",
+		sd.id AS "tradeOrderSupplyDemand.id",
+		sd.order_id AS "tradeOrderSupplyDemand.orderId",
+		sd.supply_id AS "tradeOrderSupplyDemand.supplyId",
+		sd.demand_id AS "tradeOrderSupplyDemand.demandId",
+		sd.total_price AS "tradeOrderSupplyDemand.totalPrice",
+		sd.per_price AS "tradeOrderSupplyDemand.perPrice",
+		sd.number AS "tradeOrderSupplyDemand.number",
+		sd.image_path AS "tradeOrderSupplyDemand.imagePath",
+		sd.price_unit_id AS "tradeOrderSupplyDemand.priceUnitId",
+		sd.number_unit_id AS "tradeOrderSupplyDemand.numberUnitId",
+		sd.price_unit_value AS "tradeOrderSupplyDemand.priceUnitValue",
+		sd.number_unit_value AS "tradeOrderSupplyDemand.numberUnitValue",
+		sd.remarks AS "tradeOrderSupplyDemand.remarks",
+		sd.goods_name AS "tradeOrderSupplyDemand.goodsName",
+		sd.pgoods_name AS "tradeOrderSupplyDemand.pgoodsName",
+		us.user_name AS "addressInfo.username",
+		us.telephone AS "addressInfo.telephone",
+		us.detail_area AS "addressInfo.detailArea"
+	</sql>
+	
+    <sql id="tradeOrderSupplyDemandJoins"></sql>
+    
+	<select id="get" resultType="TradeOrderSupplyDemand">
+		SELECT 
+			<include refid="tradeOrderSupplyDemandColumns"/>
+		FROM trade_order_supply_demand a
+		<include refid="tradeOrderSupplyDemandJoins"/>
+		<where>
+		  <if test="id!=null and id!='' ">
+		      a.id = #{id}
+		  </if>
+		  <if test="orderId!=null and orderId!='' ">
+		     a.order_id = #{orderId}
+		  </if>
+		</where>
+	</select>
+	
+	<select id="findSuppleyDemandByOrderId" resultType="TradeOrderSupplyDemand">
+		SELECT 
+			<include refid="tradeOrderSupplyDemandColumns"/>
+		FROM trade_order_supply_demand a
+		<include refid="tradeOrderSupplyDemandJoins"/>
+		WHERE a.order_id = #{orderId}
+	</select>
+	
+	<select id="findSupplyDemandInfo" resultType="SupplyDemandInfo">
+	    select * from supply_demand_info 
+	      <where>
+	        <if test="supplyId !=null and supplyId!='' ">
+	           id = #{supplyId}
+	        </if>
+	         <if test="demandId !=null and demandId!='' ">
+	           id = #{demandId}
+	        </if>
+	      </where> 
+	</select>
+	
+	<select id="findList" resultType="TradeOrderSupplyDemand">
+		SELECT 
+			<include refid="tradeOrderSupplyDemandColumns"/>
+		FROM trade_order_supply_demand a
+		<include refid="tradeOrderSupplyDemandJoins"/>
+		<where>
+			<if test="orderId!=null and orderId!='' ">
+			 order_id = #{orderId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<!-- 详情分页 -->
+	<select id="getDetails" resultType="com.wk.p3.greenmall.modules.deal.entity.Details">
+	   select 
+	    <include refid="detailsColumns" />
+	   from trade_order a left join trade_order_supply_demand sd on a.id = sd.order_id,(select user_name,telephone,detail_area from user_address_info u,(select address_id from supply_demand_info 
+	  <where>
+	    <if test="supplyid!=null and supplyid!='' ">
+	      id=#{supplyid}
+	    </if>
+	    
+	    <if test="demandid!=null and demandid!='' ">
+	      id=#{demandid}
+	    </if>
+	    
+	  </where>
+	  ) s where u.id=s.address_id) us 
+	  <where>
+	   <if test="supplyid!=null and supplyid!='' ">
+	      sd.supply_id=#{supplyid}
+	    </if>
+	    
+	    <if test="demandid!=null and demandid!='' ">
+	      sd.demand_id=#{demandid}
+	    </if>
+	  </where>
+	</select>
+	
+	<select id="findAllList" resultType="TradeOrderSupplyDemand">
+		SELECT 
+			<include refid="tradeOrderSupplyDemandColumns"/>
+		FROM trade_order_supply_demand a
+		<include refid="tradeOrderSupplyDemandJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO trade_order_supply_demand(
+			id,
+			order_id,
+			supply_id,
+			demand_id,
+			total_price,
+			per_price,
+			number,
+			image_path,
+			price_unit_id,
+			number_unit_id,
+			price_unit_value,
+			number_unit_value,
+			remarks,
+			update_date,
+			delflag,
+			goods_name,
+			pgoods_name
+		) VALUES (
+			#{id},
+			#{orderId},
+			#{supplyId},
+			#{demandId},
+			#{totalPrice},
+			#{perPrice},
+			#{number},
+			#{imagePath},
+			#{priceUnitId},
+			#{numberUnitId},
+			#{priceUnitValue},
+			#{numberUnitValue},
+			#{remarks},
+			#{updateDate},
+			#{delFlag},
+			#{goodsName},
+			#{pgoodsName}
+		)
+	</insert>
+	<!-- 更新数据 -->
+    <update id="update">
+		UPDATE trade_order_supply_demand 
+		<set> 
+		    <if test="totalPrice!=null and totalPrice!='' ">
+		      total_price = #{totalPrice},
+		    </if>
+		    <if test="perPrice!=null and perPrice!='' ">
+		      per_price = #{perPrice},
+		    </if>
+		    <if test="supplyRemarks!=null and supplyRemarks!='' ">
+		      supply_remarks = #{supplyRemarks},
+		    </if>
+		    <if test="delFlag!=null and delFlag!='' ">
+		      delflag = #{delFlag},
+		    </if>
+		    <if test="updateDate!=null and updateDate!='' ">
+		      update_date = #{updateDate},
+		    </if>
+		    <if test="remarks!=null and remarks!='' ">
+		     remarks = #{remarks},
+		    </if>
+		    <if test="numberUnitValue!=null and numberUnitValue!='' ">
+		      number_unit_value = #{numberUnitValue},
+		    </if>
+		    <if test="priceUnitValue!=null and priceUnitValue!='' ">
+		     price_unit_value = #{priceUnitValue},
+		    </if>
+		    <if test="numberUnitId!=null and numberUnitId!='' ">
+		     number_unit_id = #{numberUnitId},
+		    </if>
+		    <if test="priceUnitId!=null and priceUnitId!='' ">
+		      price_unit_id = #{priceUnitId},
+		    </if>
+		    <if test="number!=null and number!='' ">
+		     number = #{number}
+		    </if>
+	   </set>				
+			where id = #{id}			
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM trade_order_supply_demand
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 实现软删除 -->
+	<update id="deleteJhds">
+	update trade_order_supply_demand SET 
+	    update_date = #{updateDate},delflag = #{delFlag} where id = #{id}   
+	</update>
+	<!-- 返回默认单位  -->
+	<select id="unitCateGory" resultType="com.wk.p3.greenmall.modules.deal.entity.Unit" >
+	    select unit_name AS "unitName",unit_code AS "unitCode",id AS "id"  from supply_demand_unit_category c 
+	    <where>
+	          c.is_default=1 and c.del_flag =0 and c.statue=0
+	      <if test="pGoodsId!=null and pGoodsId!='' ">
+	             and c.id=#{pGoodsId}
+	      </if>
+	      
+	      <if test="priceUnitId!=null and priceUnitId!='' ">
+	             and c.id=#{priceUnitId}
+	      </if>
+	      
+	      <if test="numberUnitId!=null and numberUnitId!='' ">
+	            and c.id = #{numberUnitId}
+	      </if>
+	    </where>
+	</select>
+	<!-- 返回单位计算规则  -->
+	<select id="unitRelation" resultType="java.lang.String" >
+	    select multiplier from supply_demand_unit_relation where from_unit_code=#{fromUnitCode} and to_unit_code=#{toUnitCode}
+	</select>
+</mapper>

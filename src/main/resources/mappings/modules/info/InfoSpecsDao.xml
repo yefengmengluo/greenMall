@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.info.dao.InfoSpecsDao">
+    <insert id="insert" >
+        insert into supply_demand_spec(id,spec_name,spec_value,supply_demand_id,gcategory_id,spec_id,spec_value_id,create_by,update_by,create_date,update_date)
+        value(#{id},#{specName},#{specValue},#{supplyDemandId},#{gcategoryId},#{specId},#{specValueId},#{createBy.id},#{updateBy.id},now(),now())
+    </insert>
+
+    <update id="update">
+        UPDATE supply_demand_spec SET
+        update_date=now(),del_flag=0,update_by=#{updateBy.id} where id=#{id}
+    </update>
+    <select id="getInfoSpecsByInfoIdAndSpecs" resultType="InfoSpecs">
+        select * from supply_demand_spec where supply_demand_id=#{supplyDemandId} and spec_value_id=#{specValueId}
+    </select>
+    <select id="getInfoSpecsByInfoId" resultType="InfoSpecs">
+        select * from supply_demand_spec where supply_demand_id=#{id}
+    </select>
+    <select id="get">
+        select * from supply_demand_spec where supply_demand_id=#{supplyDemandId} and del_flag=0
+    </select>
+    <update id="delete">
+        UPDATE supply_demand_spec SET
+        del_flag = #{DEL_FLAG_DELETE}
+        WHERE id = #{id}
+    </update>
+    <update id="deleteByInfoId">
+        UPDATE supply_demand_spec SET
+        del_flag = 1
+        WHERE supply_demand_id = #{id}
+    </update>
+
+</mapper>

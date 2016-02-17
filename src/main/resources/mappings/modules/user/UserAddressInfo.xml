@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.user.dao.UserAddressInfoDao">
+    <sql id="getColumns">
+        a.id,
+        a.province_id,
+        a.city_id,
+        a.area_id,
+        a.warehouse,
+        a.detail_area,
+        a.user_id,
+        a.user_name,
+        a.telephone,
+        a.update_by,
+        a.is_defalt,
+        a.del_flag,
+        a.postcode,
+        a.type,
+        a.province_name,
+        a.city_name,
+        a.area_name,
+        a.create_by,
+        a.update_by,
+        a.create_date,
+        a.update_date
+    </sql>
+    <insert id="insert" >
+        insert into user_address_info(id,province_id,city_id,area_id,warehouse,detail_area,user_id,user_name,telephone,create_by,update_by,is_defalt,postcode,type,province_name,city_name,area_name,create_date,update_date)
+        VALUES(#{id},#{provinceId},#{cityId},#{areaId},#{warehouse},#{detailArea},#{userId},#{userName},#{telephone},#{createBy.id},#{updateBy.id},#{isDefalt},#{postcode},#{type},#{provinceName},#{cityName},#{areaName},now(),now())
+    </insert>
+    <select id="get" resultType="UserAddressInfo">
+        SELECT
+        <include refid="getColumns"/>
+        from user_address_info a
+        where a.id=#{id}
+    </select>
+
+    <update id="update">
+        UPDATE user_address_info SET
+        province_id=#{provinceId},
+        city_id=#{cityId},
+        area_id=#{areaId},
+        warehouse=#{warehouse},
+        detail_area=#{detailArea},
+        user_id=#{userId},
+        user_name=#{userName},
+        telephone=#{telephone},
+        update_by=#{updateBy.id},
+        is_defalt=#{isDefalt},
+        postcode=#{postcode},
+        province_name=#{provinceName},
+        city_name=#{cityName},
+        area_name=#{areaName},
+        update_date=now() where id=#{id}
+    </update>
+
+    <select id="findList" resultType="UserAddressInfo">
+    SELECT
+    <include refid="getColumns"/>
+    FROM user_address_info a left join sys_user b ON a.user_id=b.id and a.del_flag=0
+    WHERE  true
+    <if test="userId and userId!=''">
+        and a.user_id=#{userId}
+    </if>
+    <if test="isDefalt and isDefalt!=''">
+        and a.is_defalt=#{isDefalt}
+    </if>
+    ORDER BY a.update_date DESC
+    </select>
+
+</mapper>

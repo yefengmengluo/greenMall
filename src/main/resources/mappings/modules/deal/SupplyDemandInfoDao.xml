@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.p3.greenmall.modules.deal.dao.SupplyDemandInfoDao">
+	<sql id="supplyDemandInfoColumns">
+		a.id AS "id",
+		a.goods_name AS "goodsName",
+		a.pgoods_alias AS "pgoodsAlias",
+		a.goods_id AS "goodsId",
+		a.pgoods_id AS "pgoodsId",
+		a.pgoods_name AS "pgoodsName",
+		a.pids AS "pids",
+		a.price_unit_id AS "priceUnitId",
+		a.number_unit_id AS "numberUnitId",
+		a.price_unit_value AS "priceUnitValue",
+		a.number_unit_value AS "numberUnitValue",
+		a.number AS "number",
+		a.from_per_price AS "fromPerPrice",
+		a.to_per_price AS "toPerPrice",
+		a.specs AS "specs",
+		a.remarks AS "remarks",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.create_by AS "createBy",
+		a.update_by AS "updateBy",
+		a.statue AS "statue",
+		a.statue_intro AS "statueIntro",
+		a.type AS "type",
+		a.is_entrust AS "isEntrust",
+		a.entrust_supply_demand_id AS "entrustSupplyDemandId",
+		a.entrust_organization_id AS "entrustOrganizationId",
+		a.address_id AS "addressId",
+		a.validate_start_date AS "validateStartDate",
+		a.validate_end_date AS "validateEndDate",
+		a.production_province AS "productionProvince",
+		a.production_city AS "productionCity",
+		a.production_area AS "productionArea",
+		a.production_detail_area AS "productionDetailArea",
+		a.order_uploading_id AS "orderUploadingId",
+		a.publish_user AS "publishUser",
+		a.check_record_id AS "checkRecordId",
+		a.production_province_name AS "productionProvinceName",
+		a.production_city_name AS "productionCityName",
+		a.production_area_name AS "productionAreaName",	
+		a.nonstandard_number AS "nonstandardNumber",
+		a.nonstandard_number_unit_id AS "nonstandardNumberUnitId",
+		a.nonstandard_number_unit_name AS "nonstandardNumberUnitName"
+		
+	</sql>
+	
+	<sql id="supplyDemandInfoJoins">
+	</sql>
+    
+	<select id="get" resultType="SupplyDemandInfo">
+		SELECT 
+			<include refid="supplyDemandInfoColumns"/>
+		FROM supply_demand_info a
+		<include refid="supplyDemandInfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<!-- 新添加返回采购单信息 即采购信息-->
+   <select id="queryDemandInfo" resultType="SupplyDemandInfo">
+      SELECT 
+			<include refid="supplyDemandInfoColumns"/>
+		FROM supply_demand_info a
+		<include refid="supplyDemandInfoJoins"/>
+		<where>
+		     a.validate_end_date &gt; sysdate() and a.statue &lt;=3 and type="demand"
+			<if test="id!=null and id !=''">
+			     and a.id=#{id} 
+			</if>
+			<if test="number!=null and number !=''">
+			     and  a.number=#{number}
+			</if>
+			<if test="priceUnitValue!=null and priceUnitValue !=''">
+			     and  a.price_unit_value=#{priceUnitValue} 
+			</if>
+			<if test="goodsName!=null and goodsName !=''">
+			     and a.goodsName=#{goodsName} 
+			</if>    
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+   </select>
+ 
+ 
+   <!-- 新添加返回供应单信息 即供应信息-->
+   <select id="querySupplyInfo" resultType="SupplyDemandInfo">
+     SELECT 
+			<include refid="supplyDemandInfoColumns"/>
+		FROM supply_demand_info a
+		<include refid="supplyDemandInfoJoins"/>
+		<where>
+		     a.validate_end_date &gt; sysdate() and a.statue &lt;=3 and type="supply"
+			<if test="id!=null and id !=''">
+			     and a.id=#{id} 
+			</if>
+			<if test="number!=null and number !=''">
+			     and  a.number=#{number}
+			</if>
+			<if test="priceUnitValue!=null and priceUnitValue !=''">
+			     and  a.price_unit_value=#{priceUnitValue} 
+			</if>
+			<if test="goodsName!=null and goodsName !=''">
+			     and a.goodsName=#{goodsName} 
+			</if>    
+		</where>
+		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+   </select>
+	
+	
+	<select id="findList" resultType="SupplyDemandInfo">
+		SELECT 
+			<include refid="supplyDemandInfoColumns"/>
+		FROM supply_demand_info a
+		<include refid="supplyDemandInfoJoins"/>
+		<where>
+		     a.validate_end_date > sysdate() and a.statue >=3 
+			<if test="id!=null and id !=''">
+			     and a.id=#{id} 
+			</if>
+			<if test="number!=null and number !=''">
+			     and  a.number=#{number}
+			</if>
+			<if test="priceUnitValue!=null and priceUnitValue !=''">
+			     and  a.price_unit_value=#{priceUnitValue} 
+			</if>
+			<if test="goodsName!=null and goodsName !=''">
+			     and a.goodsName=#{goodsName} 
+			</if>    
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="SupplyDemandInfo">
+		SELECT 
+			<include refid="supplyDemandInfoColumns"/>
+		FROM supply_demand_info a
+		<include refid="supplyDemandInfoJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO supply_demand_info(
+			id,
+			goods_name,
+			pgoods_alias,
+			goods_id,
+			pgoods_id,
+			pgoods_name,
+			pids,
+			price_unit_id,
+			number_unit_id,
+			price_unit_value,
+			number_unit_value,
+			number,
+			from_per_price,
+			to_per_price,
+			specs,
+			remarks,
+			create_date,
+			update_date,
+			create_by,
+			update_by,
+			statue,
+			statue_intro,
+			type,
+			is_entrust,
+			entrust_supply_demand_id,
+			entrust_organization_id,
+			address_id,
+			validate_start_date,
+			validate_end_date,
+			production_province,
+			production_city,
+			production_area,
+			production_detail_area,
+			order_uploading_id,
+			publish_user,
+			check_record_id,
+			production_province_name,
+			production_city_name,
+			production_area_name
+		) VALUES (
+			#{id},
+			#{goodsName},
+			#{pgoodsAlias},
+			#{goodsId},
+			#{pgoodsId},
+			#{pgoodsName},
+			#{pids},
+			#{priceUnitId},
+			#{numberUnitId},
+			#{priceUnitValue},
+			#{numberUnitValue},
+			#{number},
+			#{fromPerPrice},
+			#{toPerPrice},
+			#{specs},
+			#{remarks},
+			#{createDate},
+			#{updateDate},
+			#{createBy.id},
+			#{updateBy.id},
+			#{statue},
+			#{statueIntro},
+			#{type},
+			#{isEntrust},
+			#{entrustSupplyDemandId},
+			#{entrustOrganizationId},
+			#{addressId},
+			#{validateStartDate},
+			#{validateEndDate},
+			#{productionProvince},
+			#{productionCity},
+			#{productionArea},
+			#{productionDetailArea},
+			#{orderUploadingId},
+			#{publishUser},
+			#{checkRecordId},
+			#{productionProvinceName},
+			#{productionCityName},
+			#{productionAreaName}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE supply_demand_info SET 	
+			goods_name = #{goodsName},
+			pgoods_alias = #{pgoodsAlias},
+			goods_id = #{goodsId},
+			pgoods_id = #{pgoodsId},
+			pgoods_name = #{pgoodsName},
+			pids = #{pids},
+			price_unit_id = #{priceUnitId},
+			number_unit_id = #{numberUnitId},
+			price_unit_value = #{priceUnitValue},
+			number_unit_value = #{numberUnitValue},
+			number = #{number},
+			from_per_price = #{fromPerPrice},
+			to_per_price = #{toPerPrice},
+			specs = #{specs},
+			remarks = #{remarks},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id},
+			statue = #{statue},
+			statue_intro = #{statueIntro},
+			type = #{type},
+			is_entrust = #{isEntrust},
+			entrust_supply_demand_id = #{entrustSupplyDemandId},
+			entrust_organization_id = #{entrustOrganizationId},
+			address_id = #{addressId},
+			validate_start_date = #{validateStartDate},
+			validate_end_date = #{validateEndDate},
+			production_province = #{productionProvince},
+			production_city = #{productionCity},
+			production_area = #{productionArea},
+			production_detail_area = #{productionDetailArea},
+			order_uploading_id = #{orderUploadingId},
+			publish_user = #{publishUser},
+			check_record_id = #{checkRecordId},
+			production_province_name = #{productionProvinceName},
+			production_city_name = #{productionCityName},
+			production_area_name = #{productionAreaName}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM supply_demand_info
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

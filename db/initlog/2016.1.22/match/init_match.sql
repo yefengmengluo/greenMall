@@ -1,0 +1,1 @@
+ALTER TABLE supply_demand_relation_matching ADD is_entrust tinyint DEFAULT 0

@@ -1,0 +1,71 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/cache
+           http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <context:annotation-config/>
+    <cache:annotation-driven/>
+
+    <!--当我们调用cacheManager.getCache(cacheName) 时，会先从第一个cacheManager中查找有没有cacheName的cache，-->
+    <!--如果没有接着查找第二个，如果最后找不到，因为fallbackToNoOpCache=true，那么将返回一个NOP的Cache否则返回null。-->
+    <bean id="cacheManager" class="org.springframework.cache.support.CompositeCacheManager">
+        <property name="cacheManagers">
+            <list>
+                <!--ehcacheCacheManager缓存-->
+                <ref bean="ehcacheManager" />
+                <!--simpleCacheManager缓存-->
+                <ref bean="simpleCacheManager" />
+                <!--redisCacheManager缓存-->
+                <!--<ref bean="redisCacheManager" />-->
+            </list>
+        </property>
+        <property name="fallbackToNoOpCache" value="true" />
+    </bean>
+
+    <!--ehcacheCacheManager缓存-->
+    <bean id="ehcacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="myCache"></property>
+    </bean>
+    <bean id="myCache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:${ehcache.configFile}" />
+        <property name="shared" value="true"></property>
+    </bean>
+
+    <!--simpleCacheManager缓存-->
+    <bean id="simpleCacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <property name="caches">
+            <set>
+                <!--spring提供的一个默认缓冲-->
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+                    <property name="name" value="default"></property>
+                </bean>
+                <!--测试-->
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+                    <property name="name" value="accountCache"/>
+                </bean>
+            </set>
+        </property>
+    </bean>
+
+    <!-- redisCacheManager缓存
+    <bean id="redisCacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
+        <constructor-arg index="0">
+            <bean class="org.springframework.data.redis.core.RedisTemplate">
+                <property name="connectionFactory" ref="jedisConnFactory"></property>
+            </bean>
+        </constructor-arg>
+        <constructor-arg index="1">
+            <set>
+                <value>redis</value>
+                <value>test2</value>
+            </set>
+        </constructor-arg>
+    </bean>
+    -->
+</beans>

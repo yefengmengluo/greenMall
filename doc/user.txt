@@ -1,0 +1,2 @@
+前台：http://localhost:8080/greenMall 用户名和密码可以自己注册
+后台http://localhost:8080/greenMall/a 用户名：thinkgem 密码：wkadmin
